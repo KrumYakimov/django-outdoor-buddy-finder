@@ -10,28 +10,36 @@
     <link rel="icon" type="image/x-icon" href="{% static 'images/nav/logo.png' %}">
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar">
-        <div class="logo">
-            <a href="#" class="logo">
-                <img src="{% static 'images/nav/logo.png' %}" alt="Outdoor Buddy Finder Logo">
-            </a>
-        </div>
-        <ul class="menu">
-            <li><a href="#">Home</a></li>
+<!-- Navigation -->
+<nav class="navbar">
+    <div class="logo">
+        <a href="{% url 'home' %}" class="logo">
+            <img src="{% static 'images/nav/logo.png' %}" alt="Outdoor Buddy Finder Logo">
+        </a>
+    </div>
+    <ul class="menu">
+        {% if not request.user.is_authenticated %}
             <li><a href="#">About</a></li>
-            <li><a href="#">Login</a></li>
-            <li><a href="#">Register</a></li>
-        </ul>
-    </nav>
-    <!-- End Navigation -->
+            <li><a href="{% url 'signin' %}">Sign in</a></li>
+            <li><a href="{% url 'signup' %}">Sign up</a></li>
+        {% else %}
+            <li><a href="#">Create New Adventure</a></li>
+            <li><a href="#">Profile</a></li>
+            <form action="{% url 'signout' %}" method="post" class="menu">
+                {% csrf_token %}
+                <button type="submit">Sign out</button>
+            </form>
+        {% endif %}
+    </ul>
+</nav>
+<!-- End Navigation -->
 
-     {% block content %}
-     {% endblock %}
-    <!-- Footer -->
-    <footer>
-        <p>&copy; 2024 Outdoor Buddy Finder.</p>
-    </footer>
-    <!-- End Footer -->
+{% block content %}
+{% endblock %}
+<!-- Footer -->
+<footer>
+    <p>&copy; 2024 Outdoor Buddy Finder.</p>
+</footer>
+<!-- End Footer -->
 </body>
 </html>

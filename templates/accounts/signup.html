@@ -1,0 +1,44 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% load custom_filters %}
+
+{% block content %}
+    <!-- Right Side: Registration Form -->
+    <section class="map-register">
+        <!-- Map Background -->
+        <div class="map-background">
+            <div class="map-icons">
+                <div class="icon compass"></div>
+                <div class="icon pin"></div>
+                <div class="icon trail"></div>
+            </div>
+        </div>
+
+        <!-- Registration Form -->
+        <div class="form-container">
+            <h1>Join Outdoor Buddy Finder</h1>
+            <p>Find your next adventure partner today!</p>
+            <form class="registration-form" method="post">
+                <div class="form-group">
+                    {{ form.email.label_tag }}
+                    {{ form.email|placeholder:"Enter your email address" }}
+                    {{ form.email.errors }}
+                </div>
+                <div class="form-group">
+                    {{ form.password1.label_tag }}
+                    {{ form.password1|placeholder:"Create a Password" }}
+                    {{ form.password1.errors }}
+                </div>
+                <div class="form-group">
+                    {{ form.password2.label_tag }}
+                    {{ form.password2|placeholder:"Confirm Password" }}
+                    {{ form.password2.errors }}
+                </div>
+                <button type="submit" class="btn primary">Sign Up</button>
+
+                {% csrf_token %}
+            </form>
+        </div>
+    </section>
+{% endblock %}
+        

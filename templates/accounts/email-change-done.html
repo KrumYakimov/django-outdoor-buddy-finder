@@ -1,0 +1,27 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block content %}
+    <!-- Change Email Done Section -->
+    <section class="email-change-done">
+        <!-- Map Background -->
+        <div class="map-background">
+            <div class="map-icons">
+                <div class="icon compass"></div>
+                <div class="icon pin"></div>
+                <div class="icon trail"></div>
+            </div>
+        </div>
+        <!-- Change Email Done Form -->
+        <div class="content">
+            <h2>Email Change Successful</h2>
+            <p>Your email address has been successfully updated. You will be redirected to the homepage shortly.</p>
+            <a href="{% url 'home' %}">Go to Home</a>
+            
+            <script>
+                setTimeout(function() {
+                    window.location.href = "{% url 'home' %}";
+                }, 10000); 
+            </script>
+        </div>
+    </section>
+{% endblock %}
