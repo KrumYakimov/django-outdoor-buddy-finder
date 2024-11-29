@@ -1,0 +1,37 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Outdoor Buddy Finder</title>
+    <link rel="stylesheet" href={% static 'css/styles.css' %}>
+    <link rel="icon" type="image/x-icon" href="{% static 'images/nav/logo.png' %}">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="logo">
+            <a href="#" class="logo">
+                <img src="{% static 'images/nav/logo.png' %}" alt="Outdoor Buddy Finder Logo">
+            </a>
+        </div>
+        <ul class="menu">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Login</a></li>
+            <li><a href="#">Register</a></li>
+        </ul>
+    </nav>
+    <!-- End Navigation -->
+
+     {% block content %}
+     {% endblock %}
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 Outdoor Buddy Finder.</p>
+    </footer>
+    <!-- End Footer -->
+</body>
+</html>
