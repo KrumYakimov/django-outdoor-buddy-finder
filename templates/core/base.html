@@ -23,8 +23,8 @@
             <li><a href="{% url 'signin' %}">Sign in</a></li>
             <li><a href="{% url 'signup' %}">Sign up</a></li>
         {% else %}
-            <li><a href="#">Create New Adventure</a></li>
-            <li><a href="#">Profile</a></li>
+            <li><a href="#">Add Adventure</a></li>
+            <li><a href="{% url 'profile' %}">Profile</a></li>
             <form action="{% url 'signout' %}" method="post" class="menu">
                 {% csrf_token %}
                 <button type="submit">Sign out</button>

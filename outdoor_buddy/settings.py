@@ -160,7 +160,7 @@ EMAIL_SENDER = config("EMAIL_SENDER")
 AWS_QUERYSTRING_AUTH = False  # Public access to files (optional)
 
 # Media files
-DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+DEFAULT_FILE_STORAGE = "outdoor_buddy_finder.services.storage.DebuggableS3Storage"  # "storages.backends.s3boto3.S3Boto3Storage"
 MEDIA_URL = f"https://{AWS_BUCKET}.s3.{AWS_REGION}.amazonaws.com/"
 
 

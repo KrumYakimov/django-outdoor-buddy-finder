@@ -5,8 +5,8 @@ from django.db import IntegrityError
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
-from outdoor_buddy.accounts.models import Profile
-from email_backend.email_templates import EmailTemplates
+from outdoor_buddy.accounts.models import Profile, Contact
+from outdoor_buddy.utils.email_templates import EmailTemplates
 from services.ses import send_email_to_user
 
 logger = logging.getLogger('outdoor_buddy')
@@ -29,6 +29,12 @@ def send_welcome_email(sender, instance, created, **kwargs):
                 Profile.objects.create(user=instance)
         except IntegrityError as e:
             logger.warning(f"Could not create profile for {instance.email}: {e}")
+
+        try:
+            if not hasattr(instance, "contact"):
+                Contact.objects.create(user=instance)
+        except IntegrityError as e:
+            logger.warning(f"Could not create contact for {instance.email}: {e}")
 
         if not instance.is_staff:
             logger.info(

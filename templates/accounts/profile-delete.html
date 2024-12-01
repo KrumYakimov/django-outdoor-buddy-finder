@@ -1,0 +1,124 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% load custom_filters %}
+
+{% block content %}
+    <!-- Map Background -->
+    <div class="map-background">
+        <div class="map-icons">
+            <div class="icon compass"></div>
+            <div class="icon pin"></div>
+            <div class="icon trail"></div>
+        </div>
+    </div>
+
+    <!-- Delete Profile Section -->
+    <section class="delete-profile">
+        <div class="scrollable-container profile-delete">
+            <form class="delete-profile-form" method="POST" enctype="multipart/form-data">
+            <div class="header-section-delete-profile-form">
+                <h1>Delete Profile</h1>
+                <p class="top">Are you sure you want to delete your profile? <br> This action cannot be undone.</p>
+                {% csrf_token %}
+            </div>
+
+                <!-- Profile Picture Section -->
+                <div class="profile-picture-section">
+                    {% if profile.picture_upload %}
+                        <img src="{{ profile.picture_upload.url }}"
+                             alt="Profile Picture"
+                             class="profile-picture-preview">
+                    {% else %}
+                        <img src="{% static 'images/accounts/man.png' %}"
+                             alt="Default Profile Picture"
+                             class="profile-picture-preview">
+                    {% endif %}
+                </div>
+
+                <!-- Personal Information -->
+                <fieldset>
+                    <legend>Personal Information</legend>
+                    <div class="form-group">
+                        <label>First Name</label>
+                        <p>{{ profile.first_name }}</p>
+                    </div>
+                    <div class="form-group">
+                        <label>Last Name</label>
+                        <p>{{ profile.last_name }}</p>
+                    </div>
+                    <div class="form-group">
+                        <label>Date of Birth</label>
+                        <p>{{ profile.date_of_birth }}</p>
+                    </div>
+                    <div class="form-group">
+                        <label>Gender</label>
+                        <p>{{ profile.gender }}</p>
+                    </div>
+                </fieldset>
+
+                <!-- Contact Information -->
+                <fieldset>
+                    <legend>Contact Information</legend>
+                    <div class="form-group">
+                        <label>City</label>
+                        <p>{{ contact.city }}</p>
+                    </div>
+                    <div class="form-group">
+                        <label>Address</label>
+                        <p>{{ contact.address }}</p>
+                    </div>
+                    <div class="form-group">
+                        <label>Phone Number</label>
+                        <p>{{ contact.phone_number }}</p>
+                    </div>
+                </fieldset>
+
+                <!-- Preferences -->
+                <fieldset>
+                    <legend>Preferences</legend>
+                    <div class="form-group">
+                        <label>Preferred Activities</label>
+                        <ul>
+                            {% for activity in profile.preferred_activities.all %}
+                                <li>{{ activity.name }}</li>
+                            {% empty %}
+                                <li>No preferred activities specified.</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div class="form-group">
+                        <label>Preferred Location</label>
+                        <p>{{ profile.preferred_location }}</p>
+                    </div>
+                    <div class="form-group">
+                        <label>Skill Level</label>
+                        <p>{{ profile.skill_level }}</p>
+                    </div>
+                    <div class="form-group">
+                        <label>Fitness Level</label>
+                        {{ profile.fitness_level }}
+                    </div>
+                </fieldset>
+
+                <!-- Additional Information -->
+                <fieldset>
+                    <legend>Additional Information</legend>
+                    <div class="form-group">
+                        <label>Availability</label>
+                        {{ profile.availability }}
+                    </div>
+                    <div class="form-group">
+                        <label>Bio</label>
+                        {{ profile.bio }}
+                    </div>
+                </fieldset>
+
+                <!-- Action Buttons -->
+                <div class="form-buttons">
+                    <button type="submit" class="btn primary">Delete</button>
+                    <a href="{% url 'profile' %}" class="btn secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </section>
+{% endblock %}

@@ -1,0 +1,72 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% load custom_filters %}
+
+{% block content %}
+
+    <!-- Map Background -->
+    <div class="map-background">
+        <div class="map-icons">
+            <div class="icon compass"></div>
+            <div class="icon pin"></div>
+            <div class="icon trail"></div>
+        </div>
+    </div>
+    <!-- Profile Header -->
+    <header class="profile-header">
+        <h1>Profile</h1>
+        <div class="profile-actions">
+            <a href="{% url 'profile-contact-edit' pk=profile.pk %}" class="btn primary"><i
+                    class="icon-edit"></i>Edit</a>
+            <a href="{% url 'profile-delete' pk=profile.pk %}" class="btn secondary"><i
+                    class="icon-delete"></i>Delete</a>
+            <a href="{% url 'email-change' %}" class="btn primary"><i class="icon-email"></i>Change Email</a>
+            <a href="{% url 'password_change' %}" class="btn primary"><i class="icon-password"></i>Change Password</a>
+        </div>
+    </header>
+    <!-- Profile Details -->
+    <section class="profile-container">
+        <div class="profile-card">
+            <h2>Personal Information</h2>
+            {% if profile.picture_upload %}
+                <img src="{{ profile.picture_upload.url }}"
+                     alt="Profile Picture"
+                     class="profile-picture-preview">
+            {% else %}
+                <!-- Fallback image -->
+                <img src="{% static 'images/accounts/man.png' %}"
+                     alt="Default Profile Picture"
+                     class="profile-picture-preview">
+            {% endif %}
+            <p><strong>Full Name:</strong> {{ profile.full_name }}</p>
+            <p><strong>Age:</strong> {{ profile.age }}</p>
+            <p><strong>Gender:</strong> {{ profile.gender }}</p>
+        </div>
+
+        <div class="profile-card">
+            <h2>Contact Information</h2>
+            <p><strong>City:</strong> {{ contact.city }}</p>
+            <p><strong>Address:</strong> {{ contact.address }}</p>
+            <p><strong>Phone Number:</strong> {{ contact.phone_number }}</p>
+        </div>
+
+        <div class="profile-card">
+            <h2>Preferences</h2>
+            <p><strong>Preferred Activities:</strong></p>
+            <ul>
+                {% for activity in profile.preferred_activities.all %}
+                    <li>{{ activity.name }}</li>
+                {% empty %}
+                    <li>No preferred activities specified.</li>
+                {% endfor %}
+            </ul>
+            <p><strong>Preferred Location:</strong> {{ profile.preferred_location }}</p>
+        </div>
+
+        <div class="profile-card">
+            <h2>Additional Information</h2>
+            <p><strong>Availability:</strong> {{ profile.availability }}</p>
+            <p><strong>Bio:</strong> {{ profile.bio }}</p>
+        </div>
+    </section>
+{% endblock %}

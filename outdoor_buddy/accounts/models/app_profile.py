@@ -1,6 +1,5 @@
 from datetime import date
 
-from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core import validators
 from django.db import models
@@ -12,6 +11,7 @@ from outdoor_buddy.accounts.choices import (
     FitnessLevelChoices,
 )
 from outdoor_buddy.events.models.activity import Activity
+from services.storage import DebuggableS3Storage
 
 UserModel = get_user_model()
 
@@ -19,11 +19,9 @@ UserModel = get_user_model()
 class Profile(models.Model):
     MAX_LENGTHS = {
         "name": 32,
-        "nationality": 32,
     }
     MIN_LENGTH = {
         "name": 2,
-        "nationality": 2,
     }
 
     class Meta:
@@ -32,7 +30,7 @@ class Profile(models.Model):
         ordering = ["user__email"]
 
     user = models.OneToOneField(
-        settings.AUTH_USER_MODEL,
+        to=UserModel,
         on_delete=models.CASCADE,
         primary_key=True,
     )
@@ -67,15 +65,9 @@ class Profile(models.Model):
 
     date_of_birth = models.DateField(null=True, blank=True)
 
-    nationality = models.CharField(
-        max_length=MAX_LENGTHS["nationality"],
-        validators=[validators.MinLengthValidator(MIN_LENGTH["nationality"])],
-        null=True,
-        blank=True,
-    )
-
     picture_upload = models.ImageField(
         upload_to="profile_pictures/",
+        storage=DebuggableS3Storage(),
         null=True,
         blank=True,
     )

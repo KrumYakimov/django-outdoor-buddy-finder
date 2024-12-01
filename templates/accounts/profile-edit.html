@@ -1,0 +1,125 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% load custom_filters %}
+
+{% block content %}
+    <!-- Map Background -->
+    <div class="map-background">
+        <div class="map-icons">
+            <div class="icon compass"></div>
+            <div class="icon pin"></div>
+            <div class="icon trail"></div>
+        </div>
+    </div>
+
+    <!-- Edit Profile Section -->
+    <section class="edit-profile">
+        <!-- Scrollable Container -->
+        <div class="scrollable-container">
+            <form class="edit-profile-form" method="POST" enctype="multipart/form-data">
+            <div class="header-section-edit-profile-form">
+                <h1>Edit Profile</h1>
+            </div>
+                {% csrf_token %}
+
+                <!-- Profile Picture Section -->
+                <div class="profile-picture-section">
+                    <!-- Display the uploaded picture if it exists -->
+                    {% if profile.picture_upload %}
+                        <img src="{{ profile.picture_upload.url }}"
+                             alt="Profile Picture"
+                             class="profile-picture-preview">
+                    {% else %}
+                        <!-- Fallback image -->
+                        <img src="{% static 'images/accounts/man.png' %}"
+                             alt="Default Profile Picture"
+                             class="profile-picture-preview">
+                    {% endif %}
+
+                    <!-- Label for the file upload -->
+                    {{ form.picture_upload.label_tag }}
+                    {{ form.picture_upload }}
+                </div>
+
+
+                <!-- Personal Information -->
+                <fieldset>
+                    <legend>Personal Information</legend>
+                    <div class="form-group">
+                        {{ form.first_name.label_tag }}
+                        {{ form.first_name|placeholder:"Enter your first name" }}
+                    </div>
+                    <div class="form-group">
+                        {{ form.last_name.label_tag }}
+                        {{ form.last_name|placeholder:"Enter your last name" }}
+                    </div>
+                    <div class="form-group">
+                        {{ form.date_of_birth.label_tag }}
+                        {{ form.date_of_birth }}
+                    </div>
+                    <div class="form-group">
+                        {{ form.gender.label_tag }}
+                        {{ form.gender }}
+                    </div>
+                </fieldset>
+
+                <!-- Contact Information -->
+                <fieldset>
+                    <legend>Contact Information</legend>
+                    <div class="form-group">
+                        {{ contact_form.city.label_tag }}
+                        {{ contact_form.city|placeholder:"Enter your city" }}
+                    </div>
+                    <div class="form-group">
+                        {{ contact_form.address.label_tag }}
+                        {{ contact_form.address|placeholder:"Enter your address" }}
+                    </div>
+                    <div class="form-group">
+                        {{ contact_form.phone_number.label_tag }}
+                        {{ contact_form.phone_number|placeholder:"Enter your phone number" }}
+                    </div>
+                </fieldset>
+
+                <!-- Preferences -->
+                <fieldset>
+                    <legend>Preferences</legend>
+                    <div class="form-group">
+                        {{ form.preferred_activities.label_tag }}
+                        {{ form.preferred_activities }}
+                    </div>
+                    <div class="form-group">
+                        {{ form.preferred_location.label_tag }}
+                        {{ form.preferred_location|placeholder:"Enter your preferred location" }}
+                    </div>
+                    <div class="form-group">
+                        {{ form.skill_level.label_tag }}
+                        {{ form.skill_level }}
+                    </div>
+                    <div class="form-group">
+                        {{ form.fitness_level.label_tag }}
+                        {{ form.fitness_level }}
+                    </div>
+                </fieldset>
+
+                <!-- Additional Information -->
+                <fieldset>
+                    <legend>Additional Information</legend>
+                    <div class="form-group">
+                        {{ form.availability.label_tag }}
+                        {{ form.availability|placeholder:"Enter your availability" }}
+                    </div>
+                    <div class="form-group">
+                        {{ form.bio.label_tag }}
+                        {{ form.bio|placeholder:"Tell us about yourself" }}
+                    </div>
+                </fieldset>
+
+                <!-- Form Buttons -->
+                <div class="form-buttons">
+                    <button type="submit" class="btn primary">Save Changes</button>
+                    <a href="{% url 'profile' %}" class="btn secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </section>
+{% endblock %}

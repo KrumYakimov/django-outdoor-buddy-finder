@@ -81,7 +81,7 @@ body, html {
     max-width: 600px;
     width: 100%;
     padding: 2rem;
-    background: rgba(255, 255, 255, 0.8); /* semi-transparent white background */
+    background: rgba(255, 255, 255, 0.9); /* semi-transparent white background */
     border-radius: 15px;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }

@@ -1,7 +1,14 @@
 @import url('https://fonts.googleapis.com/css?family=PT+Serif');
 @import url('https://fonts.googleapis.com/css?family=PT+Sans:400,700');
 
+/*General*/
+@import url('reset.css');
+
+/*Home*/
+@import url('core/base.css');
 @import url('core/home.css');
+
+/*Accounts*/
 @import url('accounts/signup.css');
 @import url('accounts/signin.css');
 @import url('accounts/password-change.css');
@@ -10,6 +17,9 @@
 @import url('accounts/password-reset-pages.css');
 @import url('accounts/email-change.css');
 @import url('accounts/email-change-done.css');
+@import url('accounts/profile-edit.css');
+@import url('accounts/profile-view.css');
+@import url('accounts/profile-delete.css');
 @import url('accounts/explore-profiles.css');
 /*@import url('accounts/profile.css');*/
 /*@import url('adventures/hiking.css');*/

@@ -1,0 +1,20 @@
+/* General Styling */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+html {
+    font: 20px/1.5 "PT Sans", sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: "PT Serif";
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
