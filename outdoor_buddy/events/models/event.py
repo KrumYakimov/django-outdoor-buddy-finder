@@ -6,6 +6,11 @@ from ..choices import RegistrationSatusChoices
 
 
 class Event(models.Model):
+    """
+    This model represents an event where users can participate.
+    It includes essential details about the event, such as timing, location, and activity type,
+    as well as participation-related information like capacity, spots remaining, and registration status.
+    """
     # Essential Event Details
     start_datetime = models.DateTimeField()
     end_datetime = models.DateTimeField()

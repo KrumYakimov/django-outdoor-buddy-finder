@@ -17,6 +17,11 @@ UserModel = get_user_model()
 
 
 class Profile(models.Model):
+    """
+    Represents the user profile for the Outdoor Buddy application.
+    Contains personal details, preferences, and additional information
+    related to outdoor activities.
+    """
     MAX_LENGTHS = {
         "name": 32,
     }
@@ -98,6 +103,10 @@ class Profile(models.Model):
 
     @cached_property
     def full_name(self):
+        """
+        Returns the user's full name by combining first and last names.
+        If one is missing, returns the available name.
+        """
         if self.first_name and self.last_name:
             return f"{self.first_name} {self.last_name}"
 
@@ -105,6 +114,10 @@ class Profile(models.Model):
 
     @property
     def age(self):
+        """
+        Calculates the user's age based on their date of birth.
+        Returns an empty string if the date of birth is not provided.
+        """
         if not self.date_of_birth:
             return ""
         today = date.today()
@@ -119,4 +132,8 @@ class Profile(models.Model):
         return age
 
     def __str__(self):
+        """
+        Returns a string representation of the user's profile,
+        displaying their full name and indicating if a name is not available.
+        """
         return f"{self.full_name}'s Profile"

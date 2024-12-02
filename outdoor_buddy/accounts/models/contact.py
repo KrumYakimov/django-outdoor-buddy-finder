@@ -6,6 +6,10 @@ UserModel = get_user_model()
 
 
 class Contact(models.Model):
+    """
+    Represents the contact details of a user in the Outdoor Buddy application.
+    Includes fields for city, address, and phone number, along with validation.
+    """
     MAX_LENGTH = {"city": 32, "address": 64, "phone": 15}
 
     MIN_LENGTH = {"city": 2, "address": 4, "phone": 10}
@@ -54,9 +58,16 @@ class Contact(models.Model):
 
     @property
     def is_completed(self):
+        """
+        Checks whether all contact fields (city, address, and phone_number) are filled.
+        """
         return all([self.city, self.address, self.phone_number])
 
     def __str__(self):
+        """
+        Returns a string representation of the contact, including the user's name and contact ID.
+        If no name is associated, indicates that no name is specified.
+        """
         full_name = (
             self.user.profile.full_name
             if hasattr(self.user, "profile") and self.user.profile.full_name

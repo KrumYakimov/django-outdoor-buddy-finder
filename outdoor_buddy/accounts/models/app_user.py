@@ -6,6 +6,11 @@ from outdoor_buddy.accounts.managers import AppUserManager
 
 
 class AppUser(auth_models.AbstractBaseUser, auth_models.PermissionsMixin):
+    """
+    Custom user model for the Outdoor Buddy application.
+    Extends Django's AbstractBaseUser and PermissionsMixin to provide a flexible user model
+    with email as the unique identifier instead of a username.
+    """
     EMAIL_VALIDATION_ERROR_MASSAGE = "This email is already used by another user"
 
     class Meta:
