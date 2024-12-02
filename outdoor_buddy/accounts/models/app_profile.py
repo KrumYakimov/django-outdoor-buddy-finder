@@ -11,6 +11,7 @@ from outdoor_buddy.accounts.choices import (
     FitnessLevelChoices,
 )
 from outdoor_buddy.events.models.activity import Activity
+from outdoor_buddy.utils.validators import FileSizeValidator
 from services.storage import DebuggableS3Storage
 
 UserModel = get_user_model()
@@ -22,6 +23,7 @@ class Profile(models.Model):
     Contains personal details, preferences, and additional information
     related to outdoor activities.
     """
+
     MAX_LENGTHS = {
         "name": 32,
     }
@@ -73,6 +75,9 @@ class Profile(models.Model):
     picture_upload = models.ImageField(
         upload_to="profile_pictures/",
         storage=DebuggableS3Storage(),
+        validators=[
+            FileSizeValidator(5),
+        ],
         null=True,
         blank=True,
     )

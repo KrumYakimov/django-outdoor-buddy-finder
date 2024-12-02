@@ -1,8 +1,10 @@
 from django.conf import settings
 from django.db import models
 
+from services.storage import DebuggableS3Storage
 from . import Activity
 from ..choices import RegistrationSatusChoices
+from ...utils.validators import FileSizeValidator
 
 
 class Event(models.Model):
@@ -11,7 +13,17 @@ class Event(models.Model):
     It includes essential details about the event, such as timing, location, and activity type,
     as well as participation-related information like capacity, spots remaining, and registration status.
     """
+
     # Essential Event Details
+    picture_upload = models.ImageField(
+        upload_to="profile_pictures/",
+        storage=DebuggableS3Storage(),
+        validators=[
+            FileSizeValidator(5),
+        ],
+        null=True,
+        blank=True,
+    )
     start_datetime = models.DateTimeField()
     end_datetime = models.DateTimeField()
     location = models.CharField(max_length=255)
