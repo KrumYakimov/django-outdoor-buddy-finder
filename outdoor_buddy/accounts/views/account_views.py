@@ -16,7 +16,7 @@ from django.views.generic import UpdateView, TemplateView
 
 from outdoor_buddy import settings
 from outdoor_buddy.accounts.forms import AccountEmailChangeForm
-from outdoor_buddy.utils.mixins import UserIsOwnerMixin
+from outdoor_buddy.utils.views_mixins import UserIsOwnerMixin
 
 UserModel = get_user_model()
 

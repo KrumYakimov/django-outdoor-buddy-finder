@@ -7,7 +7,7 @@ from django.views.generic import UpdateView, TemplateView, DeleteView, ListView
 
 from outdoor_buddy.accounts.forms import ProfileForm, ContactForm
 from outdoor_buddy.accounts.models import Profile, Contact
-from outdoor_buddy.utils.mixins import ReadOnlyFormMixin, UserIsOwnerMixin
+from outdoor_buddy.utils.views_mixins import ReadOnlyFormMixin, UserIsOwnerMixin
 from services.s3 import S3Service
 
 UserModel = get_user_model()

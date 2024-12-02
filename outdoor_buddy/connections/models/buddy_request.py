@@ -3,12 +3,12 @@ from django.db import models
 from django.conf import settings
 
 from outdoor_buddy.connections.choices import StatusChoices
-
+from outdoor_buddy.utils.models_mixins import TimestampedModelMixin
 
 UserModel = get_user_model()
 
 
-class BuddyRequest(models.Model):
+class BuddyRequest(TimestampedModelMixin):
     """
     This model tracks connection requests between two users. It includes information about:
 
@@ -33,8 +33,6 @@ class BuddyRequest(models.Model):
         choices=StatusChoices.choices,
         default=StatusChoices.PENDING
     )
-    sent_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         unique_together = ("from_user", "to_user")  # Prevent duplicate requests

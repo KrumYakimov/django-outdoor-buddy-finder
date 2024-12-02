@@ -5,15 +5,15 @@ from .models import BuddyRequest, Connection
 
 @admin.register(BuddyRequest)
 class BuddyRequestAdmin(ModelAdmin):
-    list_display = ("from_user", "to_user", "status", "sent_at", "updated_at")
-    list_filter = ("status", "sent_at")
+    list_display = ("from_user", "to_user", "status", "created_at", "updated_at")
+    list_filter = ("status", "created_at")
     search_fields = ("from_user__username", "to_user__username")
     layout = (
         ("Request Details", {
             "fields": ("from_user", "to_user", "status"),
         }),
         ("Timestamps", {
-            "fields": ("sent_at", "updated_at"),
+            "fields": ("created_at", "updated_at"),
         }),
     )
 
