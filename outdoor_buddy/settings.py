@@ -77,10 +77,15 @@ TEMPLATES = [
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
+
+                # Default context processors
                 "django.template.context_processors.debug",
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+
+                # Custom context processor
+                "outdoor_buddy.utils.context_processors.add_profile_to_context",
             ],
         },
     },

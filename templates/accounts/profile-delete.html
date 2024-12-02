@@ -116,7 +116,7 @@
                 <!-- Action Buttons -->
                 <div class="form-buttons">
                     <button type="submit" class="btn primary">Delete</button>
-                    <a href="{% url 'profile' %}" class="btn secondary">Cancel</a>
+                    <a href="{% url 'profile' profile.user.id %}" class="btn secondary">Cancel</a>
                 </div>
             </form>
         </div>

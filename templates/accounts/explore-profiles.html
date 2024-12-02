@@ -1,6 +1,10 @@
+{% extends 'core/base.html' %}
+{% load custom_filters %}
+{% load static %}
 
+{% block content %}
     <div class="explore-profiles">
-        <div class="explore-profiles-conntent">
+        <div class="explore-profiles-content">
             <h1>Explore Profiles</h1>
             <p>Connect with adventurers near you or around the world.</p>
         </div>
@@ -10,77 +14,61 @@
             <div class="icon trail"></div>
         </div>
         <div class="profile-grid">
-            <!-- Profile Card 1 -->
-            <div class="profile-card">
-                <img src="icons/man.webp" alt="John Doe" class="profile-pic">
-                <h3>John Doe</h3>
-                <p class="location">Denver, CO</p>
-                <p class="bio">Loves exploring mountain trails and kayaking adventures.</p>
-                <div class="activity-badge">Hiking</div>
-                <div class="action-buttons">
-                    <button class="connect-btn">Connect</button>
-                    <button class="view-btn">View Profile</button>
+            {% for profile in profiles %}
+                <div class="profile-card">
+                    <!-- Profile Picture -->
+                    {% if profile.picture_upload %}
+                        <img src="{{ profile.picture_upload.url }}" alt="{{ profile.full_name }}" class="profile-pic">
+                    {% else %}
+                        {% if profile.gender == "Male" %}
+                            <img src="{% static 'images/accounts/man.png' %}" alt="{{ profile.full_name }}"
+                                 class="profile-pic">
+                        {% elif profile.gender == "Female" %}
+                            <img src="{% static 'images/accounts/woman.png' %}" alt="{{ profile.full_name }}"
+                                 class="profile-pic">
+                        {% else %}
+                            <img src="{% static 'images/accounts/person.png' %}" alt="{{ profile.full_name }}"
+                                 class="profile-pic">
+                        {% endif %}
+                    {% endif %}
+                    <!-- Name and Location -->
+                    <h3>{{ profile.full_name }}</h3>
+                    {% with profile.user|contact as contact %}
+                        {% if contact and contact.city %}
+                            <p class="location">{{ contact.city }}</p>
+                        {% else %}
+                            <p class="location">Unknown Location</p>
+                        {% endif %}
+                    {% endwith %}
+                    <!-- Bio -->
+                    <p class="bio">{{ profile.bio|default:"This adventurer hasn't added a bio yet."|truncatewords:10 }}</p>
+
+                    <!-- Action Buttons -->
+                    <div class="action-buttons">
+                        {% if profile.user != request.user and request.user.is_authenticated %}
+                            <!-- Show action buttons only for other profiles -->
+                            <button class="connect-btn">Connect</button>
+                            <a href="{% url 'profile' profile.user.pk %}" class="view-btn">View Profile</a>
+                        {% endif %}
+                    </div>
                 </div>
-            </div>
-            <!-- Profile Card 2 -->
-            <div class="profile-card">
-                <img src="icons/woman.webp" alt="Jane Smith" class="profile-pic">
-                <h3>Jane Smith</h3>
-                <p class="location">Seattle, WA</p>
-                <p class="bio">Passionate about kayaking and cycling through scenic routes.</p>
-                <div class="activity-badge">Kayaking</div>
-                <div class="action-buttons">
-                    <button class="connect-btn">Connect</button>
-                    <button class="view-btn">View Profile</button>
-                </div>
-            </div>
-            <!-- Profile Card 1 -->
-            <div class="profile-card">
-                <img src="icons/man.webp" alt="John Doe" class="profile-pic">
-                <h3>John Doe</h3>
-                <p class="location">Denver, CO</p>
-                <p class="bio">Loves exploring mountain trails and kayaking adventures.</p>
-                <div class="activity-badge">Hiking</div>
-                <div class="action-buttons">
-                    <button class="connect-btn">Connect</button>
-                    <button class="view-btn">View Profile</button>
-                </div>
-            </div>
-            <!-- Profile Card 2 -->
-            <div class="profile-card">
-                <img src="icons/woman.webp" alt="Jane Smith" class="profile-pic">
-                <h3>Jane Smith</h3>
-                <p class="location">Seattle, WA</p>
-                <p class="bio">Passionate about kayaking and cycling through scenic routes.</p>
-                <div class="activity-badge">Kayaking</div>
-                <div class="action-buttons">
-                    <button class="connect-btn">Connect</button>
-                    <button class="view-btn">View Profile</button>
-                </div>
-            </div>
-            <!-- Profile Card 1 -->
-            <div class="profile-card">
-                <img src="icons/man.webp" alt="John Doe" class="profile-pic">
-                <h3>John Doe</h3>
-                <p class="location">Denver, CO</p>
-                <p class="bio">Loves exploring mountain trails and kayaking adventures.</p>
-                <div class="activity-badge">Hiking</div>
-                <div class="action-buttons">
-                    <button class="connect-btn">Connect</button>
-                    <button class="view-btn">View Profile</button>
-                </div>
-            </div>
-            <!-- Profile Card 2 -->
-            <div class="profile-card">
-                <img src="icons/woman.webp" alt="Jane Smith" class="profile-pic">
-                <h3>Jane Smith</h3>
-                <p class="location">Seattle, WA</p>
-                <p class="bio">Passionate about kayaking and cycling through scenic routes.</p>
-                <div class="activity-badge">Kayaking</div>
-                <div class="action-buttons">
-                    <button class="connect-btn">Connect</button>
-                    <button class="view-btn">View Profile</button>
-                </div>
-            </div>
+            {% endfor %}
         </div>
-    </div>clea
+
+        <!-- Pagination -->
+        <div class="pagination">
+            {% if is_paginated %}
+                <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+                <div>
+                    {% if page_obj.has_previous %}
+                        <a href="?page={{ page_obj.previous_page_number }}" class="pagination-link">Previous</a>
+                    {% endif %}
+                    {% if page_obj.has_next %}
+                        <a href="?page={{ page_obj.next_page_number }}" class="pagination-link">Next</a>
+                    {% endif %}
+                </div>
+            {% endif %}
+        </div>
+
+    </div>
+{% endblock %}

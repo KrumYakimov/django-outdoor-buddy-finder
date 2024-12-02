@@ -26,14 +26,18 @@
                 <div class="profile-picture-section">
                     <!-- Display the uploaded picture if it exists -->
                     {% if profile.picture_upload %}
-                        <img src="{{ profile.picture_upload.url }}"
-                             alt="Profile Picture"
-                             class="profile-picture-preview">
+                        <img src="{{ profile.picture_upload.url }}" alt="{{ profile.full_name }}" class="profile-pic">
                     {% else %}
-                        <!-- Fallback image -->
-                        <img src="{% static 'images/accounts/man.png' %}"
-                             alt="Default Profile Picture"
-                             class="profile-picture-preview">
+                        {% if profile.gender == "Male" %}
+                            <img src="{% static 'images/accounts/man.png' %}" alt="{{ profile.full_name }}"
+                                 class="profile-pic">
+                        {% elif profile.gender == "Female" %}
+                            <img src="{% static 'images/accounts/woman.png' %}" alt="{{ profile.full_name }}"
+                                 class="profile-pic">
+                        {% else %}
+                            <img src="{% static 'images/accounts/person.png' %}" alt="{{ profile.full_name }}"
+                                 class="profile-pic">
+                        {% endif %}
                     {% endif %}
 
                     <!-- Label for the file upload -->
@@ -117,7 +121,7 @@
                 <!-- Form Buttons -->
                 <div class="form-buttons">
                     <button type="submit" class="btn primary">Save Changes</button>
-                    <a href="{% url 'profile' %}" class="btn secondary">Cancel</a>
+                    <a href="{% url 'profile' profile.user_id %}" class="btn secondary">Cancel</a>
                 </div>
             </form>
         </div>

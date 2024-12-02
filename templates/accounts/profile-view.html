@@ -16,12 +16,14 @@
     <header class="profile-header">
         <h1>Profile</h1>
         <div class="profile-actions">
+            {% if profile.user == request.user %}
             <a href="{% url 'profile-contact-edit' pk=profile.pk %}" class="btn primary"><i
                     class="icon-edit"></i>Edit</a>
             <a href="{% url 'profile-delete' pk=profile.pk %}" class="btn secondary"><i
                     class="icon-delete"></i>Delete</a>
             <a href="{% url 'email-change' %}" class="btn primary"><i class="icon-email"></i>Change Email</a>
             <a href="{% url 'password_change' %}" class="btn primary"><i class="icon-password"></i>Change Password</a>
+            {% endif %}
         </div>
     </header>
     <!-- Profile Details -->

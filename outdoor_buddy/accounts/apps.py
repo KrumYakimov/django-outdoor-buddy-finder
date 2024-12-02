@@ -8,3 +8,4 @@ class AccountsConfig(AppConfig):
     def ready(self):
         import outdoor_buddy.accounts.signals
 
+

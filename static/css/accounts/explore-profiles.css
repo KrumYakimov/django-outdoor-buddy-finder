@@ -8,8 +8,8 @@
     justify-content: space-between;
     height: 100vh; /* Full viewport height */
     padding: 2rem;
-    background: url("/static/images/accounts/map-pattern.png") no-repeat center center/cover;
-    background-size: cover; /* Ensure background scales appropriately */
+    background: url("/static/images/accounts/map.png") no-repeat center center/cover;
+    background-size: cover;
     overflow: hidden;
     z-index: 1;
 }
@@ -60,26 +60,27 @@
     }
 }
 
-.explore-profiles-conntent{
+.explore-profiles-content{
     /* background: rgba(0, 0, 0, 0.05); Semi-transparent black overlay */
     /* padding: 1rem; */
     display: inline-block;
     border-radius: 5px; /* Optional: Rounded corners for a modern look */
     text-align: center;
+    z-index: 10;
 }
 
-.explore-profiles-conntent h1 {
+.explore-profiles-content h1 {
     font-size: 2.5rem;
     margin-bottom: 0.5rem;
-    
+
 }
 
-.explore-profiles-conntent p{
+.explore-profiles-content p{
     font-size: 1.5rem;
     margin-bottom: 0.5rem;
 }
 
-.explore-profiles-conntent h1, .explore-profiles-conntent p {
+.explore-profiles-content h1, .explore-profiles-content p {
     color: #FFFFFF; /* White text for high contrast */
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 1.2); /* Subtle shadow for clarity */
 }
@@ -89,7 +90,7 @@
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 1.5rem;
     width: 90%;
-    max-width: 1200px;
+    max-width: 1000px;
     /* background: rgba(255, 255, 255, 0.8); Semi-transparent background */
     padding: 2rem;
     border-radius: 15px;
@@ -109,6 +110,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: space-between; /* Distribute space evenly */
+    height: 100%; /* Ensure consistent height for all cards */
 }
 
 .profile-card:hover {
@@ -145,7 +148,7 @@
 }
 
 /* Activity Badge */
-.activity-badge {
+.preferred-activities {
     background: #eee;
     color: #1C4631;
     padding: 0.2rem 4rem;
@@ -155,12 +158,15 @@
 }
 
 /* Action Buttons */
-.action-buttons {
+.profile-card .action-buttons {
+    margin-top: auto; /* Push buttons to the bottom */
     display: flex;
     gap: 1rem;
+    justify-content: center;
 }
 
-.action-buttons button {
+.action-buttons button,
+.action-buttons .view-btn{
     padding: 0.5rem 1rem;
     font-size: 0.7rem;
     border: none;
@@ -186,3 +192,72 @@
 .action-buttons .view-btn:hover {
     background: #0056b3;
 }
+
+
+/* Pagination */
+.pagination {
+    margin-top: 2rem;
+    text-align: center;
+    font-size: 1.2rem;
+    z-index: 10;
+    position: relative;
+    display: flex;
+    /*flex-direction: column;*/
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+}
+
+.pagination span {
+    display: inline-block;
+    font-size: 0.9rem;
+    color: #444;
+    margin: 0 10px;
+    background-color: #f0f8f4; /* Light green tint */
+    padding: 0.3rem 0.7rem;
+    border-radius: 50px; /* Rounded badge */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.pagination-indicator {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+.pagination-indicator span {
+    width: 12px;
+    height: 12px;
+    background-color: #ddd;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.pagination-indicator span.active {
+    background-color: #198C69; /* Active indicator color */
+    transform: scale(1.2);
+}
+
+.pagination-link {
+    text-decoration: none;
+    color: #fff;
+    background-color: #198C69; /* Modern blue */
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.pagination-link:hover {
+    background-color: #145e49;
+    transform: translateY(-2px);
+}
+
+.pagination-link:disabled {
+    background-color: #ddd;
+    color: #888;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+

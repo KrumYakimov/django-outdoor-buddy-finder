@@ -1,31 +1,32 @@
-import logging
-
-from django.contrib.auth import get_user_model, views as auth_view
-from django.contrib.auth import mixins as auth_mixin
+from django.contrib.auth import get_user_model
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.tokens import default_token_generator
-from django.contrib.messages.views import SuccessMessageMixin
+from django.contrib.auth.views import (
+    PasswordChangeView,
+    PasswordResetView,
+    PasswordResetDoneView,
+    PasswordResetConfirmView,
+    PasswordResetCompleteView,
+)
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.urls import reverse_lazy
 from django.utils.http import urlsafe_base64_encode
-from django.views import generic as views
+from django.views.generic import UpdateView, TemplateView
 
 from outdoor_buddy import settings
 from outdoor_buddy.accounts.forms import AccountEmailChangeForm
-
-logger = logging.getLogger(__name__)
+from outdoor_buddy.utils.mixins import UserIsOwnerMixin
 
 UserModel = get_user_model()
 
 
-class AccountPasswordChangeView(
-    auth_mixin.LoginRequiredMixin, auth_view.PasswordChangeView
-):
+class AccountPasswordChangeView(LoginRequiredMixin, PasswordChangeView):
     template_name = "accounts/password-change.html"
     success_url = reverse_lazy("password-change-done")
 
 
-class AccountResetPasswordView(auth_view.PasswordResetView):
+class AccountResetPasswordView(PasswordResetView):
     template_name = "accounts/password_reset.html"
     success_url = reverse_lazy("reset-password-done")
 
@@ -60,21 +61,19 @@ class AccountResetPasswordView(auth_view.PasswordResetView):
         logger.info(f"Password reset email sent to {user_email}")
 
 
-class AccountPasswordResetDoneView(auth_view.PasswordResetDoneView):
+class AccountPasswordResetDoneView(PasswordResetDoneView):
     template_name = "accounts/password_reset_done.html"
 
 
-class AccountPasswordResetConfirmView(auth_view.PasswordResetConfirmView):
+class AccountPasswordResetConfirmView(PasswordResetConfirmView):
     template_name = "accounts/password_reset_confirm.html"
 
 
-class AccountPasswordResetCompleteView(auth_view.PasswordResetCompleteView):
+class AccountPasswordResetCompleteView(PasswordResetCompleteView):
     template_name = "accounts/password_reset_complete.html"
 
 
-class AccountEmailChangeView(
-    SuccessMessageMixin, auth_mixin.LoginRequiredMixin, views.UpdateView
-):
+class AccountEmailChangeView(LoginRequiredMixin, UserIsOwnerMixin, UpdateView):
     form_class = AccountEmailChangeForm
     template_name = "accounts/email-change.html"
     success_url = reverse_lazy("email-change-done")
@@ -83,5 +82,5 @@ class AccountEmailChangeView(
         return UserModel.objects.get(pk=self.request.user.pk)
 
 
-class AccountEmailChangeDoneView(views.TemplateView):
+class AccountEmailChangeDoneView(TemplateView):
     template_name = "accounts/email-change-done.html"

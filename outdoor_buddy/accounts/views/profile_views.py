@@ -1,72 +1,61 @@
-import logging
-
 from django.contrib.auth import get_user_model
-from django.contrib.auth import mixins as auth_mixin
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.forms import modelform_factory
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
-from django.views.generic import UpdateView, TemplateView, DeleteView
+from django.views.generic import UpdateView, TemplateView, DeleteView, ListView
 
 from outdoor_buddy.accounts.forms import ProfileForm, ContactForm
 from outdoor_buddy.accounts.models import Profile, Contact
-from outdoor_buddy.utils.mixins import ReadOnlyFormMixin
+from outdoor_buddy.utils.mixins import ReadOnlyFormMixin, UserIsOwnerMixin
 from services.s3 import S3Service
-
-logger = logging.getLogger(__name__)
 
 UserModel = get_user_model()
 
 
-class ProfileContactView(auth_mixin.LoginRequiredMixin, TemplateView):
+class ProfileContactView(LoginRequiredMixin, TemplateView):
     template_name = "accounts/profile-view.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        user = self.request.user
 
-        context["profile"] = Profile.objects.get(user=user)
-        context["contact"] = Contact.objects.get(user=user)
+        # Get the user_id from the URL kwargs
+        pk = self.kwargs.get("pk")
+
+        # Fetch the specified user
+        user = get_object_or_404(UserModel, id=pk)
+
+        # Exclude superuser and staff
+        if user.is_superuser or user.is_staff:
+            context["profile"] = None
+            context["contact"] = None
+        else:
+            # Fetch the associated Profile and Contact
+            context["profile"] = get_object_or_404(Profile, user=user)
+            context["contact"] = get_object_or_404(Contact, user=user)
 
         return context
 
 
-class ProfileContactUpdateView(auth_mixin.LoginRequiredMixin, UpdateView):
+class ProfileContactUpdateView(LoginRequiredMixin, UserIsOwnerMixin, UpdateView):
     model = Profile
-    template_name = 'accounts/profile-edit.html'
+    template_name = "accounts/profile-edit.html"
     form_class = ProfileForm
 
     def get_object(self, queryset=None):
         profile = self.request.user.profile
-        print(f"Fetched Profile: {profile}")  # Debug log
+        # print(f"Fetched Profile: {profile}")  # Debug log
         return profile
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # Add Contact form to the context
-        context['contact_form'] = ContactForm(instance=self.request.user.contact)
+        context["contact_form"] = ContactForm(instance=self.request.user.contact)
         return context
-
-    # def form_valid(self, form):
-    #     profile = form.save(commit=False)
-    #     print(f"Profile user before assignment: {profile.user}")  # Debug log
-    #     if not profile.user:
-    #         profile.user = self.request.user
-    #     print(f"Profile user after assignment: {profile.user}")  # Debug log
-    #     profile.save()
-    #
-    #     contact_form = ContactForm(self.request.POST, instance=self.request.user.contact)
-    #     if contact_form.is_valid():
-    #         contact_form.save()
-    #     else:
-    #         print("ContactForm errors:", contact_form.errors)
-    #
-    #     return super().form_valid(form)
 
     def form_valid(self, form):
         profile = form.save(commit=False)
 
-        # Delete old profile picture if a new one is uploaded
-        if 'picture_upload' in form.changed_data and profile.picture_upload:
+        if "picture_upload" in form.changed_data and profile.picture_upload:
             s3_service = S3Service()
             old_picture_key = profile.picture_upload.name
             try:
@@ -82,7 +71,9 @@ class ProfileContactUpdateView(auth_mixin.LoginRequiredMixin, UpdateView):
 
         profile.save()
 
-        contact_form = ContactForm(self.request.POST, instance=self.request.user.contact)
+        contact_form = ContactForm(
+            self.request.POST, instance=self.request.user.contact
+        )
         if contact_form.is_valid():
             contact_form.save()
         else:
@@ -91,19 +82,19 @@ class ProfileContactUpdateView(auth_mixin.LoginRequiredMixin, UpdateView):
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse_lazy('profile')  # Redirect after successful edit
+        return reverse_lazy("profile", kwargs={"pk": self.object.pk})
 
 
-class UserDeleteView(auth_mixin.LoginRequiredMixin, ReadOnlyFormMixin, DeleteView):
+class UserDeleteView(LoginRequiredMixin, UserIsOwnerMixin, ReadOnlyFormMixin, DeleteView):
     model = UserModel
     template_name = "accounts/profile-delete.html"
-    success_url = reverse_lazy('home')  # Redirect to the home page after deletion
+    success_url = reverse_lazy("home")
 
     def get_object(self, queryset=None):
         """
         Retrieve the User instance by primary key (pk) and include the related Profile and Contact.
         """
-        app_user = get_object_or_404(UserModel, pk=self.kwargs['pk'])
+        app_user = get_object_or_404(UserModel, pk=self.kwargs["pk"])
         return app_user
 
     def get_context_data(self, **kwargs):
@@ -112,21 +103,17 @@ class UserDeleteView(auth_mixin.LoginRequiredMixin, ReadOnlyFormMixin, DeleteVie
         """
         context = super().get_context_data(**kwargs)
 
-        # Retrieve the related Profile and Contact instances
         profile = self.object.profile
         contact = self.object.contact
 
-        # Create forms with disabled (readonly) fields
-        ProfileForm = modelform_factory(Profile, exclude=['user'])
-        ContactForm = modelform_factory(Contact, exclude=['user'])
+        ProfileForm = modelform_factory(Profile, exclude=["user"])
+        ContactForm = modelform_factory(Contact, exclude=["user"])
 
-        # Instantiate the forms with existing data
-        context['profile_form'] = ProfileForm(instance=profile)
-        context['contact_form'] = ContactForm(instance=contact)
+        context["profile_form"] = ProfileForm(instance=profile)
+        context["contact_form"] = ContactForm(instance=contact)
 
-        # Pass the actual profile and contact data separately for rendering
-        context['profile'] = profile
-        context['contact'] = contact
+        context["profile"] = profile
+        context["contact"] = contact
 
         return context
 
@@ -136,9 +123,29 @@ class UserDeleteView(auth_mixin.LoginRequiredMixin, ReadOnlyFormMixin, DeleteVie
         """
         app_user = self.get_object()
 
-        # Delete the related Profile and Contact objects
         app_user.profile.delete()
         app_user.contact.delete()
 
-        # Proceed with deleting the User
         return super().delete(request, *args, **kwargs)
+
+
+class ExploreProfilesView(ListView):
+    model = Profile
+    template_name = "accounts/explore-profiles.html"
+    context_object_name = "profiles"
+    paginate_by = 6
+
+    def get_queryset(self):
+        # Fetch all profiles excluding superuser and staff users
+        return Profile.objects.exclude(user__is_superuser=True).exclude(user__is_staff=True).select_related("user")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        # Add current user's profile and contact explicitly
+        if self.request.user.is_authenticated:
+            context["my_profile"] = Profile.objects.get(user=self.request.user)
+            context["my_contact"] = Contact.objects.get(user=self.request.user)
+
+        return context
+
