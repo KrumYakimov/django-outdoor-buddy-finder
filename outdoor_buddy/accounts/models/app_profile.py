@@ -5,19 +5,19 @@ from django.core import validators
 from django.db import models
 from django.utils.functional import cached_property
 
-from outdoor_buddy.accounts.choices import (
-    GenderChoices,
-    SkillLevelChoices,
-    FitnessLevelChoices,
-)
+from outdoor_buddy.accounts.choices import GenderChoices
 from outdoor_buddy.events.models.activity import Activity
+from outdoor_buddy.utils.models_mixins import (
+    ImageUploadMixin,
+    CapabilityLevelMixinMixin,
+)
 from outdoor_buddy.utils.validators import FileSizeValidator
-from services.storage import DebuggableS3Storage
+from services.storage import S3Storage
 
 UserModel = get_user_model()
 
 
-class Profile(models.Model):
+class Profile(ImageUploadMixin, CapabilityLevelMixinMixin):
     """
     Represents the user profile for the Outdoor Buddy application.
     Contains personal details, preferences, and additional information
@@ -65,45 +65,16 @@ class Profile(models.Model):
     gender = models.CharField(
         max_length=max(len(choice) for choice in GenderChoices.values),
         choices=GenderChoices.choices,
-        default=GenderChoices.DO_NOT_SHOW,
         null=True,
         blank=True,
     )
 
     date_of_birth = models.DateField(null=True, blank=True)
-
-    picture_upload = models.ImageField(
-        upload_to="profile_pictures/",
-        storage=DebuggableS3Storage(),
-        validators=[
-            FileSizeValidator(5),
-        ],
-        null=True,
-        blank=True,
-    )
-
-    skill_level = models.CharField(
-        max_length=max(len(choice) for choice in SkillLevelChoices.values),
-        choices=SkillLevelChoices.choices,
-        default=SkillLevelChoices.BEGINNER,
-        null=True,
-        blank=True,
-    )
-
-    fitness_level = models.CharField(
-        max_length=max(len(choice) for choice in FitnessLevelChoices.values),
-        choices=FitnessLevelChoices.choices,
-        default=FitnessLevelChoices.MODERATE,
-        null=True,
-        blank=True,
-    )
-
     preferred_activities = models.ManyToManyField(to=Activity, related_name="users")
     availability = models.TextField(null=True, blank=True)
     preferred_location = models.CharField(max_length=255, null=True, blank=True)
     languages = models.CharField(max_length=255, null=True, blank=True)
     outdoor_experience = models.TextField(null=True, blank=True)
-
     bio = models.TextField(null=True, blank=True)
 
     @cached_property

@@ -19,7 +19,7 @@ class BuddyRequest(TimestampedModelMixin):
     """
 
     from_user = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
+        to=UserModel,
         on_delete=models.CASCADE,
         related_name="sent_requests"
     )
@@ -29,7 +29,7 @@ class BuddyRequest(TimestampedModelMixin):
         related_name="received_requests"
     )
     status = models.CharField(
-        max_length=10,
+        max_length=max(len(choice) for choice in StatusChoices.values),
         choices=StatusChoices.choices,
         default=StatusChoices.PENDING
     )

@@ -21,10 +21,18 @@
 @import url('accounts/profile-view.css');
 @import url('accounts/profile-delete.css');
 @import url('accounts/explore-profiles.css');
+
+/* Events*/
+@import url("events/event-create.css");
+@import url("events/event-edit.css");
+@import url("events/event-detail.css");
+@import url("events/event-delete.css");
+
+
 /*@import url('accounts/profile.css');*/
 /*@import url('adventures/hiking.css');*/
-/*@import url('../../outdoor_buddy/events/create_event.css');*/
-/*@import url('../../outdoor_buddy/events/details_event.css');*/
+/*@import url('../../outdoor_buddy/events/event-create.css');*/
+/*@import url('../../outdoor_buddy/events/event-detail.css');*/
 
 
 /* Response status codes */

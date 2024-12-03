@@ -13,6 +13,27 @@ from services.s3 import S3Service
 UserModel = get_user_model()
 
 
+class ExploreProfilesView(ListView):
+    model = Profile
+    template_name = "accounts/explore-profiles.html"
+    context_object_name = "profiles"
+    paginate_by = 6
+
+    def get_queryset(self):
+        # Fetch all profiles excluding superuser and staff users
+        return Profile.objects.exclude(user__is_superuser=True).exclude(user__is_staff=True).select_related("user")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        # Add current user's profile and contact explicitly
+        if self.request.user.is_authenticated:
+            context["my_profile"] = Profile.objects.get(user=self.request.user)
+            context["my_contact"] = Contact.objects.get(user=self.request.user)
+
+        return context
+
+
 class ProfileContactView(LoginRequiredMixin, TemplateView):
     template_name = "accounts/profile-view.html"
 
@@ -127,25 +148,4 @@ class UserDeleteView(LoginRequiredMixin, UserIsOwnerMixin, ReadOnlyFormMixin, De
         app_user.contact.delete()
 
         return super().delete(request, *args, **kwargs)
-
-
-class ExploreProfilesView(ListView):
-    model = Profile
-    template_name = "accounts/explore-profiles.html"
-    context_object_name = "profiles"
-    paginate_by = 6
-
-    def get_queryset(self):
-        # Fetch all profiles excluding superuser and staff users
-        return Profile.objects.exclude(user__is_superuser=True).exclude(user__is_staff=True).select_related("user")
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-
-        # Add current user's profile and contact explicitly
-        if self.request.user.is_authenticated:
-            context["my_profile"] = Profile.objects.get(user=self.request.user)
-            context["my_contact"] = Contact.objects.get(user=self.request.user)
-
-        return context
 

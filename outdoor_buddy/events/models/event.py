@@ -1,13 +1,16 @@
 from django.conf import settings
+from django.contrib.auth import get_user_model
 from django.db import models
 
-from services.storage import DebuggableS3Storage
-from . import Activity
-from ..choices import RegistrationSatusChoices
-from ...utils.validators import FileSizeValidator
+from outdoor_buddy.events.choices import RegistrationSatusChoices
+from outdoor_buddy.events.models import Activity
+from outdoor_buddy.utils.models_mixins import ImageUploadMixin, CapabilityLevelMixinMixin
 
 
-class Event(models.Model):
+UserModel = get_user_model()
+
+
+class Event(ImageUploadMixin, CapabilityLevelMixinMixin):
     """
     This model represents an event where users can participate.
     It includes essential details about the event, such as timing, location, and activity type,
@@ -15,15 +18,7 @@ class Event(models.Model):
     """
 
     # Essential Event Details
-    picture_upload = models.ImageField(
-        upload_to="profile_pictures/",
-        storage=DebuggableS3Storage(),
-        validators=[
-            FileSizeValidator(5),
-        ],
-        null=True,
-        blank=True,
-    )
+    name = models.CharField(max_length=50, unique=True)
     start_datetime = models.DateTimeField()
     end_datetime = models.DateTimeField()
     location = models.CharField(max_length=255)
@@ -32,28 +27,20 @@ class Event(models.Model):
     activity_type = models.ForeignKey(
         to=Activity, on_delete=models.CASCADE, related_name="events"
     )
-    difficulty_level = models.CharField(
-        max_length=20,
-        choices=[
-            ("beginner", "Beginner"),
-            ("intermediate", "Intermediate"),
-            ("expert", "Expert"),
-        ],
-    )
     capacity = models.PositiveIntegerField()
     spots_remaining = models.PositiveIntegerField(
         blank=True, null=True
     )  # Calculated dynamically if needed
 
-    # Organizer and Participation Details
+    # Organizer Details
     creator = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
+        to=UserModel,
         on_delete=models.CASCADE,
         related_name="created_events",
     )
     registration_deadline = models.DateTimeField(blank=True, null=True)
     registration_status = models.CharField(
-        max_length=10,
+        max_length=max(len(choice) for choice in RegistrationSatusChoices.values),
         choices=RegistrationSatusChoices.choices,
         default=RegistrationSatusChoices.OPEN,
     )

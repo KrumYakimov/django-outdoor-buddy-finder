@@ -1,0 +1,122 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% load common_custom_filters %}
+
+{% block content %}
+    <section class="event-form-container">
+        <div class="map-icons">
+            <div class="icon compass"></div>
+            <div class="icon pin"></div>
+            <div class="icon trail"></div>
+        </div>
+        <h1>Create an Event</h1>
+        <form class="event-form" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+
+            <!-- Picture Upload Section -->
+            <fieldset class="event-create">
+                <div class="event-picture-section">
+                    {% if profile.picture_upload %}
+                        <img src="{{ event.picture_upload.url }}" alt="{{ event.name }}" class="profile-pic">
+                    {% else %}
+                        <img src="" alt="Event Picture" class="event-picture-preview">
+                    {% endif %}
+                    {{ form.picture_upload.label_tag }}
+                    {{ form.picture_upload }}
+                </div>
+            </fieldset>
+
+            <!-- Essential Event Details -->
+            <fieldset class="event-create">
+                <legend>Event Details</legend>
+                <div class="form-group">
+                    {{ form.name.label_tag }}
+                    {{ form.name|placeholder:"Enter the event's name" }}
+                    {{ form.name.errors }}
+                </div>
+
+                <div class="form-group">
+                    {{ form.start_datetime.label_tag }}
+                    {{ form.start_datetime|placeholder:"Enter the start date and time" }}
+                    {{ form.start_datetime.errors }}
+                </div>
+
+                <div class="form-group">
+                    {{ form.end_datetime.label_tag }}
+                    {{ form.end_datetime|placeholder:"Enter the end date and time" }}
+                    {{ form.end_datetime.errors }}
+                </div>
+
+                <div class="form-group">
+                    {{ form.location.label_tag }}
+                    {{ form.location|placeholder:"Enter the event location (address or coordinates)" }}
+                    {{ form.location.errors }}
+                </div>
+
+                <div class="form-group">
+                    {{ form.embedded_map.label_tag }}
+                    {{ form.embedded_map|placeholder:"Optional: Paste a Google Maps URL" }}
+                    {{ form.embedded_map.errors }}
+                </div>
+
+                <div class="form-group">
+                    {{ form.description.label_tag }}
+                    {{ form.description|placeholder:"Describe your event in detail..." }}
+                    {{ form.description.errors }}
+                </div>
+
+                <div class="form-group">
+                    {{ form.activity_type.label_tag }}
+                    {{ form.activity_type|placeholder:"Select the type of activity" }}
+                    {{ form.activity_type.errors }}
+                </div>
+
+                <!-- Skill Level -->
+                <div class="form-group">
+                    {{ form.skill_level.label_tag }}
+                    {{ form.skill_level }}
+                    {{ form.skill_level.errors }}
+                </div>
+
+                <!-- Fitness Level -->
+                <div class="form-group">
+                    {{ form.fitness_level.label_tag }}
+                    {{ form.fitness_level }}
+                    {{ form.fitness_level.errors }}
+                </div>
+
+                <div class="form-group">
+                    {{ form.capacity.label_tag }}
+                    {{ form.capacity|placeholder:"Enter the maximum number of participants" }}
+                    {{ form.capacity.errors }}
+                </div>
+
+                <div class="form-group">
+                    {{ form.spots_remaining.label_tag }}
+                    {{ form.spots_remaining|placeholder:"Optional: Enter available spots" }}
+                    {{ form.spots_remaining.errors }}
+                </div>
+            </fieldset>
+
+            <!-- Organizer and Participation Details -->
+            <fieldset class="event-create">
+                <legend>Organizer Details</legend>
+
+                <div class="form-group">
+                    {{ form.registration_deadline.label_tag }}
+                    {{ form.registration_deadline|placeholder:"Optional: Set a registration deadline" }}
+                    {{ form.registration_deadline.errors }}
+                </div>
+
+                <div class="form-group">
+                    {{ form.registration_status.label_tag }}
+                    {{ form.registration_status|placeholder:"Choose a registration status (Open or Closed)" }}
+                    {{ form.registration_status.errors }}
+                </div>
+            </fieldset>
+
+            <button type="submit" class="submit-btn">Create Event</button>
+        </form>
+    </section>
+{% endblock %}

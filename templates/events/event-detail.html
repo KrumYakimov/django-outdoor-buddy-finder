@@ -1,0 +1,85 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="view-event-page">
+    <h1>Event Details</h1>
+    <section class="event-details-container">
+        <div class="map-icons-event-details">
+            <div class="icon-event-details compass"></div>
+            <div class="icon-event-details pin"></div>
+            <div class="icon-event-details trail"></div>
+        </div>
+        <div class="event-details">
+            <!-- Picture Section -->
+            <div class="event-detail-picture-section">
+                {% if event.picture_upload %}
+                    <img src="{{ event.picture_upload.url }}" alt="{{ event.name }}" class="event-detail-picture-preview">
+                {% else %}
+                    <img src="#" alt="Default Event Picture" class="event-detail-picture-preview">
+                {% endif %}
+            </div>
+
+            <!-- Essential Event Details -->
+            <div class="event-info">
+                <h2>Essential Details</h2>
+                <p><strong>Event Name:</strong> {{ event.name }}</p>
+                <p><strong>Start Date/Time:</strong> {{ event.start_datetime|date:"F j, Y, g:i A" }}</p>
+                <p><strong>End Date/Time:</strong> {{ event.end_datetime|date:"F j, Y, g:i A" }}</p>
+                <p><strong>Location:</strong> {{ event.location }}</p>
+                {% if event.embedded_map %}
+                    <p><strong>Map:</strong> <a href="{{ event.embedded_map }}" target="_blank">View on Google Maps</a></p>
+                {% endif %}
+                <p><strong>Description:</strong> {{ event.description }}</p>
+            </div>
+
+            <!-- Organizer Details -->
+            <div class="organizer-info">
+                <h2>Organizer Details</h2>
+                <p>
+                    <strong>Organizer:</strong>
+                    <a href="{% url 'profile' event.creator.profile.pk %}">
+                        {{ event.creator.profile.full_name|default:event.creator.email }}
+                    </a>
+                </p>
+                <p><strong>Contact:</strong> {{ event.creator.email }}</p>
+                <p><strong>Activity Type:</strong> {{ event.activity_type.name }}</p>
+                <p><strong>Skill Level:</strong> {{ event.get_skill_level_display }}</p>
+                <p><strong>Fitness Level:</strong> {{ event.get_fitness_level_display }}</p>
+                <p><strong>Capacity:</strong> {{ event.capacity }}</p>
+                <p><strong>Spots Remaining:</strong> {{ event.spots_remaining }}</p>
+            </div>
+
+            <!-- Participants -->
+            <div class="participants">
+                <h2>Participants</h2>
+                <ul>
+                    {% for participant in event.participants.all %}
+                        <li><a href="{% url 'profile' participant.pk %}">{{ participant.get_full_name }}</a></li>
+                    {% empty %}
+                        <p>No participants yet.</p>
+                    {% endfor %}
+                </ul>
+                {% if event.registration_deadline %}
+                    <p><strong>Registration Deadline:</strong> {{ event.registration_deadline|date:"F j, Y, g:i A" }}</p>
+                {% endif %}
+                <p><strong>Registration Status:</strong> {{ event.get_registration_status_display }}</p>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+            {% if event.creator == user %}
+            <a href="{% url 'event-update' event.pk %}" class="btn edit-btn">Edit</a>
+            <a href="{% url 'event-delete' event.pk %}" class="btn delete-btn" onclick="return confirm('Are you sure?');">Delete</a>
+            <a href="#" class="cancel-btn">Back to Events</a>
+            {% else %}
+            <button class="join-event-btn">Join Event</button>
+             <a href="#" class="cancel-btn">Back to Events</a>
+            {% endif %}
+        </div>
+
+    
+    </section>
+</section>
+{% endblock %}

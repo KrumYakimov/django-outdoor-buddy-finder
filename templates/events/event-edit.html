@@ -1,0 +1,69 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% load common_custom_filters %}
+
+{% block content %}
+    <section class="event-form-container">
+        <div class="map-icons">
+            <div class="icon compass"></div>
+            <div class="icon pin"></div>
+            <div class="icon trail"></div>
+        </div>
+
+        <h1>Edit Event</h1>
+
+        <form class="event-form" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+
+            <!-- Picture Upload Section -->
+            <fieldset class="event-edit" i>
+{#                <legend>Event Picture</legend>#}
+                <div class="event-picture-section">
+                    {% if event.picture_upload %}
+                        <img src="{{ event.picture_upload.url }}" alt="{{ event.name }}" class="event-picture-preview">
+                    {% else %}
+                        <img src="" alt="Default Event Picture" class="event-picture-preview">
+                    {% endif %}
+                    <div class="form-group">
+                        {{ form.picture_upload.label_tag }}
+                        {{ form.picture_upload }}
+                        {{ form.picture_upload.errors }}
+                    </div>
+                </div>
+            </fieldset>
+
+            <!-- Essential Event Details -->
+            <fieldset class="event-edit">
+                <legend>Event Details</legend>
+
+                {% for field in form.visible_fields %}
+                    {% if field.name not in 'picture_upload registration_deadline registration_status' %}
+                        <div class="form-group">
+                            {{ field.label_tag }}
+                            {{ field|placeholder:"Enter your details" }}
+                            {{ field.errors }}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </fieldset>
+
+            <!-- Organizer and Participation Details -->
+            <fieldset class="event-edit">
+                <legend>Organizer Details</legend>
+
+                {% for field in form.visible_fields %}
+                    {% if field.name in 'registration_deadline registration_status' %}
+                        <div class="form-group">
+                            {{ field.label_tag }}
+                            {{ field|placeholder:"Enter organizer details" }}
+                            {{ field.errors }}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </fieldset>
+
+            <button type="submit" class="submit-btn">Update Event</button>
+        </form>
+    </section>
+{% endblock %}

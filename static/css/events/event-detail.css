@@ -1,0 +1,264 @@
+/* Base Styling */
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: "PT Sans", sans-serif;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(to bottom, #f0f4f8, #d9e4ec);
+    overflow-y: auto;
+}
+
+img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.view-event-page {
+    background: url("/static/images/events/map-pattern-create-event.png") no-repeat center center/cover;
+}
+
+/* Event Details Page Background */
+.event-details-page {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    min-height: 100vh;
+    padding: 2rem;
+    background-size: cover;
+    overflow: auto;
+    z-index: 1;
+}
+
+/* Floating Icons */
+.map-icons-event-details {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    pointer-events: none;
+}
+
+.icon-event-details {
+    position: fixed;
+    width: 70px;
+    height: 70px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    animation: float 3s infinite ease-in-out;
+}
+
+.icon-event-details.compass {
+    top: 15%;
+    left: 10%;
+    background-image: url("/static/images/icons/compass.png");
+}
+
+.icon-event-details.pin {
+    top: 50%;
+    right: 10%;
+    background-image: url("/static/images/icons/pin-icon.png");
+}
+
+.icon-event-details.trail {
+    bottom: 15%;
+    left: 13%;
+    background-image: url("/static/images/icons/trail-icon.png");
+}
+
+/* Floating Animation */
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+/* Event Details Container */
+.event-details-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    max-width: 700px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 15px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 1s ease-in-out;
+    z-index: 3;
+    max-height: 90vh; /* Limit the height to make it scrollable */
+    overflow-y: auto; /* Enable vertical scrolling */
+}
+
+/* Header */
+h1 {
+    text-align: center;
+    font-size: 2.5rem;
+    margin: 2rem 0;
+    color: #FFFFFF; /* White text for high contrast */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 1.2); /* Subtle shadow for clarity */
+}
+
+/* Picture Section*/
+.event-detail-picture-section {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+.event-detail-picture-preview {
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+}
+
+/* Section Titles */
+.event-details-container h2 {
+    color: #145e49;
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    border-bottom: 2px solid #198C69;
+    padding-bottom: 0.5rem;
+}
+
+/* Event Info and Organizer */
+.event-info, .organizer-info {
+    margin-bottom: 2rem;
+    background: #f9f9f9;
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.event-info p, .organizer-info p {
+    font-size: 1rem;
+    margin: 0.5rem 0;
+}
+
+.event-info p strong, .organizer-info p strong {
+    color: #198C69;
+    font-weight: bold;
+}
+
+/* Participants Section */
+.participants {
+    background: #e6f7f0;
+    padding: 1.5rem;
+    border-radius: 10px;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.participants ul {
+    list-style-type: circle;
+    margin: 1rem 0;
+    padding-left: 1.5rem;
+}
+
+.participants ul li {
+    margin-bottom: 0.5rem;
+}
+
+/* Action Buttons */
+.action-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.action-buttons a {
+    text-decoration: none;
+    color: #fff;
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+    font-weight: bold;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+    /* Add a fixed width or min-width */
+    min-width: 170px;
+    text-align: center;
+    display: inline-block;
+}
+
+
+.action-buttons .edit-btn {
+    background-color: #198C69;
+}
+
+.action-buttons .edit-btn:hover {
+    background: #145e49;
+    transform: translateY(-3px);
+}
+
+.action-buttons .delete-btn {
+    background-color: #DC3545;
+}
+
+.action-buttons .delete-btn:hover {
+    background-color: #A71D2A;
+    transform: translateY(-3px);
+}
+
+.action-buttons .cancel-btn {
+    background-color: #6C757D;
+}
+
+.action-buttons .cancel-btn:hover {
+    background-color: #5A6268;
+    transform: translateY(-3px);
+}
+
+/* Join Button */
+.join-event-btn {
+    background: #198C69;
+    color: #fff;
+    font-size: 1.2rem;
+    font-weight: bold;
+    padding: 0.8rem 2rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.join-event-btn:hover {
+    background: #145e49;
+    transform: translateY(-3px);
+}
+
+/* Fade-In Animation */
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .event-details-container h1 {
+        font-size: 2rem;
+    }
+
+    .action-buttons a {
+        font-size: 0.9rem;
+        padding: 0.6rem 1rem;
+    }
+}

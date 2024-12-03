@@ -104,32 +104,48 @@ body, html {
 }
 
 /* Profile Picture Section */
-.profile-picture-section {
-    text-align: center;
+.event-picture-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     margin-bottom: 2rem;
 }
 
-.profile-picture-preview {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    object-fit: cover;
+.event-picture-preview {
+    width: 300px; /* Adjust width as needed */
+    height: auto;
+    border-radius: 10px;
     margin-bottom: 1rem;
-    border: 3px solid #198C69;
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
-.profile-picture-section label {
-    display: block;
-    color: #198C69;
+.file-input-label {
     font-size: 1rem;
+    font-weight: bold;
+    color: #198C69;
     margin-bottom: 0.5rem;
+    text-align: center;
 }
 
-.profile-picture-section input[type="file"] {
+.custom-file-input {
     display: block;
-    margin: 0 auto;
+    width: 100%;
+    max-width: 300px;
+    padding: 0.5rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
+
+.custom-file-input:focus {
+    border-color: #198C69;
+    box-shadow: 0 0 5px rgba(31, 123, 255, 0.3);
+    outline: none;
+}
+
+
 
 /* Form Groups */
 .edit-profile-form .form-group {
