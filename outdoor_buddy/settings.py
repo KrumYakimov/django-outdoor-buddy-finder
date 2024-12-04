@@ -54,7 +54,7 @@ INSTALLED_APPS = [
     "outdoor_buddy.events.apps.EventsConfig",
     "outdoor_buddy.connections.apps.ConnectionsConfig",
     "outdoor_buddy.reviews.apps.ReviewsConfig",
-    "outdoor_buddy.common"
+    "outdoor_buddy.common",
 ]
 
 MIDDLEWARE = [
@@ -219,4 +219,3 @@ LOGGING = {
         },
     },
 }
-

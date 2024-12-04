@@ -97,8 +97,8 @@ img {
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
     animation: fadeIn 1s ease-in-out;
     z-index: 3;
-    max-height: 90vh; /* Limit the height to make it scrollable */
-    overflow-y: auto; /* Enable vertical scrolling */
+    max-height: none; /* Limit the height to make it scrollable */
+    overflow-y: visible; /* Enable vertical scrolling */
 }
 
 /* Header */
@@ -165,7 +165,21 @@ h1 {
 }
 
 .participants ul li {
+    color: #333; /* Dark text for better visibility */
+    font-size: 1rem; /* Ensure font size is legible */
+    line-height: 1.5; /* Add spacing between lines */
     margin-bottom: 0.5rem;
+}
+
+.participants ul li a {
+    color: #007bff; /* Link color */
+    text-decoration: none; /* Remove underline */
+    font-weight: bold;
+}
+
+.participants ul li a:hover {
+    text-decoration: underline; /* Add underline on hover */
+    color: #0056b3; /* Change color on hover */
 }
 
 /* Action Buttons */
@@ -239,6 +253,24 @@ h1 {
     transform: translateY(-3px);
 }
 
+.leave-event-btn {
+    background: #DC3545; /* Red for unjoin */
+    color: #fff;
+    font-size: 1.2rem;
+    font-weight: bold;
+    padding: 0.8rem 2rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.leave-event-btn:hover {
+    background: #A71D2A;
+    transform: translateY(-3px);
+}
+
 /* Fade-In Animation */
 @keyframes fadeIn {
     0% {
@@ -250,6 +282,79 @@ h1 {
         transform: translateY(0);
     }
 }
+
+/* Message Alerts */
+.messages {
+    position: relative;
+    max-width: 700px;
+    margin: 1.5rem auto; /* Space between the message block and other content */
+    padding: 1rem;
+    border-radius: 10px;
+    font-size: 1rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Success Message */
+.alert-success {
+    background-color: #d4edda;
+    border-left: 5px solid #198C69; /* Green left border for success messages */
+    color: #155724;
+}
+
+/* Warning Message */
+.alert-warning {
+    background-color: #fff3cd;
+    border-left: 5px solid #ffeeba; /* Yellow left border for warning messages */
+    color: #856404;
+}
+
+/* Error Message */
+.alert-error {
+    background-color: #f8d7da;
+    border-left: 5px solid #f5c6cb; /* Red left border for error messages */
+    color: #721c24;
+}
+
+/* General Message Hover Effect */
+.alert:hover {
+    opacity: 0.9;
+    cursor: pointer;
+    transition: opacity 0.3s ease-in-out;
+}
+
+/* Animation for Messages */
+@keyframes slideIn {
+    0% {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.alert {
+    animation: slideIn 0.5s ease-in-out;
+}
+
+/* Close Button for Messages (optional) */
+.messages .close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #000;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.messages .close-btn:hover {
+    color: #555;
+}
+
 
 /* Responsive Design */
 @media (max-width: 768px) {

@@ -1,0 +1,23 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block content %}
+<section class="email-change-done">
+    <div class="map-background">
+        <div class="map-icons">
+            <div class="icon compass"></div>
+            <div class="icon pin"></div>
+            <div class="icon trail"></div>
+        </div>
+    </div>
+    <div class="content">
+        <h2>Event Registration Successful</h2>
+        <p>You have successfully joined the event.<br> Redirecting shortly.</p>
+        <a href="{% url 'event-detail' event.pk %}">Go to My Events</a>
+        <script>
+            setTimeout(function() {
+                window.location.href = "{% url 'event-detail' event.pk %}";
+            }, 5000);
+        </script>
+    </div>
+</section>
+{% endblock %}

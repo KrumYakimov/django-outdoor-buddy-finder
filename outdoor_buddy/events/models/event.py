@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.db import models
+from django.utils.timezone import now
 
 from outdoor_buddy.events.choices import RegistrationSatusChoices
 from outdoor_buddy.events.models import Activity
@@ -55,4 +56,9 @@ class Event(ImageUploadMixin, CapabilityLevelMixinMixin):
         """
         if self.spots_remaining is None:  # Initialize spots_remaining to capacity
             self.spots_remaining = self.capacity
+
+        # Automatically close registration if the deadline has passed
+        if self.registration_deadline and now() > self.registration_deadline:
+            self.registration_status = RegistrationSatusChoices.CLOSED
+
         super().save(*args, **kwargs)

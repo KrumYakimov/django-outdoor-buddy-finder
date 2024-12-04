@@ -1,15 +1,120 @@
+from collections import defaultdict
+
 from django.contrib import messages
+from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Prefetch
 from django.forms import modelform_factory
 from django.shortcuts import get_object_or_404
-from django.urls import reverse_lazy
-from django.views.generic import DetailView
+from django.urls import reverse_lazy, reverse
+from django.views.generic import DetailView, ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from outdoor_buddy.events.models import Event
+
+from outdoor_buddy.accounts.models import Profile
+from outdoor_buddy.events.models import Event, EventParticipant
 from outdoor_buddy.events.forms import EventForm
 from outdoor_buddy.utils.views_mixins import UserIsOwnerMixin, ReadOnlyFormMixin
 from services.s3 import S3Service
 
+
+UserModel = get_user_model()
+
+
+class UserEventListView(LoginRequiredMixin, ListView):
+    model = Event
+    template_name = "events/user-events.html"
+    context_object_name = "user_events"
+
+    def get_queryset(self):
+        """
+        Fetch events created by the logged-in user with related activity types preloaded.
+        """
+        return (
+            Event.objects.filter(creator=self.request.user)
+            .select_related("activity_type")
+            .order_by("start_datetime")
+        )
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        queryset = self.get_queryset()
+
+        grouped_events = defaultdict(list)
+        for event in queryset:
+            grouped_events[event.activity_type.name].append(event)
+
+        context["user_events"] = dict(grouped_events)
+        return context
+
+
+# class EventDetailView(LoginRequiredMixin, DetailView):
+#     model = Event
+#     template_name = "events/event-detail.html"
+#     context_object_name = "event"
+#
+#     def get_object(self, queryset=None):
+#         """
+#         Fetch the specific event based on its ID and ensure it exists.
+#         """
+#         return get_object_or_404(Event, pk=self.kwargs["pk"])
+#
+#     def get_context_data(self, **kwargs):
+#         """
+#         Add additional context data (e.g., organizer's profile and activity type).
+#         """
+#         context = super().get_context_data(**kwargs)
+#         event = self.object
+#         context["organizer_profile"] = getattr(event.creator, "profile", None)  # Add organizer's profile
+#         context["activity_name"] = event.activity_type.name.lower().replace(" ", "-")  # Add activity slug
+#         return context
+
+# class EventDetailView(LoginRequiredMixin, DetailView):
+#     model = Event
+#     template_name = "events/event-detail.html"
+#     context_object_name = "event"
+#
+#     def get_object(self, queryset=None):
+#         """
+#         Fetch the specific event based on its ID and ensure it exists.
+#         """
+#         queryset = queryset or self.get_queryset()
+#         queryset = queryset.prefetch_related(
+#             Prefetch(
+#                 "participants",
+#                 queryset=EventParticipant.objects.select_related("user"),
+#             )
+#         )
+#         return get_object_or_404(queryset, pk=self.kwargs["pk"])
+
+    # def get_context_data(self, **kwargs):
+    #     """
+    #     Add additional context data (e.g., organizer's profile and activity type).
+    #     """
+    #     context = super().get_context_data(**kwargs)
+    #     event = self.object
+    #     context["organizer_profile"] = getattr(event.creator, "profile", None)  # Add organizer's profile
+    #     context["activity_name"] = event.activity_type.name.lower().replace(" ", "-")  # Add activity slug
+    #     return context
+
+    # def get_return_url(self):
+    #     """
+    #     Determine the return URL based on the referrer or fallback to the activity-specific or user-event list views.
+    #     """
+    #     referer = self.request.META.get("HTTP_REFERER")
+    #     if referer:
+    #         return referer  # Prioritize the referrer to return to where the user came from.
+    #
+    #     # Fallback: Determine based on activity type
+    #     activity_slug = self.object.activity_type.name.lower().replace(" ", "-")
+    #     activity_urls = {
+    #         "hiking": "hiking-events",
+    #         "skiing": "skiing-events",
+    #         "kayaking": "kayaking-events",
+    #         "mountain-biking": "mountain-biking-events",
+    #     }
+    #
+    #     # Return activity-specific URL if exists, otherwise fallback to user-event-list
+    #     return reverse(activity_urls.get(activity_slug, "user-event-list"))
 
 class EventDetailView(LoginRequiredMixin, DetailView):
     model = Event
@@ -24,12 +129,41 @@ class EventDetailView(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         """
-        Add additional context data if necessary (e.g., related participants).
+        Add additional context data including organizer profile, activity type, and return URL.
         """
         context = super().get_context_data(**kwargs)
-        event = self.object
-        context["organizer_profile"] = getattr(event.creator, "profile", None)  # Add organizer's profile
+        event = self.get_object()
+
+        # Add organizer profile and return URL
+        context.update({
+            "organizer_profile": getattr(event.creator, "profile", None),
+            "activity_name": event.activity_type.name.lower().replace(" ", "-"),
+            "return_url": self.get_return_url(),
+        })
+
+        context["is_participant"] = event.participants.filter(user=self.request.user).exists()
+
         return context
+
+    def get_return_url(self):
+        """
+        Determine the return URL based on the referrer or fallback to the activity-specific or user-event list views.
+        """
+        referer = self.request.META.get("HTTP_REFERER")
+        if referer:
+            return referer  # Prioritize the referrer to return to where the user came from.
+
+        # Fallback: Determine based on activity type
+        activity_slug = self.object.activity_type.name.lower().replace(" ", "-")
+        activity_urls = {
+            "hiking": "hiking-events",
+            "skiing": "skiing-events",
+            "kayaking": "kayaking-events",
+            "mountain-biking": "mountain-biking-events",
+        }
+
+        # Return activity-specific URL if exists, otherwise fallback to user-event-list
+        return reverse(activity_urls.get(activity_slug, "user-event-list"))
 
 
 class EventCreateView(LoginRequiredMixin, CreateView):

@@ -24,6 +24,7 @@
             <li><a href="{% url 'signup' %}">Sign up</a></li>
         {% else %}
             <li><a href="{% url 'event-create' %}">Add Adventure</a></li>
+            <li><a href="{% url 'user-event-list' %}">My Adventure</a></li>
             <li><a href="{% url 'profile' profile.user.id  %}">Profile</a></li>
             <form action="{% url 'signout' %}" method="post" class="menu">
                 {% csrf_token %}

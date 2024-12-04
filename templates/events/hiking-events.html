@@ -1,0 +1,52 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block content %}
+
+    <!-- Page Header -->
+    <header class="hiking-header">
+        <h1>Hiking Adventures</h1>
+        <p>Discover scenic trails and breathtaking landscapes on your next hike.</p>
+    </header>
+
+    <!-- Popular Hiking Trails -->
+    <section class="popular-trails">
+        <h2>Popular Hiking Trails</h2>
+        <div class="trail-grid">
+            {% for event in hiking_events %}
+                <div class="trail-card">
+                    {% if event.picture_upload %}
+                        <img src="{{ event.picture_upload.url }}" alt="{{ event.name }}" class="trail-image">
+                    {% else %}
+                        <img src="{% static 'images/default_trail.png' %}" alt="Default Trail" class="trail-image">
+                    {% endif %}
+                    <h3>{{ event.name }}</h3>
+                    <p>{{ event.description|truncatewords:15 }}</p>
+                    <p><span>Start Date:</span> {{ event.start_datetime|date:"F j, Y, g:i A" }}</p>
+                    <p><span>End Date:</span> {{ event.end_datetime|date:"F j, Y, g:i A" }}</p>
+                    <p class="creator-info">
+                        <span>Created by:</span>
+                        <a href="{% url 'profile' event.creator.profile.pk %}">{{ event.creator.profile.full_name|default:event.creator.email }}</a>
+                    </p>
+                    {% if request.user.is_authenticated %}
+                        <a href="{% url 'event-detail' event.pk %}" class="join-event">View Event</a>
+                    {% endif %}
+                </div>
+            {% empty %}
+                <p>No hiking events are currently available. Check back later!</p>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- Hiking Tips -->
+    <section class="hiking-tips">
+        <h2>Hiking Tips</h2>
+        <ul class="tips-list">
+            <li>Pack plenty of water and snacks to stay hydrated and energized.</li>
+            <li>Wear sturdy hiking boots and dress in layers for changing weather conditions.</li>
+            <li>Carry a map or GPS device to navigate trails safely.</li>
+            <li>Respect wildlife and preserve nature by following Leave No Trace principles.</li>
+        </ul>
+    </section>
+
+{% endblock %}

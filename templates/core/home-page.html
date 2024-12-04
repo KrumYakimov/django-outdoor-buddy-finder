@@ -22,19 +22,19 @@
     <section class="activities">
         <h2>Discover Adventures</h2>
         <div class="activity-icons">
-            <a href="#" class="activity">
+            <a href="{% url 'hiking-events' %}" class="activity">
                 <img src=" {% static 'images/home_page/hiking-icon-2.png' %}" alt="Hiking">
                 <p>Hiking</p>
             </a>
-            <a href="#" class="activity">
+            <a href="{% url 'skiing-events' %}" class="activity">
                 <img src="{% static 'images/home_page/skiing-icon.png' %}" alt="Skiing">
                 <p>Skiing</p>
             </a>
-            <a href="#" class="activity">
+            <a href="{% url 'kayaking-events' %}" class="activity">
                 <img src="{% static 'images/home_page/kayaking-icon.png' %}" alt="Kayaking">
                 <p>Kayaking</p>
             </a>
-            <a href="#" class="activity">
+            <a href="{% url 'mountain-biking-events' %}" class="activity">
                 <img src="{% static 'images/home_page/biking-icon.png' %}" alt="Biking">
                 <p>Mountain Biking</p>
             </a>

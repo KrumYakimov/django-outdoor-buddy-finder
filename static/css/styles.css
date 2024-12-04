@@ -27,6 +27,12 @@
 @import url("events/event-edit.css");
 @import url("events/event-detail.css");
 @import url("events/event-delete.css");
+@import url("events/user-events.css");
+@import url("events/hiking.css");
+@import url("events/skiing.css");
+@import url("events/kayaking.css");
+@import url("events/mountain-biking.css");
+
 
 
 /*@import url('accounts/profile.css');*/

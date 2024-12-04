@@ -1,0 +1,51 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block content %}
+    <!-- Page Header -->
+    <header class="mountain-biking-header">
+        <h1>Mountain Biking Adventures</h1>
+        <p>Conquer rugged trails and explore the wild on two wheels.</p>
+    </header>
+
+    <!-- Popular Biking Trails -->
+    <section class="popular-trails">
+        <h2>Popular Biking Trails</h2>
+        <div class="trail-grid">
+            {% for event in biking_events %}
+                <div class="trail-card">
+                   {% if event.picture_upload %}
+                        <img src="{{ event.picture_upload.url }}" alt="{{ event.name }}" class="trail-image">
+                    {% else %}
+                        <img src="{% static 'icons/default_biking.png' %}" alt="Default Skiing Spot" class="trail-image">
+                    {% endif %}
+
+                    <h3>{{ event.name }}</h3>
+                    <p>{{ event.description|truncatewords:15 }}</p>
+                    <p><span>Start Date:</span> {{ event.start_datetime|date:"F j, Y" }}</p>
+                    <p><span>End Date:</span> {{ event.end_datetime|date:"F j, Y" }}</p>
+                    <p class="creator-info">
+                        <span>Created by:</span>
+                        <a href="{% url 'profile' event.creator.id %}">{{ event.creator.profile.full_name|default:event.creator.email }}</a>
+                    </p>
+                    {% if request.user.is_authenticated %}
+                        <a href="{% url 'event-detail' event.pk %}" class="join-event">View Event</a>
+                    {% endif %}
+                </div>
+            {% empty %}
+                <p>No mountain biking events available at the moment. Check back later!</p>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- Mountain Biking Tips -->
+    <section class="biking-tips">
+        <h2>Biking Tips</h2>
+        <ul class="tips-list">
+            <li>Wear a helmet and gloves for protection.</li>
+            <li>Inspect your bike before starting your journey.</li>
+            <li>Bring a repair kit and extra water.</li>
+            <li>Stay on marked trails to protect the environment.</li>
+        </ul>
+    </section>
+{% endblock %}

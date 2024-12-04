@@ -1,0 +1,32 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block content %}
+<section class="user-events">
+    <h1>My Events</h1>
+    {% if user_events %}
+        {% for activity_type, events in user_events.items %}
+            <div class="activity-group {{ activity_type|slugify }}">
+                <h2>{{ activity_type }}</h2>
+                <div class="trail-grid">
+                    {% for event in events %}
+                        <div class="trail-card">
+                            {% if event.picture_upload %}
+                                <img src="{{ event.picture_upload.url }}" alt="{{ event.name }}" class="trail-image">
+                            {% else %}
+                                <img src="#" alt="Default Trail" class="trail-image">
+                            {% endif %}
+                            <h3>{{ event.name }}</h3>
+                            <p>{{ event.description }}</p>
+                            <p><span>Start Date:</span> {{ event.start_datetime|date:"F j, Y" }}</p>
+                            <p><span>End Date:</span> {{ event.end_datetime|date:"F j, Y" }}</p>
+                            <a href="{% url 'event-detail' event.id %}" class="join-event">View Event</a>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>You have not created any events yet.</p>
+    {% endif %}
+</section>
+{% endblock %}
