@@ -1,13 +1,11 @@
 {% extends 'core/base.html' %}
-{% load app_custom_filters %}
-{% load common_custom_filters %}
 {% load static %}
 
 {% block content %}
     <div class="explore-profiles">
         <div class="explore-profiles-content">
-            <h1>Explore Profiles</h1>
-            <p>Connect with adventurers near you or around the world.</p>
+            <h1>Your Adventure Buddies</h1>
+            <p>Explore profiles of adventurers you are connected with and plan your next outdoor journey together.</p>
         </div>
         <div class="map-icons">
             <div class="icon compass"></div>
@@ -34,7 +32,7 @@
                     {% endif %}
                     <!-- Name and Location -->
                     <h3>{{ profile.full_name }}</h3>
-                    {% with profile.user|contact as contact %}
+                    {% with profile.user.contact_set.first as contact %}
                         {% if contact and contact.city %}
                             <p class="location">{{ contact.city }}</p>
                         {% else %}
@@ -46,11 +44,7 @@
 
                     <!-- Action Buttons -->
                     <div class="action-buttons">
-                        {% if profile.user != request.user and request.user.is_authenticated %}
-                            <!-- Show action buttons only for other profiles -->
-{#                            <button class="connect-btn">Connect</button>#}
-                            <a href="{% url 'profile' profile.user.pk %}" class="view-btn">View Profile</a>
-                        {% endif %}
+                        <a href="{% url 'profile' profile.user.pk %}" class="view-btn">View Profile</a>
                     </div>
                 </div>
             {% endfor %}

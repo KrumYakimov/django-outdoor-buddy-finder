@@ -1,0 +1,27 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block content %}
+    <!-- Request Accepted Section -->
+    <section class="action-message">
+        <!-- Map Background -->
+        <div class="map-background">
+            <div class="map-icons">
+                <div class="icon compass"></div>
+                <div class="icon pin"></div>
+                <div class="icon trail"></div>
+            </div>
+        </div>
+        <!-- Request Accepted Content -->
+        <div class="content">
+            <h2>Buddy Request Accepted</h2>
+            <p>You have successfully accepted the buddy request.<br> Redirecting to your profile shortly.</p>
+            <a href="{% url 'profile' pk=request.user.pk %}">Go to Profile</a>
+            
+            <script>
+                setTimeout(function() {
+                    window.location.href = "{% url 'profile' pk=request.user.pk %}";
+                }, 5000); 
+            </script>
+        </div>
+    </section>
+{% endblock %}

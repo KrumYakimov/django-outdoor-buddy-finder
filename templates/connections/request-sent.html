@@ -1,0 +1,27 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block content %}
+    <!-- Request Sent Section -->
+    <section class="action-message">
+        <!-- Map Background -->
+        <div class="map-background">
+            <div class="map-icons">
+                <div class="icon compass"></div>
+                <div class="icon pin"></div>
+                <div class="icon trail"></div>
+            </div>
+        </div>
+        <!-- Request Sent Content -->
+        <div class="content">
+            <h2>Request Sent Successfully</h2>
+            <p>Your buddy request has been sent successfully.<br> Redirecting to the homepage shortly.</p>
+            <a href="{% url 'home' %}">Go to Home</a>
+            
+            <script>
+                setTimeout(function() {
+                    window.location.href = "{% url 'home' %}";
+                }, 5000); 
+            </script>
+        </div>
+    </section>
+{% endblock %}

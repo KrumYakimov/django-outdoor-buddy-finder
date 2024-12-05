@@ -24,4 +24,5 @@ urlpatterns = [
     path("", include("outdoor_buddy.core.urls")),
     path("accounts/", include("outdoor_buddy.accounts.urls")),
     path("events/", include("outdoor_buddy.events.urls")),
+    path("connections/", include("outdoor_buddy.connections.urls"))
 ]

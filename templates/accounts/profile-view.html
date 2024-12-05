@@ -1,7 +1,90 @@
+{#{% extends 'core/base.html' %}#}
+{#{% load static %}#}
+{##}
+{#{% block content %}#}
+{##}
+{#    <!-- Map Background -->#}
+{#    <div class="map-background">#}
+{#        <div class="map-icons">#}
+{#            <div class="icon compass"></div>#}
+{#            <div class="icon pin"></div>#}
+{#            <div class="icon trail"></div>#}
+{#        </div>#}
+{#    </div>#}
+{#    <!-- Profile Header -->#}
+{#    <header class="profile-header">#}
+{#        <h1>Profile</h1>#}
+{#        <div class="profile-actions">#}
+{#            {% if profile.user == request.user %}#}
+{#            <a href="{% url 'profile-contact-edit' pk=profile.pk %}" class="btn primary"><i#}
+{#                    class="icon-edit"></i>Edit</a>#}
+{#            <a href="{% url 'profile-delete' pk=profile.pk %}" class="btn secondary"><i#}
+{#                    class="icon-delete"></i>Delete</a>#}
+{#            <a href="{% url 'email-change' %}" class="btn primary"><i class="icon-email"></i>Change Email</a>#}
+{#            <a href="{% url 'password_change' %}" class="btn primary"><i class="icon-password"></i>Change Password</a>#}
+{#            {% endif %}#}
+{#        </div>#}
+{#    </header>#}
+{#    <!-- Profile Details -->#}
+{#    <section class="profile-container">#}
+{#        <div class="profile-card">#}
+{#            <h2>Personal Information</h2>#}
+{#            {% if profile.picture_upload %}#}
+{#                <img src="{{ profile.picture_upload.url }}"#}
+{#                     alt="Profile Picture"#}
+{#                     class="profile-picture-preview">#}
+{#            {% else %}#}
+{#                <!-- Fallback image -->#}
+{#                <img src="{% static 'images/accounts/man.png' %}"#}
+{#                     alt="Default Profile Picture"#}
+{#                     class="profile-picture-preview">#}
+{#            {% endif %}#}
+{#            <p><strong>Full Name:</strong> {{ profile.full_name }}</p>#}
+{#            <p><strong>Age:</strong> {{ profile.age }}</p>#}
+{#            <p><strong>Gender:</strong> {{ profile.gender }}</p>#}
+{#        </div>#}
+{##}
+{#        <div class="profile-card">#}
+{#            <h2>Contact Information</h2>#}
+{#            <p><strong>City:</strong> {{ contact.city }}</p>#}
+{#            <p><strong>Address:</strong> {{ contact.address }}</p>#}
+{#            <p><strong>Phone Number:</strong> {{ contact.phone_number }}</p>#}
+{#        </div>#}
+{##}
+{#        <div class="profile-card">#}
+{#            <h2>Preferences</h2>#}
+{#            <p><strong>Preferred Activities:</strong></p>#}
+{#            <ul>#}
+{#                {% for activity in profile.preferred_activities.all %}#}
+{#                    <li>{{ activity.name }}</li>#}
+{#                {% empty %}#}
+{#                    <li>No preferred activities specified.</li>#}
+{#                {% endfor %}#}
+{#            </ul>#}
+{#            <p><strong>Preferred Location:</strong> {{ profile.preferred_location }}</p>#}
+{#        </div>#}
+{##}
+{#        <div class="profile-card">#}
+{#            <h2>Additional Information</h2>#}
+{#            <p><strong>Availability:</strong> {{ profile.availability }}</p>#}
+{#            <p><strong>Bio:</strong> {{ profile.bio }}</p>#}
+{#        </div>#}
+{#    </section>#}
+{#{% endblock %}#}
+
 {% extends 'core/base.html' %}
 {% load static %}
 
 {% block content %}
+    {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
 
     <!-- Map Background -->
     <div class="map-background">
@@ -13,18 +96,124 @@
     </div>
     <!-- Profile Header -->
     <header class="profile-header">
-        <h1>Profile</h1>
-        <div class="profile-actions">
-            {% if profile.user == request.user %}
-            <a href="{% url 'profile-contact-edit' pk=profile.pk %}" class="btn primary"><i
-                    class="icon-edit"></i>Edit</a>
-            <a href="{% url 'profile-delete' pk=profile.pk %}" class="btn secondary"><i
-                    class="icon-delete"></i>Delete</a>
-            <a href="{% url 'email-change' %}" class="btn primary"><i class="icon-email"></i>Change Email</a>
-            <a href="{% url 'password_change' %}" class="btn primary"><i class="icon-password"></i>Change Password</a>
+    <h1>Profile</h1>
+    <div class="profile-actions">
+        {% if profile.user == request.user %}
+            <!-- Profile Owner Actions -->
+            <a href="{% url 'profile-contact-edit' pk=profile.pk %}" class="btn primary">
+                <i class="icon-edit"></i> Edit
+            </a>
+            <a href="{% url 'profile-delete' pk=profile.pk %}" class="btn secondary">
+                <i class="icon-delete"></i> Delete
+            </a>
+            <a href="{% url 'email-change' %}" class="btn primary">
+                <i class="icon-email"></i> Change Email
+            </a>
+            <a href="{% url 'password_change' %}" class="btn primary">
+                <i class="icon-password"></i> Change Password
+            </a>
+            {% if received_request %}
+                <!-- Accept/Decline Buddy Request -->
+                <form action="{% url 'respond-buddy-request' received_request.id %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" name="action" value="accept" class="btn primary">
+                        <i class="icon-check"></i> Accept Request
+                    </button>
+                    <button type="submit" name="action" value="decline" class="btn secondary">
+                        <i class="icon-close"></i> Decline Request
+                    </button>
+                </form>
             {% endif %}
-        </div>
-    </header>
+        {% else %}
+            <!-- Buddy Request Logic for Other Profiles -->
+            {% if is_buddy %}
+                <form action="{% url 'disconnect-buddy' profile.user.pk %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn danger">
+                        <i class="icon-disconnect"></i> Disconnect
+                    </button>
+                </form>
+{#            {% elif sent_request %}#}
+                {#                        <p class="info">Your request is pending</p>#}
+            {% else %}
+                <form class="send-buddy-request" action="{% url 'send-buddy-request' profile.user.pk %}" method="post">
+                    {% csrf_token %}
+                    {% if not received_request and not sent_request %}
+                        <!-- Display "Send Buddy Request" Button -->
+                        <button type="submit" class="btn primary">
+                            <i class="icon-send"></i> Send Buddy Request
+                        </button>
+                    {% elif sent_request %}
+                        <!-- Show Message for Sent Request -->
+                        <p class="info">Your buddy request is pending</p>
+                    {% else %}
+                        <!-- Show Message for Received Request -->
+                        <p class="info">You received buddy request</p>
+                    {% endif %}
+                </form>
+
+            {% endif %}
+        {% endif %}
+    </div>
+    {##}
+    {##}
+    {#    </header>#}
+    {#    <header class="profile-header">#}
+    {#        <h1>Profile</h1>#}
+    {#        <div class="profile-actions">#}
+    {#            {% if profile.user == request.user %}#}
+    {#                <!-- Profile Owner Actions -->#}
+    {#                <a href="{% url 'profile-contact-edit' pk=profile.pk %}" class="btn primary">#}
+    {#                    <i class="icon-edit"></i> Edit#}
+    {#                </a>#}
+    {#                <a href="{% url 'profile-delete' pk=profile.pk %}" class="btn secondary">#}
+    {#                    <i class="icon-delete"></i> Delete#}
+    {#                </a>#}
+    {#                <a href="{% url 'email-change' %}" class="btn primary">#}
+    {#                    <i class="icon-email"></i> Change Email#}
+    {#                </a>#}
+    {#                <a href="{% url 'password_change' %}" class="btn primary">#}
+    {#                    <i class="icon-password"></i> Change Password#}
+    {#                </a>#}
+    {#            {% else %}#}
+    {#                <!-- Buddy Request Logic for Other Profiles -->#}
+    {#                {% if is_buddy %}#}
+    {#                    <!-- Disconnect Button -->#}
+    {#                    <form action="{% url 'disconnect-buddy' profile.user.pk %}" method="post">#}
+    {#                        {% csrf_token %}#}
+    {#                        <button type="submit" class="btn danger">#}
+    {#                            <i class="icon-disconnect"></i> Disconnect#}
+    {#                        </button>#}
+    {#                    </form>#}
+    {#                {% elif sent_request %}#}
+    {#                    <!-- Pending Request (No button needed, just a message) -->#}
+    {#                    <p class="info">Your buddy request is pending approval.</p>#}
+    {#                {% elif received_request %}#}
+    {#                    <!-- Accept/Decline Buddy Request -->#}
+    {#                    <form action="{% url 'respond-buddy-request' received_request.id %}" method="post">#}
+    {#                        {% csrf_token %}#}
+    {#                        <button type="submit" name="action" value="accept" class="btn primary">#}
+    {#                            <i class="icon-check"></i> Accept Request#}
+    {#                        </button>#}
+    {#                        <button type="submit" name="action" value="decline" class="btn secondary">#}
+    {#                            <i class="icon-close"></i> Decline Request#}
+    {#                        </button>#}
+    {#                    </form>#}
+    {#                {% else %}#}
+    {#                    <!-- Send Buddy Request -->#}
+    {#                    <form action="{% url 'send-buddy-request' profile.user.pk %}" method="post">#}
+    {#                        {% csrf_token %}#}
+    {#                        <button type="submit" class="btn primary">#}
+    {#                            <i class="icon-send"></i> Send Buddy Request#}
+    {#                        </button>#}
+    {#                    </form>#}
+    {#                {% endif %}#}
+    {#            {% endif %}#}
+    {#        </div>#}
+    {#    </header>#}
+
+
+
     <!-- Profile Details -->
     <section class="profile-container">
         <div class="profile-card">
@@ -48,6 +237,7 @@
             <h2>Contact Information</h2>
             <p><strong>City:</strong> {{ contact.city }}</p>
             <p><strong>Address:</strong> {{ contact.address }}</p>
+            <p><strong>Email:</strong> {{ user.email }}</p>
             <p><strong>Phone Number:</strong> {{ contact.phone_number }}</p>
         </div>
 
@@ -66,8 +256,15 @@
 
         <div class="profile-card">
             <h2>Additional Information</h2>
+            <p><strong>Skill Level:</strong> {{ profile.skill_level }}</p>
+            <p><strong>Fitness Level:</strong> {{ profile.fitness_level }}</p>
             <p><strong>Availability:</strong> {{ profile.availability }}</p>
             <p><strong>Bio:</strong> {{ profile.bio }}</p>
         </div>
     </section>
 {% endblock %}
+
+
+
+
+
