@@ -1,3 +1,167 @@
+/*!* Header Section *!*/
+/*.hiking-header {*/
+/*    text-align: center;*/
+/*    background: url('/static/images/events/hiking-hero_3.png') no-repeat center center/cover;*/
+/*    padding: 10rem 2rem;*/
+/*}*/
+
+/*.hiking-header h1 {*/
+/*    font-size: 3rem;*/
+/*    margin-bottom: 1rem;*/
+/*    color:  #fff;*/
+/*    text-shadow: 2px 2px 4px rgba(0, 0, 0, 1.2);*/
+/*}*/
+
+/*.hiking-header p {*/
+/*    font-size: 1.5rem;*/
+/*    margin-top: 0.5rem;*/
+/*    color:  #fff;*/
+/*    text-shadow: 2px 2px 4px rgba(0, 0, 0, 10);*/
+/*}*/
+
+/*!* Popular Hiking Trails Section *!*/
+/*.popular-trails {*/
+/*    text-align: center;*/
+/*    margin: 2rem auto;*/
+/*    padding: 2rem;*/
+/*    background: #f9f9f9;*/
+/*}*/
+
+/*.popular-trails h2 {*/
+/*    font-size: 2rem;*/
+/*    margin-bottom: 1.5rem;*/
+/*}*/
+
+/*.trail-grid {*/
+/*    display: grid;*/
+/*    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));*/
+/*    gap: 1.5rem;*/
+/*    max-width: 1200px;*/
+/*    margin: auto;*/
+/*}*/
+
+/*.trail-card {*/
+/*    background: #fff;*/
+/*    border-radius: 10px;*/
+/*    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);*/
+/*    text-align: center;*/
+/*    !*padding: 1.5rem;*!*/
+/*    transition: transform 0.3s ease, box-shadow 0.3s ease;*/
+
+/*    !* Ensure all cards have the same height *!*/
+/*    display: flex;*/
+/*    flex-direction: column;*/
+/*    justify-content: space-between;*/
+/*    height: 100%;*/
+/*}*/
+
+/*.trail-card:hover {*/
+/*    transform: translateY(-5px);*/
+/*    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);*/
+/*}*/
+
+/*.trail-card img {*/
+/*    width: 100%;*/
+/*    height: auto;*/
+/*    !*border-radius: 10px;*!*/
+/*    border-top-left-radius: 10px;*/
+/*    border-top-right-radius: 10px;*/
+/*    margin-bottom: 1rem;*/
+/*}*/
+
+/*.trail-card h3 {*/
+/*    font-size: 1.5rem;*/
+/*    margin-bottom: 0.5rem;*/
+/*}*/
+
+/*.trail-card p {*/
+/*    font-size: 1rem;*/
+/*    color: #555;*/
+/*    margin-bottom: 0.5rem;*/
+/*}*/
+
+/*.trail-card span {*/
+/*    font-weight: bold;*/
+/*}*/
+
+/*.trail-card .creator-info {*/
+/*    margin-bottom: auto; !* Ensures consistent spacing above the button *!*/
+/*}*/
+
+/*.trail-card a {*/
+/*    color: #007BFF;*/
+/*    text-decoration: none;*/
+/*    font-weight: bold;*/
+/*    transition: color 0.3s ease;*/
+/*}*/
+
+/*.trail-card a:hover {*/
+/*    color: #0056b3;*/
+/*}*/
+
+/*.trail-card .join-event {*/
+/*    display: inline-block;*/
+/*    padding: 0.5rem 1.5rem;*/
+/*    font-size: 1rem;*/
+/*    background: #198C69;*/
+/*    color: #fff;*/
+/*    border: none;*/
+/*    border-radius: 5px;*/
+/*    cursor: pointer;*/
+/*    transition: background-color 0.3s ease, transform 0.2s ease;*/
+/*    margin-top: auto; !* Push the button to the bottom *!*/
+/*}*/
+
+/*.trail-card .join-event:hover {*/
+/*    background: #145e49;*/
+/*    transform: translateY(-3px);*/
+/*}*/
+
+
+/*!* Hiking Tips Section *!*/
+/*.hiking-tips {*/
+/*    max-width: 800px;*/
+/*    margin: 2rem auto;*/
+/*    padding: 2rem;*/
+/*    background: #fff;*/
+/*    border-radius: 10px;*/
+/*    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);*/
+/*    text-align: left;*/
+/*}*/
+
+/*.hiking-tips h2 {*/
+/*    font-size: 2rem;*/
+/*    margin-bottom: 1rem;*/
+/*}*/
+
+/*.tips-list {*/
+/*    list-style-type: disc;*/
+/*    margin-left: 2rem;*/
+/*    font-size: 1.2rem;*/
+/*    line-height: 1.6;*/
+/*    color: #555;*/
+/*}*/
+
+/*!* Footer *!*/
+/*.footer {*/
+/*    text-align: center;*/
+/*    background: #198C69;*/
+/*    color: #fff;*/
+/*    padding: 1rem 0;*/
+/*    margin-top: 2rem;*/
+/*}*/
+
+/*.footer-links a {*/
+/*    color: #fff;*/
+/*    text-decoration: none;*/
+/*    margin: 0 0.5rem;*/
+/*    transition: color 0.3s ease;*/
+/*}*/
+
+/*.footer-links a:hover {*/
+/*    color: #FF7E01;*/
+/*}*/
+
 /* Header Section */
 .hiking-header {
     text-align: center;
@@ -8,14 +172,14 @@
 .hiking-header h1 {
     font-size: 3rem;
     margin-bottom: 1rem;
-    color:  #fff;
+    color: #fff;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 1.2);
 }
 
 .hiking-header p {
     font-size: 1.5rem;
     margin-top: 0.5rem;
-    color:  #fff;
+    color: #fff;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 10);
 }
 
@@ -45,10 +209,8 @@
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     text-align: center;
-    /*padding: 1.5rem;*/
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 
-    /* Ensure all cards have the same height */
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -63,7 +225,6 @@
 .trail-card img {
     width: 100%;
     height: auto;
-    /*border-radius: 10px;*/
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
     margin-bottom: 1rem;
@@ -85,7 +246,7 @@
 }
 
 .trail-card .creator-info {
-    margin-bottom: auto; /* Ensures consistent spacing above the button */
+    margin-bottom: auto;
 }
 
 .trail-card a {
@@ -109,14 +270,13 @@
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease;
-    margin-top: auto; /* Push the button to the bottom */
+    margin-top: auto;
 }
 
 .trail-card .join-event:hover {
     background: #145e49;
     transform: translateY(-3px);
 }
-
 
 /* Hiking Tips Section */
 .hiking-tips {
@@ -142,22 +302,50 @@
     color: #555;
 }
 
-/* Footer */
-.footer {
-    text-align: center;
-    background: #198C69;
-    color: #fff;
-    padding: 1rem 0;
+/* Reviews Section */
+.reviews-section {
+    margin-top: 2rem;
+    background: #f9f9f9;
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.reviews-section h2 {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+}
+
+.reviews-section ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.reviews-section ul li {
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #ddd;
+}
+
+.reviews-section ul li p {
+    margin: 0.5rem 0;
+    color: #555;
+}
+
+.reviews-section ul li span {
+    font-weight: bold;
+    color: #198C69;
+}
+
+.reviews-section form {
     margin-top: 2rem;
 }
 
-.footer-links a {
-    color: #fff;
-    text-decoration: none;
-    margin: 0 0.5rem;
-    transition: color 0.3s ease;
-}
-
-.footer-links a:hover {
-    color: #FF7E01;
+.reviews-section form .form-control {
+    width: 100%;
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
 }

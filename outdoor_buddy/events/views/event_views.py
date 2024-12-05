@@ -3,9 +3,9 @@ from collections import defaultdict
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db.models import Prefetch
+from django.db.models import Prefetch, Avg
 from django.forms import modelform_factory
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy, reverse
 from django.views.generic import DetailView, ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -13,6 +13,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from outdoor_buddy.accounts.models import Profile
 from outdoor_buddy.events.models import Event, EventParticipant
 from outdoor_buddy.events.forms import EventForm
+from outdoor_buddy.reviews.forms import ReviewForm
 from outdoor_buddy.utils.views_mixins import UserIsOwnerMixin, ReadOnlyFormMixin
 from services.s3 import S3Service
 
@@ -60,61 +61,42 @@ class UserEventListView(LoginRequiredMixin, ListView):
 #
 #     def get_context_data(self, **kwargs):
 #         """
-#         Add additional context data (e.g., organizer's profile and activity type).
+#         Add additional context data including organizer profile, activity type, and return URL.
 #         """
 #         context = super().get_context_data(**kwargs)
-#         event = self.object
-#         context["organizer_profile"] = getattr(event.creator, "profile", None)  # Add organizer's profile
-#         context["activity_name"] = event.activity_type.name.lower().replace(" ", "-")  # Add activity slug
-#         return context
-
-# class EventDetailView(LoginRequiredMixin, DetailView):
-#     model = Event
-#     template_name = "events/event-detail.html"
-#     context_object_name = "event"
+#         event = self.get_object()
 #
-#     def get_object(self, queryset=None):
+#         # Add organizer profile and return URL
+#         context.update({
+#             "organizer_profile": getattr(event.creator, "profile", None),
+#             "activity_name": event.activity_type.name.lower().replace(" ", "-"),
+#             "return_url": self.get_return_url(),
+#         })
+#
+#         context["is_participant"] = event.participants.filter(user=self.request.user).exists()
+#
+#         return context
+#
+#     def get_return_url(self):
 #         """
-#         Fetch the specific event based on its ID and ensure it exists.
+#         Determine the return URL based on the referrer or fallback to the activity-specific or user-event list views.
 #         """
-#         queryset = queryset or self.get_queryset()
-#         queryset = queryset.prefetch_related(
-#             Prefetch(
-#                 "participants",
-#                 queryset=EventParticipant.objects.select_related("user"),
-#             )
-#         )
-#         return get_object_or_404(queryset, pk=self.kwargs["pk"])
+#         referer = self.request.META.get("HTTP_REFERER")
+#         if referer:
+#             return referer  # Prioritize the referrer to return to where the user came from.
+#
+#         # Fallback: Determine based on activity type
+#         activity_slug = self.object.activity_type.name.lower().replace(" ", "-")
+#         activity_urls = {
+#             "hiking": "hiking-events",
+#             "skiing": "skiing-events",
+#             "kayaking": "kayaking-events",
+#             "mountain-biking": "mountain-biking-events",
+#         }
+#
+#         # Return activity-specific URL if exists, otherwise fallback to user-event-list
+#         return reverse(activity_urls.get(activity_slug, "user-event-list"))
 
-    # def get_context_data(self, **kwargs):
-    #     """
-    #     Add additional context data (e.g., organizer's profile and activity type).
-    #     """
-    #     context = super().get_context_data(**kwargs)
-    #     event = self.object
-    #     context["organizer_profile"] = getattr(event.creator, "profile", None)  # Add organizer's profile
-    #     context["activity_name"] = event.activity_type.name.lower().replace(" ", "-")  # Add activity slug
-    #     return context
-
-    # def get_return_url(self):
-    #     """
-    #     Determine the return URL based on the referrer or fallback to the activity-specific or user-event list views.
-    #     """
-    #     referer = self.request.META.get("HTTP_REFERER")
-    #     if referer:
-    #         return referer  # Prioritize the referrer to return to where the user came from.
-    #
-    #     # Fallback: Determine based on activity type
-    #     activity_slug = self.object.activity_type.name.lower().replace(" ", "-")
-    #     activity_urls = {
-    #         "hiking": "hiking-events",
-    #         "skiing": "skiing-events",
-    #         "kayaking": "kayaking-events",
-    #         "mountain-biking": "mountain-biking-events",
-    #     }
-    #
-    #     # Return activity-specific URL if exists, otherwise fallback to user-event-list
-    #     return reverse(activity_urls.get(activity_slug, "user-event-list"))
 
 class EventDetailView(LoginRequiredMixin, DetailView):
     model = Event
@@ -129,19 +111,36 @@ class EventDetailView(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         """
-        Add additional context data including organizer profile, activity type, and return URL.
+        Add additional context data including organizer profile, activity type,
+        return URL, reviews, and review-related information.
         """
         context = super().get_context_data(**kwargs)
         event = self.get_object()
 
-        # Add organizer profile and return URL
+        # Organizer profile and activity type
         context.update({
             "organizer_profile": getattr(event.creator, "profile", None),
             "activity_name": event.activity_type.name.lower().replace(" ", "-"),
             "return_url": self.get_return_url(),
         })
 
+        # Participant information
         context["is_participant"] = event.participants.filter(user=self.request.user).exists()
+
+        # Reviews and average rating
+        reviews = event.reviews.select_related('reviewer__profile').all()
+        average_rating = reviews.aggregate(Avg("rating"))["rating__avg"]
+
+        # Check if the user has already left a review
+        user_review = reviews.filter(reviewer=self.request.user).first()
+
+        # Add reviews and review form to context
+        context.update({
+            "reviews": reviews,
+            "average_rating": average_rating or 0,  # Default to 0 if no reviews
+            "user_review": user_review,
+            "review_form": ReviewForm(instance=user_review)  # Prefill form if review exists
+        })
 
         return context
 
@@ -164,6 +163,24 @@ class EventDetailView(LoginRequiredMixin, DetailView):
 
         # Return activity-specific URL if exists, otherwise fallback to user-event-list
         return reverse(activity_urls.get(activity_slug, "user-event-list"))
+
+    def post(self, request, *args, **kwargs):
+        """
+        Handle review submission.
+        """
+        event = self.get_object()
+        review_form = ReviewForm(request.POST)
+
+        if review_form.is_valid():
+            review = review_form.save(commit=False)
+            review.reviewer = request.user
+            review.event = event
+            review.save()
+            return redirect("event-detail", pk=event.pk)
+
+        # If the form is invalid, re-render the template with errors
+        return self.render_to_response(self.get_context_data(review_form=review_form))
+
 
 
 class EventCreateView(LoginRequiredMixin, CreateView):

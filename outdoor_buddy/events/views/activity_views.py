@@ -1,8 +1,25 @@
 from django.core.exceptions import ObjectDoesNotExist
+from django.db.models import Avg, Count
 from django.views.generic import ListView
 
 from outdoor_buddy.events.models import Event, Activity
 
+
+# class HikingEventListView(ListView):
+#     model = Event
+#     template_name = "events/hiking-events.html"
+#     context_object_name = "hiking_events"
+#
+#     def get_queryset(self):
+#         """
+#         Filter events based on activity type 'Hiking'.
+#         Assumes there's an Activity instance with the name 'Hiking'.
+#         """
+#         try:
+#             hiking_activity = Activity.objects.get(name="Hiking")
+#         except ObjectDoesNotExist:
+#             return Event.objects.none()
+#         return Event.objects.filter(activity_type=hiking_activity).order_by("start_datetime")
 
 class HikingEventListView(ListView):
     model = Event
@@ -11,14 +28,27 @@ class HikingEventListView(ListView):
 
     def get_queryset(self):
         """
-        Filter events based on activity type 'Hiking'.
-        Assumes there's an Activity instance with the name 'Hiking'.
+        Filter events based on activity type 'Hiking' and annotate them with average rating and review count.
         """
         try:
             hiking_activity = Activity.objects.get(name="Hiking")
         except ObjectDoesNotExist:
             return Event.objects.none()
-        return Event.objects.filter(activity_type=hiking_activity).order_by("start_datetime")
+
+        return (
+            Event.objects.filter(activity_type=hiking_activity)
+            .annotate(average_rating=Avg("reviews__rating"), review_count=Count("reviews"))
+            .order_by("start_datetime")
+        )
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        # Include the event object if it's single-event focused
+        if self.object_list.exists():
+            context["event"] = self.object_list.first()  # Pass the first event (or appropriate logic)
+
+        return context
 
 
 class SkiingEventListView(ListView):

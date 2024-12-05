@@ -1,5 +1,128 @@
+{#{% extends 'core/base.html' %}#}
+{#{% load static %}#}
+{##}
+{#{% block content %}#}
+{#    <!-- Messages Section -->#}
+{#    {% if messages %}#}
+{#        <div class="messages">#}
+{#            {% for message in messages %}#}
+{#                <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">#}
+{#                    {{ message }}#}
+{#                </div>#}
+{#            {% endfor %}#}
+{#        </div>#}
+{#    {% endif %}#}
+{#    <section class="view-event-page">#}
+{#        <h1>Event Details</h1>#}
+{#        <section class="event-details-container">#}
+{#            <div class="map-icons-event-details">#}
+{#                <div class="icon-event-details compass"></div>#}
+{#                <div class="icon-event-details pin"></div>#}
+{#                <div class="icon-event-details trail"></div>#}
+{#            </div>#}
+{#            <div class="event-details">#}
+{#                <!-- Picture Section -->#}
+{#                <div class="event-detail-picture-section">#}
+{#                    {% if event.picture_upload %}#}
+{#                        <img src="{{ event.picture_upload.url }}" alt="{{ event.name }}"#}
+{#                             class="event-detail-picture-preview">#}
+{#                    {% else %}#}
+{#                        <img src="#" alt="Default Event Picture" class="event-detail-picture-preview">#}
+{#                    {% endif %}#}
+{#                </div>#}
+{##}
+{#                <!-- Essential Event Details -->#}
+{#                <div class="event-info">#}
+{#                    <h2>Essential Details</h2>#}
+{#                    <p><strong>Event Name:</strong> {{ event.name }}</p>#}
+{#                    <p><strong>Start Date/Time:</strong> {{ event.start_datetime|date:"F j, Y, g:i A" }}</p>#}
+{#                    <p><strong>End Date/Time:</strong> {{ event.end_datetime|date:"F j, Y, g:i A" }}</p>#}
+{#                    <p><strong>Location:</strong> {{ event.location }}</p>#}
+{#                    {% if event.embedded_map %}#}
+{#                        <p><strong>Map:</strong> <a href="{{ event.embedded_map }}" target="_blank">View on Google#}
+{#                            Maps</a></p>#}
+{#                    {% endif %}#}
+{#                    <p><strong>Description:</strong> {{ event.description }}</p>#}
+{#                </div>#}
+{##}
+{#                <!-- Organizer Details -->#}
+{#                <div class="organizer-info">#}
+{#                    <h2>Organizer Details</h2>#}
+{#                    <p>#}
+{#                        <strong>Organizer:</strong>#}
+{#                        <a href="{% url 'profile' event.creator.profile.pk %}">#}
+{#                            {{ event.creator.profile.full_name|default:event.creator.email }}#}
+{#                        </a>#}
+{#                    </p>#}
+{#                    <p><strong>Contact:</strong> {{ event.creator.email }}</p>#}
+{#                    <p><strong>Activity Type:</strong> {{ event.activity_type.name }}</p>#}
+{#                    <p><strong>Skill Level:</strong> {{ event.get_skill_level_display }}</p>#}
+{#                    <p><strong>Fitness Level:</strong> {{ event.get_fitness_level_display }}</p>#}
+{#                    <p><strong>Capacity:</strong> {{ event.capacity }}</p>#}
+{#                    <p><strong>Spots Remaining:</strong> {{ event.spots_remaining }}</p>#}
+{#                </div>#}
+{##}
+{#                <!-- Participants -->#}
+{#                <div class="participants">#}
+{#                    <h2>Participants</h2>#}
+{#                    <ul>#}
+{#                        {% for participant in event.participants.all %}#}
+{#                            <li>#}
+{#                                {% if participant.user.profile %}#}
+{#                                    <a href="{% url 'profile' participant.user.profile.pk %}">#}
+{#                                        {{ participant.user.profile.full_name }}#}
+{#                                    </a>#}
+{#                                {% else %}#}
+{#                                    <p>No profile available for {{ participant.user.email }}</p>#}
+{#                                {% endif %}#}
+{#                            </li>#}
+{#                        {% empty %}#}
+{#                            <li>No participants yet.</li>#}
+{#                        {% endfor %}#}
+{#                    </ul>#}
+{##}
+{#                    {% if event.registration_deadline %}#}
+{#                        <p><strong>Registration#}
+{#                            Deadline:</strong> {{ event.registration_deadline|date:"F j, Y, g:i A" }}</p>#}
+{#                    {% endif %}#}
+{#                    <p><strong>Registration Status:</strong> {{ event.get_registration_status_display }}</p>#}
+{#                </div>#}
+{#            </div>#}
+{##}
+{#            <!-- Action Buttons -->#}
+{#            <div class="action-buttons">#}
+{#                {% if event.creator == user %}#}
+{#                    <!-- Buttons for Event Creator -->#}
+{#                    <a href="{% url 'event-update' event.pk %}" class="btn edit-btn">Edit</a>#}
+{#                    <a href="{% url 'event-delete' event.pk %}" class="btn delete-btn"#}
+{#                       onclick="return confirm('Are you sure?');">#}
+{#                        Delete#}
+{#                    </a>#}
+{#                {% else %}#}
+{#                    {% if is_participant %}#}
+{#                        <!-- Leave Button -->#}
+{#                        <form action="{% url 'leave-event' event.pk %}" method="post">#}
+{#                            {% csrf_token %}#}
+{#                            <button type="submit" class="leave-event-btn">Leave Event</button>#}
+{#                        </form>#}
+{#                    {% else %}#}
+{#                        <!-- Join Button -->#}
+{#                        <form action="{% url 'join-event' event.pk %}" method="post">#}
+{#                            {% csrf_token %}#}
+{#                            <button type="submit" class="join-event-btn">Join Event</button>#}
+{#                        </form>#}
+{#                    {% endif %}#}
+{#                {% endif %}#}
+{#             <a href="{{ return_url }}" class="cancel-btn">Back to Events</a>#}
+{#            </div>#}
+{#        </section>#}
+{#    </section>#}
+{#{% endblock %}#}
+
+
 {% extends 'core/base.html' %}
 {% load static %}
+{% load common_custom_filters %}
 
 {% block content %}
     <!-- Messages Section -->
@@ -89,6 +212,82 @@
                 </div>
             </div>
 
+            <div class="reviews-section">
+                <h2>Reviews</h2>
+
+                <!-- Average Rating -->
+                <div class="average-rating">
+                    <strong>Average Rating:</strong> {{ average_rating|floatformat:1 }} / 5
+                </div>
+
+                <!-- User's Review Form -->
+                {% if user.is_authenticated %}
+                    <h3>Leave a Review</h3>
+                    <form method="post" action="{% url 'submit-event-review' event.pk %}">
+                        {% csrf_token %}
+
+                        <!-- Rating Field -->
+                        <div class="form-group">
+                            {% if user != event.creator %}
+                                <label for="rating">Your Rating:</label>
+                                <select id="rating" name="rating" required>
+                                    <option value="" disabled selected>Select a rating</option>
+                                    {% for i in "12345" %}
+                                        <option value="{{ i }}"
+                                                {% if user_review and user_review.rating == i|stringformat:"i" %}selected{% endif %}>
+                                            {{ i }} / 5
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                                </div>
+
+                                <!-- Comment Field -->
+                                {#                        <div class="form-group">#}
+                                {#                            <label for="comment">Your Comment:</label>#}
+                                {#                            <textarea id="comment" name="comment" rows="4"#}
+                                {#                                      placeholder="Write your comment here...">#}
+                                {#                                {% if user_review %}#}
+                                {#                                    {{ user_review.comment }}#}
+                                {#                                {% endif %}#}
+                                {#                            </textarea>#}
+                                {#                        </div>#}
+                                <div class="form-group">
+                                    <label for="id_comment">Your Comment:</label>
+                                    {{ review_form.comment|placeholder:"Write your comment here..." }}
+                                </div>
+
+                                <!-- Submit Button -->
+                                <button type="submit" class="btn primary">
+                                    {% if user_review %} Update Review {% else %} Submit Review {% endif %}
+                                </button>
+                            {% endif %}
+                    </form>
+                {% else %}
+                    <p><a href="{% url 'login' %}">Log in</a> to leave a review.</p>
+                {% endif %}
+
+                <!-- List of Reviews -->
+                <h3>What Others Are Saying</h3>
+                <ul class="reviews-list">
+                    {% for review in reviews %}
+                        <li>
+                            <strong>
+                                <a href="{% url 'profile' review.reviewer.profile.pk %}">
+                                    {{ review.reviewer.profile.full_name|default:review.reviewer.email }}
+                                </a>
+                            </strong>
+
+                            <span>Rating: {{ review.rating }} / 5</span>
+                            <p>{{ review.comment }}</p>
+                            <small>Reviewed on {{ review.created_at|date:"F j, Y" }}</small>
+                        </li>
+                    {% empty %}
+                        <p>No reviews yet. Be the first to leave one!</p>
+                    {% endfor %}
+                </ul>
+            </div>
+
+
             <!-- Action Buttons -->
             <div class="action-buttons">
                 {% if event.creator == user %}
@@ -113,8 +312,14 @@
                         </form>
                     {% endif %}
                 {% endif %}
-             <a href="{{ return_url }}" class="cancel-btn">Back to Events</a>
+                <a href="{{ return_url }}" class="cancel-btn">Back to Events</a>
             </div>
         </section>
     </section>
 {% endblock %}
+
+
+
+
+
+

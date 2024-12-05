@@ -193,7 +193,7 @@ h1 {
 .action-buttons a {
     text-decoration: none;
     color: #fff;
-    padding: 0.8rem 1.5rem;
+    padding: 0.5rem 1rem;
     font-size: 1rem;
     font-weight: bold;
     border-radius: 5px;
@@ -367,3 +367,94 @@ h1 {
         padding: 0.6rem 1rem;
     }
 }
+
+
+.reviews-section {
+    margin-top: 2rem;
+    background: #f9f9f9;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.reviews-section h2, .reviews-section h3 {
+    color: #145e49;
+    margin-bottom: 1rem;
+    border-bottom: 2px solid #198C69;
+    padding-bottom: 0.5rem;
+}
+
+.reviews-section .form-group {
+    margin-bottom: 1rem;
+}
+
+.reviews-section label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+.reviews-section select, .reviews-section textarea {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+.reviews-section textarea {
+    resize: none;
+}
+
+.reviews-section button {
+    display: inline-block;
+    background: #198C69;
+    color: white;
+    font-size: 1rem;
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.reviews-section button:hover {
+    background: #145e49;
+    transform: translateY(-2px);
+}
+
+.reviews-list {
+    list-style: none;
+    padding: 0;
+    margin-top: 2rem;
+}
+
+.reviews-list li {
+    margin-bottom: 1rem;
+    padding: 1rem;
+    background: white;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.reviews-list li strong {
+    color: #007BFF;
+    font-size: 1.1rem;
+}
+
+.reviews-list li span {
+    display: inline-block;
+    margin-left: 1rem;
+    color: #666;
+}
+
+.reviews-list li p {
+    margin: 0.5rem 0;
+    color: #444;
+}
+
+.reviews-list li small {
+    color: #888;
+}
+
+
