@@ -221,49 +221,45 @@
                 </div>
 
                 <!-- User's Review Form -->
-                {% if user.is_authenticated %}
+                {% if user.is_authenticated and user != event.creator %}
                     <h3>Leave a Review</h3>
                     <form method="post" action="{% url 'submit-event-review' event.pk %}">
                         {% csrf_token %}
 
                         <!-- Rating Field -->
                         <div class="form-group">
-                            {% if user != event.creator %}
-                                <label for="rating">Your Rating:</label>
-                                <select id="rating" name="rating" required>
-                                    <option value="" disabled selected>Select a rating</option>
-                                    {% for i in "12345" %}
-                                        <option value="{{ i }}"
-                                                {% if user_review and user_review.rating == i|stringformat:"i" %}selected{% endif %}>
-                                            {{ i }} / 5
-                                        </option>
-                                    {% endfor %}
-                                </select>
-                                </div>
+                            <label for="rating">Your Rating:</label>
+                            <select id="rating" name="rating" required>
+                                <option value="" disabled selected>Select a rating</option>
+                                {% for i in "12345" %}
+                                    <option value="{{ i }}"
+                                            {% if user_review and user_review.rating == i|stringformat:"i" %}selected{% endif %}>
+                                        {{ i }} / 5
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
 
-                                <!-- Comment Field -->
-                                {#                        <div class="form-group">#}
-                                {#                            <label for="comment">Your Comment:</label>#}
-                                {#                            <textarea id="comment" name="comment" rows="4"#}
-                                {#                                      placeholder="Write your comment here...">#}
-                                {#                                {% if user_review %}#}
-                                {#                                    {{ user_review.comment }}#}
-                                {#                                {% endif %}#}
-                                {#                            </textarea>#}
-                                {#                        </div>#}
-                                <div class="form-group">
-                                    <label for="id_comment">Your Comment:</label>
-                                    {{ review_form.comment|placeholder:"Write your comment here..." }}
-                                </div>
+                        <!-- Comment Field -->
+                        {#                        <div class="form-group">#}
+                        {#                            <label for="comment">Your Comment:</label>#}
+                        {#                            <textarea id="comment" name="comment" rows="4"#}
+                        {#                                      placeholder="Write your comment here...">#}
+                        {#                                {% if user_review %}#}
+                        {#                                    {{ user_review.comment }}#}
+                        {#                                {% endif %}#}
+                        {#                            </textarea>#}
+                        {#                        </div>#}
+                        <div class="form-group">
+                            <label for="id_comment">Your Comment:</label>
+                            {{ review_form.comment|placeholder:"Write your comment here..." }}
+                        </div>
 
-                                <!-- Submit Button -->
-                                <button type="submit" class="btn primary">
-                                    {% if user_review %} Update Review {% else %} Submit Review {% endif %}
-                                </button>
-                            {% endif %}
+                        <!-- Submit Button -->
+                        <button type="submit" class="btn primary">
+                            {% if user_review %} Update Review {% else %} Submit Review {% endif %}
+                        </button>
                     </form>
-                {% else %}
-                    <p><a href="{% url 'login' %}">Log in</a> to leave a review.</p>
                 {% endif %}
 
                 <!-- List of Reviews -->
@@ -282,14 +278,20 @@
                             <small>Reviewed on {{ review.created_at|date:"F j, Y" }}</small>
                         </li>
                     {% empty %}
-                        <p>No reviews yet. Be the first to leave one!</p>
+                        <p>
+                            {% if user == event.creator %}
+                                No reviews yet.
+                            {% else %}
+                                No reviews yet. Be the first to leave one!
+                            {% endif %}
+                        </p>
                     {% endfor %}
                 </ul>
             </div>
 
 
             <!-- Action Buttons -->
-            <div class="action-buttons">
+            <div class="action-buttons-event-details">
                 {% if event.creator == user %}
                     <!-- Buttons for Event Creator -->
                     <a href="{% url 'event-update' event.pk %}" class="btn edit-btn">Edit</a>

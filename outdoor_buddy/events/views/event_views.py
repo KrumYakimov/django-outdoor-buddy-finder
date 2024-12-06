@@ -50,7 +50,7 @@ class UserEventListView(LoginRequiredMixin, ListView):
 
 # class EventDetailView(LoginRequiredMixin, DetailView):
 #     model = Event
-#     template_name = "events/event-detail.html"
+#     template_name = "events/event-details.html"
 #     context_object_name = "event"
 #
 #     def get_object(self, queryset=None):
@@ -100,7 +100,7 @@ class UserEventListView(LoginRequiredMixin, ListView):
 
 class EventDetailView(LoginRequiredMixin, DetailView):
     model = Event
-    template_name = "events/event-detail.html"
+    template_name = "events/event-details.html"
     context_object_name = "event"
 
     def get_object(self, queryset=None):

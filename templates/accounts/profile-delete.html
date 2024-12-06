@@ -22,15 +22,15 @@
             </div>
 
                 <!-- Profile Picture Section -->
-                <div class="profile-picture-section">
+                <div class="profile-picture-section-delete">
                     {% if profile.picture_upload %}
                         <img src="{{ profile.picture_upload.url }}"
                              alt="Profile Picture"
-                             class="profile-picture-preview">
+                             class="profile-pic-delete">
                     {% else %}
                         <img src="{% static 'images/accounts/man.png' %}"
                              alt="Default Profile Picture"
-                             class="profile-picture-preview">
+                             class="profile-pic-delete">
                     {% endif %}
                 </div>
 
@@ -113,7 +113,7 @@
                 </fieldset>
 
                 <!-- Action Buttons -->
-                <div class="form-buttons">
+                <div class="form-buttons-profile-delete">
                     <button type="submit" class="btn primary">Delete</button>
                     <a href="{% url 'profile' profile.user.id %}" class="btn secondary">Cancel</a>
                 </div>

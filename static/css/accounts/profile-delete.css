@@ -159,30 +159,30 @@ p {
 }
 
 /* Profile Picture Section */
-.profile-picture-section {
-    text-align: center;
+.profile-picture-section-delete{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     margin-bottom: 2rem;
 }
 
-.profile-picture-preview {
-    width: 120px;
-    height: 120px;
+.profile-pic-delete{
+    width: 200px; /* Adjust width as needed */
+    height: auto;
     border-radius: 50%;
-    object-fit: cover;
     margin-bottom: 1rem;
-    border: 3px solid #198C69;
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
 /* Form Buttons */
-.form-buttons {
+.form-buttons-profile-delete {
     display: flex;
     justify-content: space-between;
     gap: 1rem;
 }
 
-.btn {
-    padding: 0.8rem 1.5rem;
+.form-buttons-profile-delete .btn {
+    padding: 0.8rem 2rem;
     font-size: 1rem;
     border-radius: 5px;
     cursor: pointer;
@@ -193,22 +193,22 @@ p {
     display: inline-block;
 }
 
-.btn.primary {
+.form-buttons-profile-delete .btn.primary {
     background: #e74c3c;
     color: white;
 }
 
-.btn.primary:hover {
+.form-buttons-profile-delete .btn.primary:hover {
     background: #c0392b;
     transform: translateY(-2px);
 }
 
-.btn-secondary {
+.form-buttons-profile-delete .btn.secondary {
     background: #ddd;
     color: #555;
 }
 
-.btn-secondary:hover {
+.form-buttons-profile-delete .btn.secondary:hover {
     background: #bbb;
     transform: translateY(-2px);
 }

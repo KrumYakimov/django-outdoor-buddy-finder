@@ -70,7 +70,7 @@ body, html {
     text-align: center;
     /* margin-top: 3rem; */
     z-index: 3;
-    position: sticky;
+    /*position: sticky;*/
     top: 60px; /* Sticks below navbar */
      /*background: rgba(255, 255, 255, 0.9); */
     padding: 1rem 0;
@@ -128,8 +128,11 @@ body, html {
     width: 100%;
     max-width: 700px;
     padding: 1rem;
-    z-index: 1;
+    height: 100vh; /* Full viewport height */
     overflow-y: auto;
+    /*max-height: none; !* Limit the height to make it scrollable *!*/
+    /*overflow-y: visible; !* Enable vertical scrolling *!*/
+    z-index: 1;
 }
 
 /* Card Styles */
@@ -183,3 +186,79 @@ body, html {
     color: #fff; /* White text for high contrast */
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 1.2); /* Subtle shadow for clarity */
 }
+
+.reviews-section-user {
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 10px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 2rem auto;
+    max-width: 600px;
+    z-index: 100;
+}
+
+.reviews-section-user h2 {
+    font-size: 1.8rem;
+    color: #145e49;
+    margin-bottom: 1rem;
+    border-bottom: 2px solid #198C69;
+    padding-bottom: 0.5rem;
+}
+
+.reviews-section-user h3 {
+    margin-top: 1rem;
+    color: #145e49;
+    margin-bottom: 1rem;
+    border-bottom: 2px solid #198C69;
+    padding-bottom: 0.5rem;
+}
+
+.reviews-list-user {
+    list-style: none;
+    padding: 0;
+    margin-top: 1rem;
+}
+
+.reviews-list-user li {
+   margin-bottom: 1rem;
+    padding: 1rem;
+    background: white;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.reviews-list-user li strong {
+    font-weight: bold;
+    color: #333;
+}
+
+.reviews-list-user li span {
+    display: block;
+    margin-top: 0.5rem;
+    color: #666;
+}
+
+.reviews-section-user form {
+    margin-top: 1.5rem;
+}
+
+.reviews-section-user form .btn {
+    background: #198C69;
+    color: #fff;
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.reviews-section-user form .btn:hover {
+    background: #145e49;
+    transform: translateY(-3px);
+}
+
+
+
+
+
+

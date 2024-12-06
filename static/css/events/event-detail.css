@@ -183,17 +183,17 @@ h1 {
 }
 
 /* Action Buttons */
-.action-buttons {
+.action-buttons-event-details {
     display: flex;
     justify-content: center;
     gap: 1rem;
     margin-top: 2rem;
 }
 
-.action-buttons a {
+.action-buttons-event-details a {
     text-decoration: none;
     color: #fff;
-    padding: 0.5rem 1rem;
+    padding: 0.5rem 2rem;
     font-size: 1rem;
     font-weight: bold;
     border-radius: 5px;
@@ -201,35 +201,35 @@ h1 {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 
     /* Add a fixed width or min-width */
-    min-width: 170px;
-    text-align: center;
-    display: inline-block;
+    /*min-width: 100px;*/
+    /*text-align: center;*/
+    /*display: inline-block;*/
 }
 
 
-.action-buttons .edit-btn {
+.action-buttons-event-details .edit-btn {
     background-color: #198C69;
 }
 
-.action-buttons .edit-btn:hover {
+.action-buttons-event-details .edit-btn:hover {
     background: #145e49;
     transform: translateY(-3px);
 }
 
-.action-buttons .delete-btn {
+.action-buttons-event-details .delete-btn {
     background-color: #DC3545;
 }
 
-.action-buttons .delete-btn:hover {
+.action-buttons-event-details .delete-btn:hover {
     background-color: #A71D2A;
     transform: translateY(-3px);
 }
 
-.action-buttons .cancel-btn {
+.action-buttons-event-details .cancel-btn {
     background-color: #6C757D;
 }
 
-.action-buttons .cancel-btn:hover {
+.action-buttons-event-details .cancel-btn:hover {
     background-color: #5A6268;
     transform: translateY(-3px);
 }
@@ -238,7 +238,7 @@ h1 {
 .join-event-btn {
     background: #198C69;
     color: #fff;
-    font-size: 1.2rem;
+    font-size: 1rem;
     font-weight: bold;
     padding: 0.8rem 2rem;
     border: none;
@@ -246,6 +246,7 @@ h1 {
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
 }
 
 .join-event-btn:hover {
@@ -256,7 +257,7 @@ h1 {
 .leave-event-btn {
     background: #DC3545; /* Red for unjoin */
     color: #fff;
-    font-size: 1.2rem;
+    font-size: 1rem;
     font-weight: bold;
     padding: 0.8rem 2rem;
     border: none;
@@ -379,6 +380,7 @@ h1 {
 
 .reviews-section h2, .reviews-section h3 {
     color: #145e49;
+    margin-top: 1rem;
     margin-bottom: 1rem;
     border-bottom: 2px solid #198C69;
     padding-bottom: 0.5rem;
@@ -406,7 +408,7 @@ h1 {
     resize: none;
 }
 
-.reviews-section button {
+.reviews-section .btn {
     display: inline-block;
     background: #198C69;
     color: white;
@@ -418,7 +420,7 @@ h1 {
     transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-.reviews-section button:hover {
+.reviews-section .btn:hover {
     background: #145e49;
     transform: translateY(-2px);
 }
@@ -456,5 +458,7 @@ h1 {
 .reviews-list li small {
     color: #888;
 }
+
+
 
 

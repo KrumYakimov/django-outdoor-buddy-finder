@@ -194,13 +194,13 @@ body, html {
 }
 
 /* Form Buttons */
-.form-buttons {
+.form-buttons-profile-edit {
     display: flex;
     justify-content: space-between;
     gap: 1rem;
 }
 
-.btn {
+.form-buttons-profile-edit .btn {
     padding: 0.8rem 1.5rem;
     font-size: 1rem;
     border-radius: 5px;
@@ -212,22 +212,22 @@ body, html {
     display: inline-block;
 }
 
-.btn.primary {
+.form-buttons-profile-edit .btn.primary {
     background: #198C69;
     color: white;
 }
 
-.btn.primary:hover {
+.form-buttons-profile-edit .btn.primary:hover {
     background: #1C4631;
     transform: translateY(-3px);
 }
 
-.btn.secondary {
+.form-buttons-profile-edit .btn.secondary {
     background: #ddd;
     color: #555;
 }
 
-.btn.secondary:hover {
+.form-buttons-profile-edit .btn.secondary:hover {
     background: #ccc;
     transform: translateY(-3px);
 }

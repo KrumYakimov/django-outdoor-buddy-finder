@@ -1,8 +1,8 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db.models import Q
+from django.db.models import Q, Avg
 from django.forms import modelform_factory
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import UpdateView, TemplateView, DeleteView, ListView
 
@@ -10,6 +10,7 @@ from outdoor_buddy.accounts.forms import ProfileForm, ContactForm
 from outdoor_buddy.accounts.models import Profile, Contact
 from outdoor_buddy.connections.choices import StatusChoices
 from outdoor_buddy.connections.models import BuddyRequest, Connection
+from outdoor_buddy.reviews.forms import ReviewForm
 from outdoor_buddy.utils.views_mixins import ReadOnlyFormMixin, UserIsOwnerMixin
 from services.s3 import S3Service
 
@@ -24,7 +25,11 @@ class ExploreProfilesView(ListView):
 
     def get_queryset(self):
         # Fetch all profiles excluding superuser and staff users
-        return Profile.objects.exclude(user__is_superuser=True).exclude(user__is_staff=True).select_related("user")
+        return (
+            Profile.objects.exclude(user__is_superuser=True)
+            .exclude(user__is_staff=True)
+            .select_related("user")
+        )
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -37,87 +42,80 @@ class ExploreProfilesView(ListView):
         return context
 
 
-# class ProfileContactView(LoginRequiredMixin, TemplateView):
-#     template_name = "accounts/profile-view.html"
-#
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#
-#         # Get the user_id from the URL kwargs
-#         pk = self.kwargs.get("pk")
-#
-#         # Fetch the specified user
-#         user = get_object_or_404(UserModel, id=pk)
-#
-#         # Exclude superuser and staff
-#         if user.is_superuser or user.is_staff:
-#             context["profile"] = None
-#             context["contact"] = None
-#         else:
-#             # Fetch the associated Profile and Contact
-#             context["profile"] = get_object_or_404(Profile, user=user)
-#             context["contact"] = get_object_or_404(Contact, user=user)
-#
-#         return context
-
-
 class ProfileContactView(LoginRequiredMixin, TemplateView):
-    template_name = "accounts/profile-view.html"
+    template_name = "accounts/profile-details.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
         pk = self.kwargs.get("pk")
-
         user = get_object_or_404(UserModel, id=pk)
         logged_in_user = self.request.user
-
-        print(f"Debug: Profile user ID: {pk}, Logged-in user ID: {logged_in_user.id}")
 
         profile = get_object_or_404(Profile, user=user)
         contact = get_object_or_404(Contact, user=user)
 
-        context.update({
-            "profile": profile,
-            "contact": contact,
-            "is_buddy": False,
-            "sent_request": None,
-            "received_request": None,
-        })
-
+        # Fetch buddy-related data
         if logged_in_user == user:
-            # print("Debug: Logged-in user is viewing their own profile.")
             received_request = BuddyRequest.objects.filter(
                 from_user__in=UserModel.objects.all(),
                 to_user=logged_in_user,
-                status=StatusChoices.PENDING
+                status=StatusChoices.PENDING,
             ).first()
-
-            context["received_request"] = received_request
-            print(f"Received Request: {received_request}")
+            context.update({"received_request": received_request})
         else:
-
             buddy_status = Connection.objects.filter(
-                Q(user1=logged_in_user, user2=user) |
-                Q(user1=user, user2=logged_in_user)
+                Q(user1=logged_in_user, user2=user)
+                | Q(user1=user, user2=logged_in_user)
             ).exists()
-
             sent_request = BuddyRequest.objects.filter(
                 from_user=logged_in_user, to_user=user, status=StatusChoices.PENDING
             ).first()
-
             received_request = BuddyRequest.objects.filter(
                 from_user=user, to_user=logged_in_user, status=StatusChoices.PENDING
             ).first()
+            context.update(
+                {
+                    "is_buddy": buddy_status,
+                    "sent_request": sent_request,
+                    "received_request": received_request,
+                }
+            )
 
-            context.update({
-                "is_buddy": buddy_status,
-                "sent_request": sent_request,
-                "received_request": received_request,
-            })
+        # Fetch review-related data
+        reviews = user.received_reviews.all()
+        average_rating = reviews.aggregate(Avg("rating"))["rating__avg"]
+        user_review = reviews.filter(reviewer=logged_in_user).first()
 
-        # print(f"Final Context: {context}")
+        context.update(
+            {
+                "profile": profile,
+                "contact": contact,
+                "reviews": reviews,
+                "average_rating": average_rating or 0,
+                "user_review": user_review,
+                "review_form": ReviewForm(
+                    instance=user_review
+                ),  # Prefill form if a review exists
+            }
+        )
+
         return context
+
+    def post(self, request, *args, **kwargs):
+        # Handle review submission
+        pk = self.kwargs.get("pk")
+        user = get_object_or_404(UserModel, id=pk)
+        review_form = ReviewForm(request.POST)
+
+        if review_form.is_valid():
+            review = review_form.save(commit=False)
+            review.reviewer = request.user
+            review.user = user
+            review.save()
+            return redirect("profile-contact-view", pk=user.pk)
+
+        return self.render_to_response(self.get_context_data(review_form=review_form))
 
 
 class ProfileContactUpdateView(LoginRequiredMixin, UserIsOwnerMixin, UpdateView):
@@ -168,7 +166,9 @@ class ProfileContactUpdateView(LoginRequiredMixin, UserIsOwnerMixin, UpdateView)
         return reverse_lazy("profile", kwargs={"pk": self.object.pk})
 
 
-class UserDeleteView(LoginRequiredMixin, UserIsOwnerMixin, ReadOnlyFormMixin, DeleteView):
+class UserDeleteView(
+    LoginRequiredMixin, UserIsOwnerMixin, ReadOnlyFormMixin, DeleteView
+):
     model = UserModel
     template_name = "accounts/profile-delete.html"
     success_url = reverse_lazy("home")
@@ -210,4 +210,3 @@ class UserDeleteView(LoginRequiredMixin, UserIsOwnerMixin, ReadOnlyFormMixin, De
         app_user.contact.delete()
 
         return super().delete(request, *args, **kwargs)
-
