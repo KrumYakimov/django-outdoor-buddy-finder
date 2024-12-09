@@ -6,6 +6,7 @@ class EventForm(forms.ModelForm):
     class Meta:
         model = Event
         exclude = ["id", "creator"]
+        ordering = ["start_datetime"]
         widgets = {
             "start_datetime": forms.DateTimeInput(attrs={"type": "datetime-local"}),
             "end_datetime": forms.DateTimeInput(attrs={"type": "datetime-local"}),

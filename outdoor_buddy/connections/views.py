@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.exceptions import PermissionDenied
 from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views import View
@@ -16,6 +17,9 @@ class SendBuddyRequestView(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
         to_user_id = kwargs.get("user_id")
         to_user = get_object_or_404(UserModel, id=to_user_id)
+
+        if request.user == to_user:
+            raise PermissionDenied("You cannot send a buddy request to yourself.")
 
         buddy_request, created = BuddyRequest.objects.get_or_create(
             from_user=request.user,
@@ -103,13 +107,11 @@ class ConnectedProfilesView(LoginRequiredMixin, ListView):
     paginate_by = 6
 
     def get_queryset(self):
-        # Fetch connected users
         user = self.request.user
         connected_user_ids = Connection.objects.filter(
             Q(user1=user) | Q(user2=user)
         ).values_list("user1", "user2")
 
-        # Collect unique connected user IDs (excluding the logged-in user)
         connected_ids = set()
         for user1, user2 in connected_user_ids:
             connected_ids.add(user1 if user1 != user.id else user2)
@@ -119,7 +121,6 @@ class ConnectedProfilesView(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        # Add current user's profile and contact explicitly
         context["my_profile"] = Profile.objects.get(user=self.request.user)
         context["my_contact"] = Contact.objects.get(user=self.request.user)
 
