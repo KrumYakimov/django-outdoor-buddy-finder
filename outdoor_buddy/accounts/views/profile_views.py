@@ -24,11 +24,16 @@ class ExploreProfilesView(ListView):
     paginate_by = 6
 
     def get_queryset(self):
-        return (
-            Profile.objects.exclude(user__is_superuser=True)
-            .exclude(user__is_staff=True)
-            .select_related("user")
-        )
+        queryset = Profile.objects.exclude(user__is_superuser=True).exclude(user__is_staff=True).select_related("user")
+
+        if self.request.user.is_authenticated:
+            buddies = Connection.objects.filter(
+                Q(user1=self.request.user) | Q(user2=self.request.user)
+            ).values_list("user1_id", "user2_id")
+            buddy_ids = set([pk for pair in buddies for pk in pair if pk != self.request.user.id])
+            queryset = queryset.exclude(user_id__in=buddy_ids).exclude(user=self.request.user)
+
+        return queryset
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
