@@ -23,7 +23,12 @@ class EventAdmin(ModelAdmin):
         "creator",
         "registration_status",
     )
-    list_filter = ("activity_type", "skill_level", "fitness_level", "registration_status")
+    list_filter = (
+        "activity_type",
+        "skill_level",
+        "fitness_level",
+        "registration_status",
+    )
     search_fields = (
         "activity_type__name",
         "description",

@@ -9,7 +9,7 @@ from outdoor_buddy.accounts.models import Profile, Contact
 from outdoor_buddy.utils.email_templates import EmailTemplates
 from services.ses import send_email_to_user
 
-logger = logging.getLogger('outdoor_buddy')
+logger = logging.getLogger("outdoor_buddy")
 
 UserModel = get_user_model()
 

@@ -6,34 +6,11 @@ from outdoor_buddy.accounts.models import Profile, Contact
 UserModel = get_user_model()
 
 
-# class CustomAuthenticationForm(auth_forms.AuthenticationForm):
-#     username = forms.CharField(label="Email")
-#     password = forms.CharField(label="Password")
-
-
 class AppUserCreationForm(auth_forms.UserCreationForm):
-    # email = forms.EmailField(label="Email")
-    # password1 = forms.CharField(widget=forms.PasswordInput, label="Password")
-    # password2 = forms.CharField(widget=forms.PasswordInput, label="Repeat Password")
-
     class Meta(auth_forms.UserCreationForm.Meta):
         model = UserModel
         fields = ("email",)
 
-
-# class CustomPasswordChangeForm(PasswordChangeForm):
-#     old_password = forms.CharField(
-#         label="Current Password",
-#         widget=forms.PasswordInput(attrs={"placeholder": "Enter your current password"})
-#     )
-#     new_password1 = forms.CharField(
-#         label="New Password",
-#         widget=forms.PasswordInput(attrs={"placeholder": "Enter a new password"})
-#     )
-#     new_password2 = forms.CharField(
-#         label="Confirm New Password",
-#         widget=forms.PasswordInput(attrs={"placeholder": "Confirm your new password"})
-#     )
 
 class AccountEmailChangeForm(forms.ModelForm):
     class Meta:
@@ -68,5 +45,3 @@ class ContactForm(forms.ModelForm):
     class Meta:
         model = Contact
         exclude = ["user"]
-
-

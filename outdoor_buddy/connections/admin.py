@@ -9,12 +9,18 @@ class BuddyRequestAdmin(ModelAdmin):
     list_filter = ("status", "created_at")
     search_fields = ("from_user__username", "to_user__username")
     layout = (
-        ("Request Details", {
-            "fields": ("from_user", "to_user", "status"),
-        }),
-        ("Timestamps", {
-            "fields": ("created_at", "updated_at"),
-        }),
+        (
+            "Request Details",
+            {
+                "fields": ("from_user", "to_user", "status"),
+            },
+        ),
+        (
+            "Timestamps",
+            {
+                "fields": ("created_at", "updated_at"),
+            },
+        ),
     )
 
 
@@ -24,10 +30,16 @@ class ConnectionAdmin(ModelAdmin):
     list_filter = ("connected_at",)
     search_fields = ("user1__username", "user2__username")
     layout = (
-        ("Connection Details", {
-            "fields": ("user1", "user2"),
-        }),
-        ("Timestamps", {
-            "fields": ("connected_at",),
-        }),
+        (
+            "Connection Details",
+            {
+                "fields": ("user1", "user2"),
+            },
+        ),
+        (
+            "Timestamps",
+            {
+                "fields": ("connected_at",),
+            },
+        ),
     )

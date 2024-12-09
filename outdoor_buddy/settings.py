@@ -28,12 +28,26 @@ SECRET_KEY = config("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    config("NGROK_ENDPOINT"),
+    "localhost",
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    config("NGROK_CSRF_TRUSTED_ORIGINS"),
+]
 
 
 # Application definition
 
-PROJECT_APPS = []
+PROJECT_APPS = [
+    "outdoor_buddy.accounts.apps.AccountsConfig",
+    "outdoor_buddy.core.apps.CommonConfig",
+    "outdoor_buddy.events.apps.EventsConfig",
+    "outdoor_buddy.connections.apps.ConnectionsConfig",
+    "outdoor_buddy.reviews.apps.ReviewsConfig",
+    "outdoor_buddy.common",
+]
 
 INSTALLED_APPS = [
     "unfold",  # before django.contrib.admin
@@ -49,13 +63,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "outdoor_buddy.accounts.apps.AccountsConfig",
-    "outdoor_buddy.core.apps.CommonConfig",
-    "outdoor_buddy.events.apps.EventsConfig",
-    "outdoor_buddy.connections.apps.ConnectionsConfig",
-    "outdoor_buddy.reviews.apps.ReviewsConfig",
-    "outdoor_buddy.common",
-]
+] + PROJECT_APPS
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -72,19 +80,15 @@ ROOT_URLCONF = "outdoor_buddy.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [
-            BASE_DIR / "templates"
-        ],
+        "DIRS": [BASE_DIR / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
-
                 # Default context processors
                 "django.template.context_processors.debug",
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
-
                 # Custom context processor
                 "outdoor_buddy.utils.context_processors.add_profile_to_context",
             ],
@@ -151,7 +155,7 @@ STATICFILES_DIRS = (BASE_DIR / "static",)
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-AUTH_USER_MODEL = 'accounts.AppUser'
+AUTH_USER_MODEL = "accounts.AppUser"
 
 LOGIN_REDIRECT_URL = reverse_lazy("home")
 LOGIN_URL = reverse_lazy("signin")
@@ -170,7 +174,7 @@ DEFAULT_FILE_STORAGE = "outdoor_buddy_finder.services.storage.DebuggableS3Storag
 MEDIA_URL = f"https://{AWS_BUCKET}.s3.{AWS_REGION}.amazonaws.com/"
 
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 
 # SMTP Server Settings
 EMAIL_HOST = config("EMAIL_HOST")
@@ -182,40 +186,40 @@ DEFAULT_FROM_EMAIL = config("DEFAULT_FROM_EMAIL")
 
 
 LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'formatters': {
-        'verbose': {
-            'format': '{levelname} {asctime} {module} {message}',
-            'style': '{',
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "verbose": {
+            "format": "{levelname} {asctime} {module} {message}",
+            "style": "{",
         },
-        'simple': {
-            'format': '{levelname} {message}',
-            'style': '{',
-        },
-    },
-    'handlers': {
-        'console': {
-            'level': 'DEBUG',
-            'class': 'logging.StreamHandler',
-            'formatter': 'verbose',
-        },
-        'file': {
-            'level': 'DEBUG',
-            'class': 'logging.FileHandler',
-            'filename': 'debug.log',
-            'formatter': 'verbose',
+        "simple": {
+            "format": "{levelname} {message}",
+            "style": "{",
         },
     },
-    'loggers': {
-        'django': {
-            'handlers': ['console', 'file'],
-            'level': 'INFO',
+    "handlers": {
+        "console": {
+            "level": "DEBUG",
+            "class": "logging.StreamHandler",
+            "formatter": "verbose",
         },
-        'outdoor_buddy': {  # Add your app logger
-            'handlers': ['console', 'file'],
-            'level': 'DEBUG',
-            'propagate': True,
+        "file": {
+            "level": "DEBUG",
+            "class": "logging.FileHandler",
+            "filename": "debug.log",
+            "formatter": "verbose",
+        },
+    },
+    "loggers": {
+        "django": {
+            "handlers": ["console", "file"],
+            "level": "INFO",
+        },
+        "outdoor_buddy": {  # Add your app logger
+            "handlers": ["console", "file"],
+            "level": "DEBUG",
+            "propagate": True,
         },
     },
 }

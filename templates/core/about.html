@@ -1,0 +1,68 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="about-page">
+    <!-- Hero Section -->
+    <div class="about-hero">
+        <div class="hero-content-about">
+            <h1>Welcome to Outdoor Buddy Finder</h1>
+            <p>Your journey starts here—connect, explore, and share adventures with fellow enthusiasts.</p>
+        </div>
+    </div>
+
+    <!-- Mission Section -->
+    <div class="about-section about-mission">
+        <h2>Our Mission</h2>
+        <p>
+            Outdoor Buddy Finder is a platform created to unite outdoor enthusiasts. 
+            Whether you're looking for a partner to hike, ski, kayak, or bike with, our mission 
+            is to help you find your perfect adventure buddy.
+        </p>
+    </div>
+
+    <!-- Features Section -->
+    <div class="about-section about-features">
+        <h2>Why Choose Us?</h2>
+        <div class="features-grid">
+            <div class="feature">
+                <img src="{% static 'images/about/create-event.png' %}" alt="Create Events">
+                <h3>Create Events</h3>
+                <p>Organize outdoor adventures and invite others to join.</p>
+            </div>
+            <div class="feature">
+                <img src="{% static 'images/about/join-event.png' %}" alt="Join Events">
+                <h3>Join Events</h3>
+                <p>Discover and participate in events hosted by fellow adventurers.</p>
+            </div>
+            <div class="feature">
+                <img src="{% static 'images/about/explore-profile.png' %}" alt="Explore Profiles">
+                <h3>Explore Profiles</h3>
+                <p>Connect with like-minded individuals and build friendships.</p>
+            </div>
+            <div class="feature">
+                <img src="{% static 'images/about/leave-review.png' %}" alt="Reviews">
+                <h3>Leave Reviews</h3>
+                <p>Share your experience and read reviews to choose the best buddies.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact Section -->
+    <div class="about-section about-contact">
+        <h2>Contact Us</h2>
+        <p>If you have questions or need support, feel free to reach out!</p>
+        <ul>
+            <li>Email: <a href="mailto:support@outdoorbuddyfinder.com">support@outdoorbuddyfinder.com</a></li>
+            <li>Follow us on <a href="https://www.instagram.com/outdoorbuddyfinder" target="_blank">Instagram</a></li>
+        </ul>
+    </div>
+
+    <!-- Call to Action Section -->
+    <div class="about-section about-cta">
+        <a href="{% url 'signup' %}" class="cta-btn primary">Join Now</a>
+        <a href="{% url 'explore-profiles' %}" class="cta-btn secondary">Explore Profiles</a>
+    </div>
+</section>
+{% endblock %}
+

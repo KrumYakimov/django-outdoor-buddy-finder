@@ -15,9 +15,9 @@ class ReadOnlyFormMixin:
         # Make all fields read-only or disabled
         for field_name, field in form.fields.items():
             if field.widget.__class__.__name__ == "Select":  # For dropdown fields
-                field.widget.attrs['disabled'] = True
+                field.widget.attrs["disabled"] = True
             else:
-                field.widget.attrs['readonly'] = True
+                field.widget.attrs["readonly"] = True
         return form
 
 

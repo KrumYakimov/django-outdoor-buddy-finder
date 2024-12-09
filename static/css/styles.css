@@ -7,6 +7,7 @@
 /*Home*/
 @import url('core/base.css');
 @import url('core/home.css');
+@import url('core/about.css');
 
 /*Accounts*/
 @import url('accounts/signup.css');
@@ -36,13 +37,6 @@
 /*Connections*/
 @import url("connections/request-accepted.css");
 
-
-
-/*@import url('accounts/profile.css');*/
-/*@import url('adventures/hiking.css');*/
-/*@import url('../../outdoor_buddy/events/event-create.css');*/
-/*@import url('../../outdoor_buddy/events/event-detail.css');*/
-
-
-/* Response status codes */
+ /*Response status codes */
 /*@import url('response_status_codes/403.css');*/
+/*@import url('response_status_codes/404.css');*/

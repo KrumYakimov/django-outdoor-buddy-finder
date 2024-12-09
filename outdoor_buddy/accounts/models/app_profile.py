@@ -73,8 +73,6 @@ class Profile(ImageUploadMixin, CapabilityLevelMixinMixin):
     preferred_activities = models.ManyToManyField(to=Activity, related_name="users")
     availability = models.TextField(null=True, blank=True)
     preferred_location = models.CharField(max_length=255, null=True, blank=True)
-    languages = models.CharField(max_length=255, null=True, blank=True)
-    outdoor_experience = models.TextField(null=True, blank=True)
     bio = models.TextField(null=True, blank=True)
 
     @cached_property

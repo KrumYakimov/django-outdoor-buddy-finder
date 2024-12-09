@@ -1,32 +1,38 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Outdoor Buddy Finder</title>
-    <link rel="stylesheet" href={% static 'css/styles.css' %}>
-    <link rel="icon" type="image/x-icon" href="{% static 'images/nav/logo.png' %}">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="icon" type="image/x-icon" href="{% static 'images/core/favicon-32x32.png' %}">
 </head>
 <body>
 <!-- Navigation -->
 <nav class="navbar">
     <div class="logo">
-        <a href="{% url 'home' %}" class="logo">
-            <img src="{% static 'images/nav/logo.png' %}" alt="Outdoor Buddy Finder Logo">
+        <a href="{% url 'home' %}">
+            <img src="{% static 'images/core/logo.png' %}" alt="Outdoor Buddy Finder Logo">
         </a>
     </div>
+    <button class="hamburger" aria-label="Toggle navigation">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+    </button>
     <ul class="menu">
         {% if not request.user.is_authenticated %}
-            <li><a href="#">About</a></li>
+            <li><a href="{% url 'about' %}">About</a></li>
             <li><a href="{% url 'signin' %}">Sign in</a></li>
             <li><a href="{% url 'signup' %}">Sign up</a></li>
         {% else %}
-            <li><a href="{% url 'event-create' %}">Add Adventure</a></li>
-            <li><a href="{% url 'user-event-list' %}">My Adventures</a></li>
-            <li><a href="{% url 'connected-profiles' %}">Buddies</a></li>
-            <li><a href="{% url 'profile' profile.user.id  %}">Profile</a></li>
+            <li><a href="{% url 'about' %}">About</a></li>
+            <li><a href="{% url 'event-create' %}">Create Event</a></li>
+            <li><a href="{% url 'user-event-list' %}">My Events</a></li>
+            <li><a href="{% url 'explore-profiles' %}">Find Buddy</a></li>
+            <li><a href="{% url 'connected-profiles' %}">My Buddies</a></li>
+            <li><a href="{% url 'profile' profile.user.id %}">Profile</a></li>
             <form action="{% url 'signout' %}" method="post" class="menu">
                 {% csrf_token %}
                 <button type="submit">Sign out</button>
@@ -34,6 +40,7 @@
         {% endif %}
     </ul>
 </nav>
+
 <!-- End Navigation -->
 
 {% block content %}
@@ -43,5 +50,7 @@
     <p>&copy; 2024 Outdoor Buddy Finder.</p>
 </footer>
 <!-- End Footer -->
+<script src="{% static 'js/navigation.js' %}"></script>
 </body>
 </html>
+

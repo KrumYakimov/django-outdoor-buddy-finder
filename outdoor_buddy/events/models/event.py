@@ -1,12 +1,13 @@
-from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.utils.timezone import now
 
 from outdoor_buddy.events.choices import RegistrationSatusChoices
 from outdoor_buddy.events.models import Activity
-from outdoor_buddy.utils.models_mixins import ImageUploadMixin, CapabilityLevelMixinMixin
-
+from outdoor_buddy.utils.models_mixins import (
+    ImageUploadMixin,
+    CapabilityLevelMixinMixin,
+)
 
 UserModel = get_user_model()
 

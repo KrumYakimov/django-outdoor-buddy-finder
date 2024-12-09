@@ -58,7 +58,6 @@ class AccountResetPasswordView(PasswordResetView):
             [user_email],
             html_message=html_content,
         )
-        logger.info(f"Password reset email sent to {user_email}")
 
 
 class AccountPasswordResetDoneView(PasswordResetDoneView):

@@ -1,10 +1,12 @@
 from django.contrib import admin
-from django.contrib.auth import get_user_model
-from django.db.models import Prefetch
 from django.contrib.admin import SimpleListFilter
+from django.contrib.auth import get_user_model
+from django.contrib.auth.admin import UserAdmin
+from django.core.exceptions import PermissionDenied
 from unfold.admin import ModelAdmin, StackedInline, TabularInline
-from outdoor_buddy.accounts.models import Profile, Contact
 
+from outdoor_buddy.accounts.forms import ProfileForm
+from outdoor_buddy.accounts.models import Profile, Contact
 
 UserModel = get_user_model()
 
@@ -45,27 +47,74 @@ class UsersWithProfileFilter(SimpleListFilter):
 
 
 @admin.register(UserModel)
-class AppUserAdmin(ModelAdmin):
+class AppUserAdmin(ModelAdmin, UserAdmin):
     inlines = [ProfileInline, ContactFormInline]
     list_display = (
         "email",
         "date_joined",
         "is_active",
+        "is_superuser",
         "is_staff",
-        "has_profile",
-        "has_contact",
+        "get_user_groups",
     )
-    list_filter = ("is_active", "is_staff", UsersWithProfileFilter)
+    list_filter = ("is_active", "is_superuser", "is_staff", UsersWithProfileFilter)
     search_fields = ("email",)
     ordering = ("-date_joined", "email")
     readonly_fields = ("date_joined",)
     fieldsets = (
         ("Basic Info", {"fields": ("email", "date_joined", "is_active")}),
-        ("Permissions", {
-            "fields": ("is_staff", "is_superuser", "groups"),
-            "classes": ["collapse"],  # Makes this section collapsible
-        }),
+        (
+            "Permissions",
+            {
+                "fields": ("is_staff", "is_superuser", "groups"),
+                "classes": ["collapse"],  # Makes this section collapsible
+            },
+        ),
     )
+
+    add_fieldsets = (
+        (
+            None,
+            {
+                "classes": ("wide",),
+                "fields": (
+                    "email",
+                    "password1",
+                    "password2",
+                    "is_staff",
+                    "is_superuser",
+                ),
+            },
+        ),
+    )
+
+    def save_model(self, request, obj, form, change):
+        """
+        Restrict System Administrators from creating or editing superusers and staff.
+        """
+        if not request.user.is_superuser:
+            if obj.is_superuser or obj.is_staff:
+                raise PermissionDenied(
+                    "You do not have permission to create or edit superusers and staff."
+                )
+        super().save_model(request, obj, form, change)
+
+    def delete_model(self, request, obj):
+        """
+        Restrict System Administrators from deleting superusers.
+        """
+        if not request.user.is_superuser and obj.is_superuser and obj.is_staff:
+            raise PermissionDenied("You do not have permission to delete superusers.")
+        super().delete_model(request, obj)
+
+    def get_queryset(self, request):
+        """
+        Restrict System Administrators from viewing superusers in the admin list view.
+        """
+        qs = super().get_queryset(request)
+        if not request.user.is_superuser:
+            return qs.filter(is_superuser=False)  # Exclude superusers
+        return qs
 
     def mark_as_active(self, request, queryset):
         queryset.update(is_active=True)
@@ -74,17 +123,18 @@ class AppUserAdmin(ModelAdmin):
 
     actions = [mark_as_active]
 
-    @admin.display(boolean=True, description="Has Profile")
-    def has_profile(self, obj):
-        return hasattr(obj, "profile")
-
-    @admin.display(boolean=True, description="Has Contact")
-    def has_contact(self, obj):
-        return hasattr(obj, "contact")
+    @admin.display(description="Groups")
+    def get_user_groups(self, obj):
+        """
+        Dynamically displays the user's group memberships.
+        """
+        return ", ".join(group.name for group in obj.groups.all()) or "No Groups"
 
 
 @admin.register(Profile)
 class ProfileAdmin(ModelAdmin):
+    form = ProfileForm
+
     list_display = (
         "user_email",
         "full_name",
@@ -97,6 +147,41 @@ class ProfileAdmin(ModelAdmin):
     list_filter = ("gender", "skill_level", "fitness_level")
     search_fields = ("user__email", "first_name", "last_name")
     ordering = ("user__email",)
+
+    fieldsets = (
+        (
+            "User Profile",
+            {
+                "fields": (
+                    "picture_upload",
+                    "first_name",
+                    "last_name",
+                    "date_of_birth",
+                    "gender",
+                ),
+            },
+        ),
+        (
+            "Preferences",
+            {
+                "fields": (
+                    "preferred_activities",
+                    "preferred_location",
+                ),
+            },
+        ),
+        (
+            "Additional Information",
+            {
+                "fields": (
+                    "skill_level",
+                    "fitness_level",
+                    "availability",
+                    "bio",
+                ),
+            },
+        ),
+    )
 
     def user_email(self, obj):
         return obj.user.email

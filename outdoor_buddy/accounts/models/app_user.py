@@ -48,11 +48,3 @@ class AppUser(auth_models.AbstractBaseUser, auth_models.PermissionsMixin):
     USERNAME_FIELD = "email"
 
     objects = AppUserManager()
-
-    # def clean(self):
-    #     if AppUser.objects.filter(email=self.email).exists():
-    #         raise ValidationError({"email": self.EMAIL_VALIDATION_ERROR_MASSAGE})
-    #     super().clean()
-    #
-    # def __str__(self):
-    #     return f"{self.email} ({self.profile.full_name if hasattr(self, 'profile') else 'No profile'})"

@@ -2,10 +2,9 @@ from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import View
+
 from outdoor_buddy.events.models import Event
 from outdoor_buddy.reviews.models import Review
-from outdoor_buddy.reviews.forms import ReviewForm
-
 
 UserModel = get_user_model()
 
@@ -20,7 +19,9 @@ class SubmitEventReviewView(View):
         comment = request.POST.get("comment")
 
         if not rating or not (1 <= int(rating) <= 5):
-            messages.error(request, "Invalid rating. Please provide a rating between 1 and 5.")
+            messages.error(
+                request, "Invalid rating. Please provide a rating between 1 and 5."
+            )
             return redirect("event-detail", pk=pk)
 
         review, created = Review.objects.update_or_create(
@@ -28,11 +29,6 @@ class SubmitEventReviewView(View):
             event=event,
             defaults={"rating": rating, "comment": comment},
         )
-
-        # if created:
-        #     messages.success(request, "Thank you for leaving a review!")
-        # else:
-        #     messages.success(request, "Your review has been updated.")
 
         return redirect("event-detail", pk=pk)
 
@@ -47,7 +43,9 @@ class SubmitProfileReviewView(View):
         comment = request.POST.get("comment")
 
         if not rating or not (1 <= int(rating) <= 5):
-            messages.error(request, "Invalid rating. Please provide a rating between 1 and 5.")
+            messages.error(
+                request, "Invalid rating. Please provide a rating between 1 and 5."
+            )
             return redirect("profile", pk=pk)
 
         review, created = Review.objects.update_or_create(
@@ -62,4 +60,3 @@ class SubmitProfileReviewView(View):
             messages.success(request, "Your review has been updated.")
 
         return redirect("profile", pk=pk)
-

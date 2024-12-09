@@ -15,28 +15,22 @@ class Review(TimestampedModelMixin):
     """
 
     reviewer = models.ForeignKey(
-        to=UserModel,
-        on_delete=models.CASCADE,
-        related_name="given_reviews"
+        to=UserModel, on_delete=models.CASCADE, related_name="given_reviews"
     )
     # A review can be for an event or a user
     event = models.ForeignKey(
-        Event,
-        on_delete=models.CASCADE,
-        related_name="reviews",
-        null=True,
-        blank=True
+        Event, on_delete=models.CASCADE, related_name="reviews", null=True, blank=True
     )
     user = models.ForeignKey(
         to=UserModel,
         on_delete=models.CASCADE,
         related_name="received_reviews",
         null=True,
-        blank=True
+        blank=True,
     )
     rating = models.PositiveIntegerField(
         validators=[MinValueValidator(1), MaxValueValidator(5)],
-        help_text="Rating must be between 1 (lowest) and 5 (highest)."
+        help_text="Rating must be between 1 (lowest) and 5 (highest).",
     )
     comment = models.TextField(blank=True, null=True)
 
@@ -47,10 +41,10 @@ class Review(TimestampedModelMixin):
         constraints = [
             models.CheckConstraint(
                 check=(
-                    models.Q(event__isnull=False, user__isnull=True) |
-                    models.Q(event__isnull=True, user__isnull=False)
+                    models.Q(event__isnull=False, user__isnull=True)
+                    | models.Q(event__isnull=True, user__isnull=False)
                 ),
-                name="review_target_exclusivity"
+                name="review_target_exclusivity",
             )
         ]
 

@@ -22,6 +22,8 @@
     height: auto;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     margin-top: 0.3em;
+    margin-bottom: 0.3em;
+    border-radius: 0.3em;
 }
 
 /* Hover Effect for Logo */
@@ -85,13 +87,46 @@ footer p {
 }
 
 
-@media (max-width: 480px) {
-    /* Further adjustments for very small screens */
+/* Hamburger Menu Button */
+.hamburger {
+    display: none; /* Hidden by default for large screens */
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    z-index: 2000; /* Ensure it stays on top */
+}
+
+.hamburger .bar {
+    width: 25px;
+    height: 3px;
+    background: #fff;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+/* Mobile Menu */
+@media (max-width: 768px) {
     .menu {
-        gap: 0.3rem;
+        display: none; /* Hide the menu on smaller screens */
+        flex-direction: column;
+        background-color: #198C69; /* Same color as the navbar */
+        position: absolute;
+        top: 100%;
+        right: 0;
+        left: 0;
+        padding: 1rem 2rem;
+        z-index: 1000;
     }
 
-    footer {
-        font-size: 0.8rem; /* Smaller footer text */
+    .menu.active {
+        display: flex; /* Show the menu when active */
+    }
+
+    .hamburger {
+        display: flex; /* Display the hamburger button on smaller screens */
     }
 }
+
+

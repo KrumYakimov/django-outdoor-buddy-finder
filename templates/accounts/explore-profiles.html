@@ -46,11 +46,11 @@
 
                     <!-- Action Buttons -->
                     <div class="action-buttons">
-                        {% if profile.user != request.user and request.user.is_authenticated %}
+{#                        {% if profile.user != request.user and request.user.is_authenticated %}#}
                             <!-- Show action buttons only for other profiles -->
 {#                            <button class="connect-btn">Connect</button>#}
                             <a href="{% url 'profile' profile.user.pk %}" class="view-btn">View Profile</a>
-                        {% endif %}
+{#                        {% endif %}#}
                     </div>
                 </div>
             {% endfor %}

@@ -39,4 +39,3 @@ class SignupView(views.CreateView):
 class SigninView(auth_view.LoginView):
     template_name = "accounts/signin.html"
     redirect_authenticated_user = True
-    # authentication_form = CustomAuthenticationForm

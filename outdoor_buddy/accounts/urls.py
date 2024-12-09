@@ -47,9 +47,19 @@ urlpatterns = [
         name="email-change-done",
     ),
     path("profile/<int:pk>/", views.ProfileContactView.as_view(), name="profile"),
-    path('profile/edit/<int:pk>/', views.ProfileContactUpdateView.as_view(), name='profile-contact-edit'),
-    path('profile/delete/<int:pk>/', views.UserDeleteView.as_view(), name='profile-delete'),
-    path("explore-profiles/", views.ExploreProfilesView.as_view(), name="explore-profiles"),
-
+    path(
+        "profile/edit/<int:pk>/",
+        views.ProfileContactUpdateView.as_view(),
+        name="profile-contact-edit",
+    ),
+    path(
+        "profile/delete/<int:pk>/",
+        views.UserDeleteView.as_view(),
+        name="profile-delete",
+    ),
+    path(
+        "explore-profiles/",
+        views.ExploreProfilesView.as_view(),
+        name="explore-profiles",
+    ),
 ]
-

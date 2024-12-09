@@ -24,7 +24,6 @@ class ExploreProfilesView(ListView):
     paginate_by = 6
 
     def get_queryset(self):
-        # Fetch all profiles excluding superuser and staff users
         return (
             Profile.objects.exclude(user__is_superuser=True)
             .exclude(user__is_staff=True)
@@ -34,7 +33,6 @@ class ExploreProfilesView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        # Add current user's profile and contact explicitly
         if self.request.user.is_authenticated:
             context["my_profile"] = Profile.objects.get(user=self.request.user)
             context["my_contact"] = Contact.objects.get(user=self.request.user)
@@ -55,14 +53,12 @@ class ProfileContactView(LoginRequiredMixin, TemplateView):
         profile = get_object_or_404(Profile, user=user)
         contact = get_object_or_404(Contact, user=user)
 
-        # Fetch buddy-related data
         if logged_in_user == user:
-            received_request = BuddyRequest.objects.filter(
-                from_user__in=UserModel.objects.all(),
+            received_requests = BuddyRequest.objects.filter(
                 to_user=logged_in_user,
                 status=StatusChoices.PENDING,
-            ).first()
-            context.update({"received_request": received_request})
+            ).select_related("from_user__profile")
+            context.update({"received_requests": received_requests})
         else:
             buddy_status = Connection.objects.filter(
                 Q(user1=logged_in_user, user2=user)
@@ -82,7 +78,6 @@ class ProfileContactView(LoginRequiredMixin, TemplateView):
                 }
             )
 
-        # Fetch review-related data
         reviews = user.received_reviews.all()
         average_rating = reviews.aggregate(Avg("rating"))["rating__avg"]
         user_review = reviews.filter(reviewer=logged_in_user).first()
@@ -103,7 +98,6 @@ class ProfileContactView(LoginRequiredMixin, TemplateView):
         return context
 
     def post(self, request, *args, **kwargs):
-        # Handle review submission
         pk = self.kwargs.get("pk")
         user = get_object_or_404(UserModel, id=pk)
         review_form = ReviewForm(request.POST)

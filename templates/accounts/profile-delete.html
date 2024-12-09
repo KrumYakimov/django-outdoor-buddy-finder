@@ -24,13 +24,18 @@
                 <!-- Profile Picture Section -->
                 <div class="profile-picture-section-delete">
                     {% if profile.picture_upload %}
-                        <img src="{{ profile.picture_upload.url }}"
-                             alt="Profile Picture"
-                             class="profile-pic-delete">
+                        <img src="{{ profile.picture_upload.url }}" alt="{{ profile.full_name }}" class="profile-pic">
                     {% else %}
-                        <img src="{% static 'images/accounts/man.png' %}"
-                             alt="Default Profile Picture"
-                             class="profile-pic-delete">
+                        {% if profile.gender == "Male" %}
+                            <img src="{% static 'images/accounts/man.png' %}" alt="{{ profile.full_name }}"
+                                 class="profile-pic">
+                        {% elif profile.gender == "Female" %}
+                            <img src="{% static 'images/accounts/woman.png' %}" alt="{{ profile.full_name }}"
+                                 class="profile-pic">
+                        {% else %}
+                            <img src="{% static 'images/accounts/person.png' %}" alt="{{ profile.full_name }}"
+                                 class="profile-pic">
+                        {% endif %}
                     {% endif %}
                 </div>
 

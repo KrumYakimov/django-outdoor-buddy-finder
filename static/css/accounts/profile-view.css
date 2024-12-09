@@ -128,10 +128,10 @@ body, html {
     width: 100%;
     max-width: 700px;
     padding: 1rem;
-    height: 100vh; /* Full viewport height */
-    overflow-y: auto;
-    /*max-height: none; !* Limit the height to make it scrollable *!*/
-    /*overflow-y: visible; !* Enable vertical scrolling *!*/
+    /*height: 100vh; !* Full viewport height *!*/
+    /*overflow-y: auto;*/
+    max-height: none; /* Limit the height to make it scrollable */
+    overflow-y: visible; /* Enable vertical scrolling */
     z-index: 1;
 }
 
@@ -256,6 +256,92 @@ body, html {
     background: #145e49;
     transform: translateY(-3px);
 }
+
+
+/* General Card Styling */
+.profile-card {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin-bottom: 2rem;
+}
+
+.profile-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+}
+
+.profile-card h2 {
+    font-size: 1.5rem;
+    color: #198C69;
+    margin-bottom: 1rem;
+}
+
+/* Buddy Requests List */
+.buddy-requests-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.buddy-request-item {
+    display: flex;
+    justify-content: space-between;
+    gap: 1em;
+    align-items: center;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #ddd;
+}
+
+.buddy-request-item:last-child {
+    border-bottom: none;
+}
+
+/* Buddy Info Link */
+.buddy-profile-link {
+    color: #198C69;
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 1rem;
+}
+
+.buddy-profile-link:hover {
+    text-decoration: underline;
+}
+
+/* Buddy Request Actions */
+.buddy-actions .btn {
+    font-size: 0.9rem;
+    padding: 0.4rem 0.8rem;
+    border-radius: 5px;
+    cursor: pointer;
+    border: none;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.buddy-actions .btn.primary {
+    background: #198C69;
+    color: white;
+}
+
+.buddy-actions .btn.primary:hover {
+    background: #145e49;
+    transform: translateY(-3px);
+}
+
+.buddy-actions .btn.secondary {
+    background: #ddd;
+    color: #555;
+}
+
+.buddy-actions .btn.secondary:hover {
+    background: #bbb;
+    transform: translateY(-3px);
+}
+
 
 
 
