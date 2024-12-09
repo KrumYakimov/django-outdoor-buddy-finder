@@ -26,24 +26,32 @@
         <h2>Why Choose Us?</h2>
         <div class="features-grid">
             <div class="feature">
-                <img src="{% static 'images/about/create-event.png' %}" alt="Create Events">
-                <h3>Create Events</h3>
-                <p>Organize outdoor adventures and invite others to join.</p>
+                <a href="{% url 'event-create' %}">
+                    <img src="{% static 'images/about/create-event.png' %}" alt="Create Events">
+                    <h3>Create Events</h3>
+                    <p>Organize outdoor adventures and invite others to join.</p>
+                </a>
             </div>
             <div class="feature">
-                <img src="{% static 'images/about/join-event.png' %}" alt="Join Events">
-                <h3>Join Events</h3>
-                <p>Discover and participate in events hosted by fellow adventurers.</p>
+                <a href="{% url 'home' %}">
+                    <img src="{% static 'images/about/join-event.png' %}" alt="Join Events">
+                    <h3>Join Events</h3>
+                    <p>Discover and participate in adventures hosted by fellow adventurers.</p>
+                 </a>
             </div>
             <div class="feature">
-                <img src="{% static 'images/about/explore-profile.png' %}" alt="Explore Profiles">
-                <h3>Explore Profiles</h3>
-                <p>Connect with like-minded individuals and build friendships.</p>
+                <a href="{% url 'explore-profiles' %}">
+                    <img src="{% static 'images/about/explore-profile.png' %}" alt="Explore Profiles">
+                    <h3>Explore Profiles</h3>
+                    <p>Connect with like-minded individuals and build friendships.</p>
+                </a>
             </div>
             <div class="feature">
-                <img src="{% static 'images/about/leave-review.png' %}" alt="Reviews">
-                <h3>Leave Reviews</h3>
-                <p>Share your experience and read reviews to choose the best buddies.</p>
+                <a href="{% url 'connected-profiles' %}">
+                    <img src="{% static 'images/about/leave-review.png' %}" alt="Reviews">
+                    <h3>Leave Reviews</h3>
+                    <p>Share your experience and read reviews to choose the best buddies.</p>
+                </a>
             </div>
         </div>
     </div>
@@ -61,7 +69,6 @@
     <!-- Call to Action Section -->
     <div class="about-section about-cta">
         <a href="{% url 'signup' %}" class="cta-btn primary">Join Now</a>
-        <a href="{% url 'explore-profiles' %}" class="cta-btn secondary">Explore Profiles</a>
     </div>
 </section>
 {% endblock %}
