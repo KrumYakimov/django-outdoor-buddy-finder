@@ -8,14 +8,24 @@ from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy, reverse
 from django.views.generic import DetailView, ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from rest_framework import generics
 
 from outdoor_buddy.events.forms import EventForm
 from outdoor_buddy.events.models import Event
+from outdoor_buddy.events.serializers import EventSerializer
 from outdoor_buddy.reviews.forms import ReviewForm
 from outdoor_buddy.utils.views_mixins import UserIsOwnerMixin, ReadOnlyFormMixin
 from services.s3 import S3Service
 
 UserModel = get_user_model()
+
+
+class EventListAPIView(generics.ListAPIView):
+    """
+    API endpoint to list all events.
+    """
+    queryset = Event.objects.all().order_by('-start_datetime')
+    serializer_class = EventSerializer
 
 
 class UserEventListView(LoginRequiredMixin, ListView):

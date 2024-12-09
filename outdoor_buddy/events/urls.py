@@ -3,6 +3,7 @@ from django.urls import path, include
 from outdoor_buddy.events import views
 
 urlpatterns = [
+    path('events/', views.EventListAPIView.as_view(), name='event-list'),
     path("my-events/", views.UserEventListView.as_view(), name="user-event-list"),
     path("create/", views.EventCreateView.as_view(), name="event-create"),
     path(
