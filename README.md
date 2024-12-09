@@ -8,6 +8,14 @@
 
 This project was developed as part of my final exam for the **"Django Advanced"** module in the [Python Web](https://softuni.bg/modules/139/python-web/1500) course at **SoftUni**. The goal was to showcase my ability to structure Django applications effectively by applying advanced concepts such as the **Django REST Framework**, **Unit and Integration Testing**, and utilizing the **Django Template Engine** to create clean, maintainable, and reusable code.
 
+## Preview
+
+Here’s a glimpse of the homepage of **Outdoor Buddy Finder**:
+
+![Homepage Screenshot](static/images/core/home_page_screenshot.png)
+
+
+
 
 ---
 
