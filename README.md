@@ -12,7 +12,7 @@ This project was developed as part of my final exam for the **"Django Advanced"*
 
 Here’s a glimpse of the homepage of **Outdoor Buddy Finder**:
 
-![Homepage Screenshot](static/images/core/home_page_screenshot.png)
+![Homepage Screenshot](/static/images/core/home_page_screenshot.png)
 
 
 
