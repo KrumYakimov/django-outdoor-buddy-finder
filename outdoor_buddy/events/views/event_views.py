@@ -9,6 +9,7 @@ from django.urls import reverse_lazy, reverse
 from django.views.generic import DetailView, ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from rest_framework import generics
+from rest_framework.filters import SearchFilter, OrderingFilter
 
 from outdoor_buddy.events.forms import EventForm
 from outdoor_buddy.events.models import Event
@@ -24,8 +25,10 @@ class EventListAPIView(generics.ListAPIView):
     """
     API endpoint to list all events.
     """
-    queryset = Event.objects.all().order_by('-start_datetime')
+    queryset = Event.objects.all()
     serializer_class = EventSerializer
+    filter_backends = [SearchFilter, OrderingFilter]
+    search_fields = ['name', 'location', 'activity_type__name']
 
 
 class UserEventListView(LoginRequiredMixin, ListView):
