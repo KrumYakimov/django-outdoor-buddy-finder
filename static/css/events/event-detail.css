@@ -191,19 +191,19 @@ h1 {
 }
 
 .action-buttons-event-details a {
-    text-decoration: none;
-    color: #fff;
-    padding: 0.5rem 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.8rem;
+    color: #FFFFFF;
     font-size: 1rem;
-    font-weight: bold;
     border-radius: 5px;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-
-    /* Add a fixed width or min-width */
-    /*min-width: 100px;*/
-    /*text-align: center;*/
-    /*display: inline-block;*/
+    font-weight: bold;
+    cursor: pointer;
+    border: none;
+    width: 200px; /* Fixed width for consistent button size */
+    height: 50px; /* Fixed height for all buttons */
+    transition: background-color 0.3s, transform 0.2s;
 }
 
 

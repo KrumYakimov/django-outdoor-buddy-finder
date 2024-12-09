@@ -267,12 +267,17 @@
 }
 
 .cta-buttons .btn {
-    padding: 0.8rem 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.8rem; /* Adjust button padding */
     border-radius: 5px;
     font-size: 1rem;
     text-align: center;
-    min-width: 140px;
+    width: 200px; /* Fixed width for consistent button size */
+    height: 50px; /* Fixed height for all buttons */
     transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+    cursor: pointer;
 }
 
 /* Primary Button */
@@ -419,7 +424,7 @@
 /* Large Screens (1024px and above) */
 @media (min-width: 1024px) {
     .hero {
-        padding: 5rem 3rem;
+        padding: 1rem 1rem;
         min-height: 50vh;
     }
 

@@ -140,6 +140,7 @@
 
 .trail-card .join-event:hover {
     background: #145e49;
+    color: #fff;
     transform: translateY(-3px);
 }
 
