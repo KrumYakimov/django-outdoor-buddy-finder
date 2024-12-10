@@ -1,19 +1,19 @@
-h1 {
+#page-404-h1{
     font-size: 50px;
     color: #d9534f;
 }
 
-p {
+#page-404-p {
     font-size: 20px;
     color: #666;
 }
 
-a {
+#page-404-a {
     text-decoration: none;
     color: #007bff;
     font-size: 18px;
 }
 
-a:hover {
+#page-404-a:hover {
     text-decoration: underline;
 }

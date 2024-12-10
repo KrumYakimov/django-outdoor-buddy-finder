@@ -1,6 +1,6 @@
 {% extends "core/base.html" %}
 {% block content %}
-    <h1>403 - Forbidden</h1>
-    <p>Sorry, you are not allowed to access this page.</p>
-    <p><a href="{% url 'home' %}">Go back to the homepage</a></p>
+    <h1 id="page-403-h1">403 - Forbidden</h1>
+    <p id="page-403-p">Sorry, you are not allowed to access this page.</p>
+    <p><a href="{% url 'home' %}" id="page-403-a">Go back to the homepage</a></p>
 {% endblock %}

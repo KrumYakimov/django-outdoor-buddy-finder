@@ -38,5 +38,5 @@
 @import url("connections/request-accepted.css");
 
  /*Response status codes */
-/*@import url('response_status_codes/403.css');*/
-/*@import url('response_status_codes/404.css');*/
+@import url('response_status_codes/403.css');
+@import url('response_status_codes/404.css');

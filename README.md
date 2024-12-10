@@ -140,7 +140,7 @@ The **Outdoor Buddy Finder** application is deployed and accessible at:
    EMAIL_PORT=<your_email_port>                    # Email server port
    EMAIL_USE_TLS=<your_email_use_tls>              # Use TLS (True/False)
    EMAIL_HOST_USER=<your_email_host_user>          # Email host username
-   EMAIL_HOST_PASSWORD=<your_email_host_password>  # Email host password
+   EMAIL_HOST_PASSWORD=<your_email_host_password>  # App Passwords
    DEFAULT_FROM_EMAIL=<your_default_from_email>    # Default sender email address
     ```
    
