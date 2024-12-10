@@ -10,7 +10,7 @@
 
     <!-- Popular Kayaking Spots -->
     <section class="popular-trails">
-        <h2>Popular Kayaking Spots</h2>
+        <h2 id="popular-kayaking-spots">Popular Kayaking Spots</h2>
         <div class="trail-grid">
             {% for event in kayaking_events %}
                 <div class="trail-card">
@@ -19,7 +19,7 @@
                     {% else %}
                         <img src="{% static 'icons/default_kayaking.png' %}" alt="Default Skiing Spot" class="trail-image">
                     {% endif %}
-                    <h3>{{ event.name }}</h3>
+                    <h3 id="kayaking-event-name">{{ event.name }}</h3>
                     <p>{{ event.description|truncatewords:15 }}</p>
                     <p><span>Start Date:</span> {{ event.start_datetime|date:"F j, Y" }}</p>
                     <p><span>End Date:</span> {{ event.end_datetime|date:"F j, Y" }}</p>
@@ -27,9 +27,9 @@
                         <span>Created by:</span>
                         <a href="{% url 'profile' event.creator.id %}">{{ event.creator.profile.full_name|default:event.creator.email }}</a>
                     </p>
-                    {% if request.user.is_authenticated %}
+{#                    {% if request.user.is_authenticated %}#}
                         <a href="{% url 'event-detail' event.pk %}" class="join-event">View Event</a>
-                    {% endif %}
+{#                    {% endif %}#}
                 </div>
             {% empty %}
                 <p>No kayaking events available at the moment. Check back later!</p>

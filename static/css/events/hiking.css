@@ -19,7 +19,7 @@
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 10);
 }
 
-/* Popular Hiking Trails Section */
+ /*Popular Hiking Trails Section*/
 .popular-trails {
     text-align: center;
     margin: 2rem auto;
@@ -93,7 +93,7 @@
 }
 
 .trail-card a:hover {
-    color: #0056b3;
+    color: #FFFFFF;
 }
 
 .trail-card .join-event {
@@ -103,7 +103,9 @@
     background: #198C69;
     color: #fff;
     border: none;
-    border-radius: 5px;
+    /*border-radius: 5px;*/
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease;
     margin-top: auto;
@@ -185,6 +187,71 @@
     border: 1px solid #ccc;
     border-radius: 5px;
 }
+
+/* Small Screens (Up to 480px) */
+@media (max-width: 480px) {
+    .popular-trails {
+        padding: 1rem;
+    }
+
+    .popular-trails h2 {
+        font-size: 1.5rem;
+    }
+
+    .trail-grid {
+        grid-template-columns: 1fr; /* Single column for small screens */
+    }
+
+    .trail-card {
+        padding: 1rem;
+    }
+
+    .trail-card h3 {
+        font-size: 1.2rem;
+    }
+
+    .trail-card p {
+        font-size: 0.9rem;
+    }
+}
+
+/* Medium Screens (481px to 1023px) */
+@media (min-width: 481px) and (max-width: 1023px) {
+    .popular-trails {
+        padding: 1.5rem;
+    }
+
+    .popular-trails h2 {
+        font-size: 1.8rem;
+    }
+
+    .trail-grid {
+        grid-template-columns: repeat(2, 1fr); /* Two columns for medium screens */
+    }
+
+    .trail-card h3 {
+        font-size: 1.4rem;
+    }
+
+    .trail-card p {
+        font-size: 1rem;
+    }
+}
+
+/* Large Screens (1024px and above) */
+@media (min-width: 1024px) {
+    .trail-grid {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Dynamic columns based on available space */
+    }
+
+    .popular-trails h2 {
+        font-size: 2rem;
+    }
+}
+
+
+
+
 
 
 
