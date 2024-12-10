@@ -1,0 +1,50 @@
+.event-form-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    min-height: 100vh;
+    padding: 2rem;
+    background: url("/static/images/events/map-pattern-create-event.png") no-repeat center center/cover;
+    background-size: cover;
+    z-index: 1;
+}
+
+.event-form fieldset {
+    margin-bottom: 2rem;
+    padding: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.event-form legend {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #198C69;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    display: block;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #145e49;
+}
+
+.form-group.delete-form input,
+.form-group.delete-form textarea {
+    width: 100%;
+    padding: 0.8rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    pointer-events: none;
+    color: #666;
+}

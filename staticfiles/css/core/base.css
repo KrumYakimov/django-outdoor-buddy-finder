@@ -1,0 +1,132 @@
+/* Navigation Bar */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 2rem;
+    background-color: #198C69;
+    color: #fff;
+    position: sticky; /* Keeps the navbar fixed at the top */
+    top: 0;
+    z-index: 1000;
+}
+
+/* Logo Styling */
+.logo {
+    display: inline-block;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.logo img {
+    width: 80px; /* Adjust size */
+    height: auto;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin-top: 0.3em;
+    margin-bottom: 0.3em;
+    border-radius: 0.3em;
+}
+
+/* Hover Effect for Logo */
+.logo:hover {
+    transform: translateY(-5px) scale(1.1); /* Lift and zoom effect */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Shadow for 3D effect */
+}
+
+.logo:hover img {
+    transform: scale(1.1); /* Additional zoom effect for the image */
+}
+
+/* Menu Styling */
+.menu {
+    list-style: none;
+    display: flex;
+    gap: 1.5rem;
+    align-items: center; /* Align all items in the center */
+    margin: 0;
+    padding: 0;
+}
+
+.menu li,
+.menu form {
+    display: inline-block; /* Ensure forms behave like list items */
+    margin: 0;
+    padding: 0;
+}
+
+.menu li a,
+.menu form button {
+    color: #fff;
+    text-decoration: none;
+    font-size: 1rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: color 0.3s ease-in-out;
+    padding: 0.5rem 0; /* Match padding with other menu items */
+}
+
+/* Hover Effect for Links and Buttons */
+.menu li a:hover,
+.menu form button:hover {
+    color: #FF7E01; /* Same hover effect for consistency */
+}
+
+
+/* Footer */
+footer {
+    background: #198C69;
+    color: #fff;
+    text-align: center;
+    padding: 0.3rem 0;
+    margin-top: auto; /* Ensure footer sticks to the bottom */
+    z-index: 1000;
+}
+
+footer p {
+   color: #fff;
+}
+
+
+/* Hamburger Menu Button */
+.hamburger {
+    display: none; /* Hidden by default for large screens */
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    z-index: 2000; /* Ensure it stays on top */
+}
+
+.hamburger .bar {
+    width: 25px;
+    height: 3px;
+    background: #fff;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+/* Mobile Menu */
+@media (max-width: 768px) {
+    .menu {
+        display: none; /* Hide the menu on smaller screens */
+        flex-direction: column;
+        background-color: #198C69; /* Same color as the navbar */
+        position: absolute;
+        top: 100%;
+        right: 0;
+        left: 0;
+        padding: 1rem 2rem;
+        z-index: 1000;
+    }
+
+    .menu.active {
+        display: flex; /* Show the menu when active */
+    }
+
+    .hamburger {
+        display: flex; /* Display the hamburger button on smaller screens */
+    }
+}
+
+
