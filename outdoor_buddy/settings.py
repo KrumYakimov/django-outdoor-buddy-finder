@@ -190,11 +190,11 @@ LOGIN_URL = reverse_lazy("signin")
 LOGOUT_REDIRECT_URL = reverse_lazy("home")
 
 # AWS SES Configuration
-AWS_ACCESS_KEY = config("AWS_ACCESS_KEY")
-AWS_SECRET = config("AWS_SECRET")
-AWS_BUCKET = config("AWS_BUCKET")
-AWS_REGION = config("AWS_REGION")
-EMAIL_SENDER = config("EMAIL_SENDER")
+AWS_ACCESS_KEY = config("AWS_ACCESS_KEY", default=os.environ.get("AWS_ACCESS_KEY"))
+AWS_SECRET = config("AWS_SECRET", default=os.environ.get("AWS_SECRET"))
+AWS_BUCKET = config("AWS_BUCKET", default=os.environ.get("AWS_BUCKET"))
+AWS_REGION = config("AWS_REGION", default=os.environ.get("AWS_REGION"))
+EMAIL_SENDER = config("EMAIL_SENDER", default=os.environ.get("EMAIL_SENDER"))
 AWS_QUERYSTRING_AUTH = False  # Public access to files (optional)
 
 # Media files
@@ -205,12 +205,12 @@ MEDIA_URL = f"https://{AWS_BUCKET}.s3.{AWS_REGION}.amazonaws.com/"
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 
 # SMTP Server Settings
-EMAIL_HOST = config("EMAIL_HOST")
-EMAIL_PORT = config("EMAIL_PORT")
+EMAIL_HOST = config("EMAIL_HOST", default=os.environ.get("EMAIL_HOST"))
+EMAIL_PORT = config("EMAIL_PORT", default=os.environ.get("EMAIL_PORT"))
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = config("EMAIL_HOST_USER")
-EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")
-DEFAULT_FROM_EMAIL = config("DEFAULT_FROM_EMAIL")
+EMAIL_HOST_USER = config("EMAIL_HOST_USER", default=os.environ.get("EMAIL_HOST_USER"))
+EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD", default=os.environ.get("EMAIL_HOST_PASSWORD"))
+DEFAULT_FROM_EMAIL = config("DEFAULT_FROM_EMAIL", default=os.environ.get("DEFAULT_FROM_EMAIL"))
 
 REST_FRAMEWORK = {
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
