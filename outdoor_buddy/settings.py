@@ -32,6 +32,7 @@ DEBUG = False
 ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
+    "172.31.17.250",
     '172.31.*.*',
     'outdoorbuddy-env.eba-h5v8cuu6.eu-north-1.elasticbeanstalk.com',
 ]
