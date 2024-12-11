@@ -6,5 +6,3 @@ class HomePageView(views.TemplateView):
     template_name = "core/home-page.html"
 
 
-def health_check(request):
-    return JsonResponse({"status": "ok"})

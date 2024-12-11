@@ -9,7 +9,6 @@ https://docs.djangoproject.com/en/5.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
-import os
 import sys
 from pathlib import Path
 
@@ -24,23 +23,18 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config("SECRET_KEY", default=os.environ.get("SECRET_KEY"))
+SECRET_KEY = config("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config("DEBUG", default=False, cast=bool)
+DEBUG = True
 
 ALLOWED_HOSTS = [
-    'localhost',
-    '127.0.0.1',
-    "172.31.17.250",
-    '172.31.*.*',
-    "13.48.22.236",
-    'outdoorbuddy-env.eba-h5v8cuu6.eu-north-1.elasticbeanstalk.com',
+    config("NGROK_ENDPOINT"),
+    "localhost",
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://outdoorbuddyfinder-env.eba-smitnfig.eu-north-1.elasticbeanstalk.com",
-    "https://www.outdoorbuddyfinder.com",
+    config("NGROK_CSRF_TRUSTED_ORIGINS"),
 ]
 
 
@@ -76,7 +70,6 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
-    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -112,30 +105,15 @@ WSGI_APPLICATION = "outdoor_buddy.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-# Database configuration based on DEBUG
-def get_database_config():
-    if DEBUG:
-        return {
-            "ENGINE": "django.db.backends.postgresql",
-            "NAME": config("DB_NAME"),
-            "USER": config("DB_USER"),
-            "PASSWORD": config("DB_PASSWORD"),
-            "HOST": config("DB_HOST"),
-            "PORT": config("DB_PORT"),
-        }
-    else:
-        return {
-            "ENGINE": "django.db.backends.postgresql",
-            "NAME": config("DB_NAME_PROD", default=os.environ.get("DB_NAME_PROD")),
-            "USER": config("DB_USER_PROD", default=os.environ.get("DB_USER_PROD")),
-            "PASSWORD": config("DB_PASSWORD_PROD", default=os.environ.get("DB_PASSWORD_PROD")),
-            "HOST": config("DB_HOST_PROD", default=os.environ.get("DB_HOST_PROD")),
-            "PORT": config("DB_PORT_PROD", default=os.environ.get("DB_PORT_PROD")),
-        }
-
-
 DATABASES = {
-    "default": get_database_config()
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": config("DB_NAME"),
+        "USER": config("DB_USER"),
+        "PASSWORD": config("DB_PASSWORD"),
+        "HOST": config("DB_HOST"),
+        "PORT": config("DB_PORT"),
+    }
 }
 
 
@@ -173,10 +151,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-
 STATIC_URL = "static/"
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
-STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_DIRS = (BASE_DIR / "static",)
 
 # Default primary key field type
@@ -190,11 +165,11 @@ LOGIN_URL = reverse_lazy("signin")
 LOGOUT_REDIRECT_URL = reverse_lazy("home")
 
 # AWS SES Configuration
-AWS_ACCESS_KEY = config("AWS_ACCESS_KEY", default=os.environ.get("AWS_ACCESS_KEY"))
-AWS_SECRET = config("AWS_SECRET", default=os.environ.get("AWS_SECRET"))
-AWS_BUCKET = config("AWS_BUCKET", default=os.environ.get("AWS_BUCKET"))
-AWS_REGION = config("AWS_REGION", default=os.environ.get("AWS_REGION"))
-EMAIL_SENDER = config("EMAIL_SENDER", default=os.environ.get("EMAIL_SENDER"))
+AWS_ACCESS_KEY = config("AWS_ACCESS_KEY")
+AWS_SECRET = config("AWS_SECRET")
+AWS_BUCKET = config("AWS_BUCKET")
+AWS_REGION = config("AWS_REGION")
+EMAIL_SENDER = config("EMAIL_SENDER")
 AWS_QUERYSTRING_AUTH = False  # Public access to files (optional)
 
 # Media files
@@ -205,12 +180,12 @@ MEDIA_URL = f"https://{AWS_BUCKET}.s3.{AWS_REGION}.amazonaws.com/"
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 
 # SMTP Server Settings
-EMAIL_HOST = config("EMAIL_HOST", default=os.environ.get("EMAIL_HOST"))
-EMAIL_PORT = config("EMAIL_PORT", default=os.environ.get("EMAIL_PORT"))
+EMAIL_HOST = config("EMAIL_HOST")
+EMAIL_PORT = config("EMAIL_PORT")
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = config("EMAIL_HOST_USER", default=os.environ.get("EMAIL_HOST_USER"))
-EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD", default=os.environ.get("EMAIL_HOST_PASSWORD"))
-DEFAULT_FROM_EMAIL = config("DEFAULT_FROM_EMAIL", default=os.environ.get("DEFAULT_FROM_EMAIL"))
+EMAIL_HOST_USER = config("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")
+DEFAULT_FROM_EMAIL = config("DEFAULT_FROM_EMAIL")
 
 REST_FRAMEWORK = {
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
@@ -230,68 +205,41 @@ SPECTACULAR_SETTINGS = {
 }
 
 
-# LOGGING = {
-#     "version": 1,
-#     "disable_existing_loggers": False,
-#     "formatters": {
-#         "verbose": {
-#             "format": "{levelname} {asctime} {module} {message}",
-#             "style": "{",
-#         },
-#         "simple": {
-#             "format": "{levelname} {message}",
-#             "style": "{",
-#         },
-#     },
-#     "handlers": {
-#         "console": {
-#             "level": "DEBUG",
-#             "class": "logging.StreamHandler",
-#             "formatter": "verbose",
-#         },
-#         "file": {
-#             "level": "DEBUG",
-#             "class": "logging.FileHandler",
-#             "filename": "debug.log",
-#             "formatter": "verbose",
-#         },
-#         "error_file": {
-#             "level": "ERROR",
-#             "class": "logging.FileHandler",
-#             "filename": "errors.log",
-#             "formatter": "verbose",
-#         },
-#     },
-#     "loggers": {
-#         "django": {
-#             "handlers": ["console", "file", "error_file"],
-#             "level": "DEBUG",
-#             "propagate": False,
-#         },
-#         "outdoor_buddy": {
-#             "handlers": ["console", "file"],
-#             "level": "DEBUG",
-#             "propagate": True,
-#         },
-#     },
-# }
-
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
+    "formatters": {
+        "verbose": {
+            "format": "{levelname} {asctime} {module} {message}",
+            "style": "{",
+        },
+        "simple": {
+            "format": "{levelname} {message}",
+            "style": "{",
+        },
+    },
     "handlers": {
+        "console": {
+            "level": "DEBUG",
+            "class": "logging.StreamHandler",
+            "formatter": "verbose",
+        },
         "file": {
-            "level": "ERROR",
+            "level": "DEBUG",
             "class": "logging.FileHandler",
-            "filename": "/var/log/outdoor_buddy/errors.log",
+            "filename": "debug.log",
+            "formatter": "verbose",
         },
     },
     "loggers": {
         "django": {
-            "handlers": ["file"],
-            "level": "ERROR",
+            "handlers": ["console", "file"],
+            "level": "INFO",
+        },
+        "outdoor_buddy": {
+            "handlers": ["console", "file"],
+            "level": "DEBUG",
             "propagate": True,
         },
     },
 }
-

@@ -6,5 +6,5 @@ from outdoor_buddy.core import views
 urlpatterns = [
     path("", views.HomePageView.as_view(), name="home"),
     path("about/", TemplateView.as_view(template_name="core/about.html"), name="about"),
-    path("health/", views.health_check, name="health"),  # Dedicated health check endpoint
+
 ]
