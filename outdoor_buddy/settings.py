@@ -34,6 +34,7 @@ ALLOWED_HOSTS = [
     '127.0.0.1',
     "172.31.17.250",
     '172.31.*.*',
+    "13.48.22.236",
     'outdoorbuddy-env.eba-h5v8cuu6.eu-north-1.elasticbeanstalk.com',
 ]
 
@@ -111,16 +112,30 @@ WSGI_APPLICATION = "outdoor_buddy.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": config("DB_NAME"),
-        "USER": config("DB_USER"),
-        "PASSWORD": config("DB_PASSWORD"),
-        "HOST": config("DB_HOST"),
-        "PORT": config("DB_PORT"),
+if DEBUG:
+    # Development database settings
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": config("DB_NAME"),
+            "USER": config("DB_USER"),
+            "PASSWORD": config("DB_PASSWORD"),
+            "HOST": config("DB_HOST"),
+            "PORT": config("DB_PORT"),
+        }
     }
-}
+else:
+    # Production database settings
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": config("DB_NAME_PROD"),
+            "USER": config("DB_USER_PROD"),
+            "PASSWORD": config("DB_PASSWORD_PROD"),
+            "HOST": config("DB_HOST_PROD"),
+            "PORT": config("DB_PORT_PROD"),
+        }
+    }
 
 
 # Password validation
