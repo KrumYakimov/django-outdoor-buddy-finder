@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/5.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
+import os
 import sys
 from pathlib import Path
 
@@ -23,19 +24,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config("SECRET_KEY")
+SECRET_KEY = os.getenv('SECRET_KEY', config("SECRET_KEY"))
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config("DEBUG")
+DEBUG = os.getenv('DEBUG', config('DEBUG')) == "True"
 
-ALLOWED_HOSTS = [
-    config("NGROK_ENDPOINT"),
-    "localhost",
-]
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', config('ALLOWED_HOSTS')).split(',')
 
-CSRF_TRUSTED_ORIGINS = [
-    config("NGROK_CSRF_TRUSTED_ORIGINS"),
-]
+CSRF_TRUSTED_ORIGINS = os.getenv('CSRF_TRUSTED_ORIGINS', config('CSRF_TRUSTED_ORIGINS', [])).split(',')
+
 
 
 # Application definition
@@ -70,6 +67,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -152,6 +150,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = "static/"
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
 STATICFILES_DIRS = (BASE_DIR / "static",)
 
 # Default primary key field type
@@ -165,11 +167,11 @@ LOGIN_URL = reverse_lazy("signin")
 LOGOUT_REDIRECT_URL = reverse_lazy("home")
 
 # AWS SES Configuration
-AWS_ACCESS_KEY = config("AWS_ACCESS_KEY")
-AWS_SECRET = config("AWS_SECRET")
-AWS_BUCKET = config("AWS_BUCKET")
-AWS_REGION = config("AWS_REGION")
-EMAIL_SENDER = config("EMAIL_SENDER")
+AWS_ACCESS_KEY = os.getenv("AWS_ACCESS_KEY", config("AWS_ACCESS_KEY"))
+AWS_SECRET = os.getenv("AWS_SECRET", config("AWS_SECRET")),
+AWS_BUCKET = os.getenv("AWS_SECRET", config("AWS_BUCKET")),
+AWS_REGION = os.getenv("AWS_SECRET", config("AWS_REGION")),
+EMAIL_SENDER = os.getenv("AWS_SECRET", config("EMAIL_SENDER")),
 AWS_QUERYSTRING_AUTH = False  # Public access to files (optional)
 
 # Media files
@@ -180,12 +182,12 @@ MEDIA_URL = f"https://{AWS_BUCKET}.s3.{AWS_REGION}.amazonaws.com/"
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 
 # SMTP Server Settings
-EMAIL_HOST = config("EMAIL_HOST")
-EMAIL_PORT = config("EMAIL_PORT")
-EMAIL_USE_TLS = config("EMAIL_USE_TLS")
-EMAIL_HOST_USER = config("EMAIL_HOST_USER")
-EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")
-DEFAULT_FROM_EMAIL = config("DEFAULT_FROM_EMAIL")
+EMAIL_HOST = os.getenv("EMAIL_HOST", config("EMAIL_HOST")),
+EMAIL_PORT = os.getenv("EMAIL_HOST", config("EMAIL_PORT")),
+EMAIL_USE_TLS = os.getenv("EMAIL_HOST", config("EMAIL_USE_TLS")),
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST", config("EMAIL_HOST_USER")),
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST", config("EMAIL_HOST_PASSWORD")),
+DEFAULT_FROM_EMAIL = os.getenv("EMAIL_HOST", config("DEFAULT_FROM_EMAIL")),
 
 REST_FRAMEWORK = {
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
