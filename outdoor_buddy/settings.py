@@ -126,11 +126,11 @@ def get_database_config():
     else:
         return {
             "ENGINE": "django.db.backends.postgresql",
-            "NAME": config("DB_NAME_PROD"),
-            "USER": config("DB_USER_PROD"),
-            "PASSWORD": config("DB_PASSWORD_PROD"),
-            "HOST": config("DB_HOST_PROD"),
-            "PORT": config("DB_PORT_PROD"),
+            "NAME": config("DB_NAME_PROD", default=os.environ.get("DB_NAME_PROD")),
+            "USER": config("DB_USER_PROD", default=os.environ.get("DB_USER_PROD")),
+            "PASSWORD": config("DB_PASSWORD_PROD", default=os.environ.get("DB_PASSWORD_PROD")),
+            "HOST": config("DB_HOST_PROD", default=os.environ.get("DB_HOST_PROD")),
+            "PORT": config("DB_PORT_PROD", default=os.environ.get("DB_PORT_PROD")),
         }
 
 
