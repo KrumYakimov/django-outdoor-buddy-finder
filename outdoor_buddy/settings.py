@@ -30,11 +30,10 @@ SECRET_KEY = config("SECRET_KEY")
 DEBUG = False
 
 ALLOWED_HOSTS = [
-    "outdoorbuddyfinder-env.eba-smitnfig.eu-north-1.elasticbeanstalk.com",
-    ".elasticbeanstalk.com",
-    ".outdoorbuddyfinder.com",
-    "localhost",
-    "127.0.0.1",
+    'localhost',
+    '127.0.0.1',
+    '172.31.17.250',
+    'outdoorbuddy-env.eba-h5v8cuu6.eu-north-1.elasticbeanstalk.com',
 ]
 
 CSRF_TRUSTED_ORIGINS = [
