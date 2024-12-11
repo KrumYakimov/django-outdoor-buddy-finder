@@ -30,7 +30,6 @@ SECRET_KEY = config("SECRET_KEY")
 DEBUG = False
 
 ALLOWED_HOSTS = [
-    config("NGROK_ENDPOINT"),
     "outdoorbuddyfinder-env.eba-smitnfig.eu-north-1.elasticbeanstalk.com",
     ".elasticbeanstalk.com",
     ".outdoorbuddyfinder.com",
@@ -39,7 +38,6 @@ ALLOWED_HOSTS = [
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    config("NGROK_CSRF_TRUSTED_ORIGINS"),
     "https://outdoorbuddyfinder-env.eba-smitnfig.eu-north-1.elasticbeanstalk.com",
     "https://www.outdoorbuddyfinder.com",
 ]
