@@ -112,10 +112,10 @@ WSGI_APPLICATION = "outdoor_buddy.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-if DEBUG:
-    # Development database settings
-    DATABASES = {
-        "default": {
+# Database configuration based on DEBUG
+def get_database_config():
+    if DEBUG:
+        return {
             "ENGINE": "django.db.backends.postgresql",
             "NAME": config("DB_NAME"),
             "USER": config("DB_USER"),
@@ -123,11 +123,8 @@ if DEBUG:
             "HOST": config("DB_HOST"),
             "PORT": config("DB_PORT"),
         }
-    }
-else:
-    # Production database settings
-    DATABASES = {
-        "default": {
+    else:
+        return {
             "ENGINE": "django.db.backends.postgresql",
             "NAME": config("DB_NAME_PROD"),
             "USER": config("DB_USER_PROD"),
@@ -135,7 +132,11 @@ else:
             "HOST": config("DB_HOST_PROD"),
             "PORT": config("DB_PORT_PROD"),
         }
-    }
+
+
+DATABASES = {
+    "default": get_database_config()
+}
 
 
 # Password validation
