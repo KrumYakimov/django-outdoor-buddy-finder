@@ -14,28 +14,15 @@ Here’s a glimpse of the homepage of **Outdoor Buddy Finder**:
 
 ![Homepage Screenshot](/static/images/core/home_page_screenshot.png)
 
-
-
-
 ---
 
 ## Table of Contents
-- [Deployment](#deployment)
 - [Features](#features)
 - [Tech Stack](#tech-stack)
 - [Setup Instructions](#setup-instructions)
 - [API Endpoints](#api-endpoints)
 - [Testing](#testing)
 - [License](#license)
-
----
-
-## Deployment
-
-The **Outdoor Buddy Finder** application is deployed and accessible at:
-
-**[App URL](https://your-deployment-url.com)**
-
 ---
 
 ## Features
