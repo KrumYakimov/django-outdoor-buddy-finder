@@ -1,0 +1,280 @@
+/* General Styles */
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: "PT Sans", sans-serif;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* Map Register Section */
+.map-register {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    height: 100vh; /* Full viewport height */
+    background: linear-gradient(to bottom, rgba(240, 244, 248, 0.8), rgba(217, 228, 236, 0.8)); /* Slight transparency for overlay effect */
+}
+
+/* Map Background */
+.map-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url("/static/images/accounts/map.png") no-repeat center center/cover;
+    z-index: 1; /* Place behind the form */
+}
+
+/* Map Icons */
+.map-icons {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 2; /* Above background, below form */
+}
+
+.icon {
+    position: absolute;
+    width: 70px;
+    height: 70px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    animation: float 3s infinite ease-in-out;
+}
+
+.icon.compass {
+    top: 15%;
+    left: 10%;
+    background-image: url("/static/images/icons/compass.png");
+}
+
+.icon.pin {
+    top: 50%;
+    right: 10%;
+    background-image: url("/static/images/icons/pin-icon.png");
+}
+
+.icon.trail {
+    bottom: 15%;
+    left: 20%;
+    background-image: url("/static/images/icons/trail-icon.png");
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+/* Edit Profile Form */
+.edit-profile {
+    position: relative;
+    z-index: 3; /* Ensure form is above all other elements */
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 2rem 1rem;
+    flex: 1;
+    width: 100%;
+}
+
+.edit-profile-form {
+    width: 600px;
+    max-width: 90%;
+    background: rgba(255, 255, 255, 0.9); /* Semi-transparent form background */
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    position: relative; /* Allow stacking above background */
+}
+
+.edit-profile-form h1{
+    text-align: center;
+    font-size: 2rem;
+    color: #1C4631;
+    margin-bottom: 1rem;
+}
+
+/* Profile Picture Section */
+.profile-picture-section-edit{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.profile-pic-edit {
+    width: 200px; /* Adjust width as needed */
+    height: auto;
+    border-radius: 50%;
+    margin-bottom: 1rem;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.file-input-label {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #198C69;
+    margin-bottom: 0.5rem;
+    text-align: center;
+}
+
+.custom-file-input {
+    display: block;
+    width: 100%;
+    max-width: 300px;
+    padding: 0.5rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.custom-file-input:focus {
+    border-color: #198C69;
+    box-shadow: 0 0 5px rgba(31, 123, 255, 0.3);
+    outline: none;
+}
+
+
+
+/* Form Groups */
+.edit-profile-form .form-group {
+    margin-bottom: 1.5rem;
+    text-align: left;
+}
+
+.edit-profile-form label {
+    font-size: 1rem;
+    color: #198C69;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.edit-profile-form input,
+.edit-profile-form select,
+.edit-profile-form textarea {
+    width: 100%;
+    padding: 0.8rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.edit-profile-form input:focus,
+.edit-profile-form select:focus,
+.edit-profile-form textarea:focus {
+    outline: none;
+    border-color: #198C69;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+}
+
+/* Fieldset Styling */
+.edit-profile-form fieldset {
+    border: 1px solid #ddd;
+    padding: 1.5rem;
+    border-radius: 10px;
+    margin-bottom: 2rem;
+}
+
+.edit-profile-form legend {
+    color: #1C4631;
+    font-size: 1.2rem;
+    padding: 0 0.5rem;
+}
+
+/* Form Buttons */
+.form-buttons-profile-edit {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.form-buttons-profile-edit .btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.8rem;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    border: none;
+    width: 200px; /* Fixed width for consistent button size */
+    height: 50px; /* Fixed height for all buttons */
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.form-buttons-profile-edit .btn.primary {
+    background: #198C69;
+    color: white;
+}
+
+.form-buttons-profile-edit .btn.primary:hover {
+    background: #1C4631;
+    transform: translateY(-3px);
+}
+
+.form-buttons-profile-edit .btn.secondary {
+    background: #ddd;
+    color: #555;
+}
+
+.form-buttons-profile-edit .btn.secondary:hover {
+    background: #ccc;
+    transform: translateY(-3px);
+}
+
+/* Style for the Preferred Activities Section */
+.form-group {
+    margin-bottom: 1.5rem;
+    text-align: left;
+}
+
+.form-group label {
+    font-size: 1rem;
+    color: #198C69;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+#activities {
+    display: flex;
+    flex-wrap: wrap; /* Allows checkboxes to wrap to the next line */
+    gap: 1rem; /* Space between checkboxes */
+    margin-top: 0.5rem;
+}
+
+#activities label {
+    display: flex;
+    align-items: center; /* Aligns checkbox and text vertically */
+    gap: 0.5rem; /* Space between checkbox and text */
+    font-size: 1rem;
+    color: #555;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+#activities label:hover {
+    color: #198C69; /* Highlight text on hover */
+}
+
+#activities input[type="checkbox"] {
+    width: 20px; /* Adjust size of the checkbox */
+    height: 20px;
+    accent-color: #198C69; /* Styles the checkbox color */
+    cursor: pointer;
+}
+
+#activities input[type="checkbox"]:focus {
+    outline: 2px solid #1C4631; /* Add focus outline for accessibility */
+}

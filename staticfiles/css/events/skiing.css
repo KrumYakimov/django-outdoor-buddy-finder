@@ -1,0 +1,118 @@
+/* Skiing Header */
+.skiing-header {
+    text-align: center;
+    background: url("/static/images/events/skiing-hero.png") no-repeat center center/cover;
+    color: #fff;
+    padding: 10rem 2rem;
+}
+
+.skiing-header h1 {
+    color: #fff;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 10);
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.skiing-header p {
+    color: #fff;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 10);
+    font-size: 1.5rem;
+    margin-top: 0.5rem;
+}
+
+/* Skiing Tips Section */
+.skiing-tips {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: left;
+}
+
+.skiing-tips h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.tips-list {
+    list-style-type: disc;
+    margin-left: 2rem;
+    font-size: 1.2rem;
+    line-height: 1.6;
+    color: #555;
+}
+
+#popular-skiing-spots{
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    color: #005080 !important;
+}
+
+#skiing-event-name {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: #005080 !important;
+}
+
+/* Small Screens (Up to 480px) */
+@media (max-width: 480px) {
+    .popular-trails {
+        padding: 1rem;
+    }
+
+    .popular-trails h2 {
+        font-size: 1.5rem;
+    }
+
+    .trail-grid {
+        grid-template-columns: 1fr; /* Single column for small screens */
+    }
+
+    .trail-card {
+        padding: 1rem;
+    }
+
+    .trail-card h3 {
+        font-size: 1.2rem;
+    }
+
+    .trail-card p {
+        font-size: 0.9rem;
+    }
+}
+
+/* Medium Screens (481px to 1023px) */
+@media (min-width: 481px) and (max-width: 1023px) {
+    .popular-trails {
+        padding: 1.5rem;
+    }
+
+    .popular-trails h2 {
+        font-size: 1.8rem;
+    }
+
+    .trail-grid {
+        grid-template-columns: repeat(2, 1fr); /* Two columns for medium screens */
+    }
+
+    .trail-card h3 {
+        font-size: 1.4rem;
+    }
+
+    .trail-card p {
+        font-size: 1rem;
+    }
+}
+
+/* Large Screens (1024px and above) */
+@media (min-width: 1024px) {
+    .trail-grid {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Dynamic columns based on available space */
+    }
+
+    .popular-trails h2 {
+        font-size: 2rem;
+    }
+}
