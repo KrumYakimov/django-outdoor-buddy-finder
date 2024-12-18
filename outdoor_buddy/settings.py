@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
-ENVIRONMENT = os.getenv("ENVIRONMENT", config("ENVIRONMENT"))
+# ENVIRONMENT = os.getenv("ENVIRONMENT", config("ENVIRONMENT"))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv('SECRET_KEY', config("SECRET_KEY"))
@@ -183,11 +183,11 @@ EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 
 # SMTP Server Settings
 EMAIL_HOST = os.getenv("EMAIL_HOST", config("EMAIL_HOST"))
-EMAIL_PORT = os.getenv("EMAIL_HOST", config("EMAIL_PORT"))
-EMAIL_USE_TLS = os.getenv("EMAIL_HOST", config("EMAIL_USE_TLS"))
-EMAIL_HOST_USER = os.getenv("EMAIL_HOST", config("EMAIL_HOST_USER"))
-EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST", config("EMAIL_HOST_PASSWORD"))
-DEFAULT_FROM_EMAIL = os.getenv("EMAIL_HOST", config("DEFAULT_FROM_EMAIL"))
+EMAIL_PORT = os.getenv("EMAIL_PORT", config("EMAIL_PORT"))
+EMAIL_USE_TLS = os.getenv("EMAIL_USE_TLS", config("EMAIL_USE_TLS"))
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER", config("EMAIL_HOST_USER"))
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD", config("EMAIL_HOST_PASSWORD"))
+DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", config("DEFAULT_FROM_EMAIL"))
 
 REST_FRAMEWORK = {
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
