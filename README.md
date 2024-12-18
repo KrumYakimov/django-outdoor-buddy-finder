@@ -17,6 +17,7 @@ Here’s a glimpse of the homepage of **Outdoor Buddy Finder**:
 ---
 
 ## Table of Contents
+- [Deployment](#deployment)
 - [Features](#features)
 - [Tech Stack](#tech-stack)
 - [Setup Instructions](#setup-instructions)
@@ -25,6 +26,13 @@ Here’s a glimpse of the homepage of **Outdoor Buddy Finder**:
 - [License](#license)
 ---
 
+## Deployment
+
+The **Outdoor Buddy Finder** application is deployed and accessible at:
+
+**[App URL](https://outdoorbuddyfinder-eza8h2d9bbatcfdh.italynorth-01.azurewebsites.net)**
+
+---
 ## Features
 
 - **User Management**: 
