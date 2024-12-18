@@ -169,10 +169,10 @@ LOGOUT_REDIRECT_URL = reverse_lazy("home")
 # AWS SES Configuration
 AWS_ACCESS_KEY = os.getenv("AWS_ACCESS_KEY", config("AWS_ACCESS_KEY"))
 AWS_SECRET = os.getenv("AWS_SECRET", config("AWS_SECRET"))
-AWS_BUCKET = os.getenv("AWS_SECRET", config("AWS_BUCKET"))
-AWS_REGION = os.getenv("AWS_SECRET", config("AWS_REGION"))
-EMAIL_SENDER = os.getenv("AWS_SECRET", config("EMAIL_SENDER"))
-AWS_QUERYSTRING_AUTH = False  # Public access to files (optional)
+AWS_BUCKET = os.getenv("AWS_BUCKET", config("AWS_BUCKET"))
+AWS_REGION = os.getenv("AWS_REGION", config("AWS_REGION"))
+EMAIL_SENDER = os.getenv("EMAIL_SENDER", config("EMAIL_SENDER"))
+AWS_QUERYSTRING_AUTH = os.getenv("AWS_QUERYSTRING_AUTH", config("AWS_QUERYSTRING_AUTH"))
 
 # Media files
 DEFAULT_FILE_STORAGE = "outdoor_buddy_finder.services.storage.S3Storage"  # "storages.backends.s3boto3.S3Boto3Storage"
