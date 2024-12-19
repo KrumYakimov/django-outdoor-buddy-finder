@@ -22,13 +22,10 @@ UserModel = get_user_model()
 
 
 class EventListAPIView(generics.ListAPIView):
-    """
-    API endpoint to list all events.
-    """
     queryset = Event.objects.all()
     serializer_class = EventSerializer
     filter_backends = [SearchFilter, OrderingFilter]
-    search_fields = ['name', 'location', 'activity_type__name']
+    search_fields = ["name", "location", "activity_type__name"]
 
 
 class UserEventListView(LoginRequiredMixin, ListView):
@@ -37,9 +34,6 @@ class UserEventListView(LoginRequiredMixin, ListView):
     context_object_name = "user_events"
 
     def get_queryset(self):
-        """
-        Fetch events created by the logged-in user with related activity types preloaded.
-        """
         return (
             Event.objects.filter(creator=self.request.user)
             .select_related("activity_type")
@@ -64,16 +58,9 @@ class EventDetailView(LoginRequiredMixin, DetailView):
     context_object_name = "event"
 
     def get_object(self, queryset=None):
-        """
-        Fetch the specific event based on its ID and ensure it exists.
-        """
         return get_object_or_404(Event, pk=self.kwargs["pk"])
 
     def get_context_data(self, **kwargs):
-        """
-        Add additional context data including organizer profile, activity type,
-        return URL, reviews, and review-related information.
-        """
         context = super().get_context_data(**kwargs)
         event = self.get_object()
 
@@ -106,12 +93,9 @@ class EventDetailView(LoginRequiredMixin, DetailView):
         return context
 
     def get_return_url(self):
-        """
-        Determine the return URL based on the referrer or fallback to the activity-specific or user-event list views.
-        """
         referer = self.request.META.get("HTTP_REFERER")
         if referer:
-            return referer  # Prioritize the referrer to return to where the user came from.
+            return referer
 
         activity_slug = self.object.activity_type.name.lower().replace(" ", "-")
         activity_urls = {
@@ -124,9 +108,6 @@ class EventDetailView(LoginRequiredMixin, DetailView):
         return reverse(activity_urls.get(activity_slug, "user-event-list"))
 
     def post(self, request, *args, **kwargs):
-        """
-        Handle review submission.
-        """
         event = self.get_object()
         review_form = ReviewForm(request.POST)
 
@@ -158,16 +139,10 @@ class EventUpdateView(LoginRequiredMixin, UserIsOwnerMixin, UpdateView):
     success_url = reverse_lazy("event-list")
 
     def get_object(self, queryset=None):
-        """
-        Fetch the specific event object being edited.
-        """
         event = super().get_object(queryset)
         return event
 
     def form_valid(self, form):
-        """
-        Handles form submission, including updating the event picture.
-        """
         event = form.save(commit=False)
 
         if "picture_upload" in form.changed_data and event.picture_upload:
@@ -185,17 +160,11 @@ class EventUpdateView(LoginRequiredMixin, UserIsOwnerMixin, UpdateView):
         return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
-        """
-        Provide additional context to the template.
-        """
         context = super().get_context_data(**kwargs)
         context["event"] = self.get_object()
         return context
 
     def get_success_url(self):
-        """
-        Redirect to the event detail page after a successful update.
-        """
         return reverse_lazy("event-detail", kwargs={"pk": self.object.pk})
 
 
@@ -206,15 +175,22 @@ class EventDeleteView(
     template_name = "events/event-delete.html"
     success_url = reverse_lazy("home")
 
+    def get_object(self, queryset=None):
+        return get_object_or_404(Event, pk=self.kwargs["pk"])
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         event = self.get_object()
-        form_class = modelform_factory(Event, exclude=["id", "creator"])
-        context['form'] = form_class(instance=event)
-        context['event'] = event
+
+        EventForm = modelform_factory(Event, exclude=["id", "creator"])
+        context["form"] = EventForm(instance=event)
+        context["event"] = event
+
         return context
 
     def post(self, request, *args, **kwargs):
         event = self.get_object()
+        response = super().post(request, *args, **kwargs)
         event.delete()
-        return super().post(request, *args, **kwargs)
+
+        return response
