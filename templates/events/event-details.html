@@ -295,10 +295,7 @@
                 {% if event.creator == user %}
                     <!-- Buttons for Event Creator -->
                     <a href="{% url 'event-update' event.pk %}" class="btn edit-btn">Edit</a>
-                    <a href="{% url 'event-delete' event.pk %}" class="btn delete-btn"
-                       onclick="return confirm('Are you sure?');">
-                        Delete
-                    </a>
+                    <a href="{% url 'event-delete' event.pk %}" class="btn delete-btn">Delete</a>
                 {% else %}
                     {% if is_participant %}
                         <!-- Leave Button -->

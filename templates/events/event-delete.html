@@ -9,7 +9,7 @@
         </div>
 
         <h1>Delete Event</h1>
-        <form class="event-form" method="post" action="">
+        <form class="event-form" method="post" action="{% url 'event-delete' event.pk %}">
             {% csrf_token %}
 
             <!-- Picture Upload Section -->
@@ -117,7 +117,7 @@
             <!-- Action Buttons -->
             <div class="action-buttons">
                 <button type="submit" class="btn delete-btn">Delete Event</button>
-                <a href="#" class="btn cancel-btn">Cancel</a>
+                <a href="{% url 'event-detail' event.pk %}" class="btn cancel-btn">Cancel</a>
             </div>
         </form>
     </section>
