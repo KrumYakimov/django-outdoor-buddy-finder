@@ -208,7 +208,10 @@ class EventDeleteView(
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['event'] = self.get_object()
+        event = self.get_object()
+        form_class = modelform_factory(Event, exclude=["id", "creator"])
+        context['form'] = form_class(instance=event)
+        context['event'] = event
         return context
 
     def post(self, request, *args, **kwargs):
