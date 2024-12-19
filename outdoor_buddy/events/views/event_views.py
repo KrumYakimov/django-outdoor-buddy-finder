@@ -204,10 +204,14 @@ class EventDeleteView(
 ):
     model = Event
     template_name = "events/event-delete.html"
-    form_class = modelform_factory(Event, exclude=(["id", "creator"]))
     success_url = reverse_lazy("home")
 
-    def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
-        kwargs["instance"] = self.object
-        return kwargs
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['event'] = self.get_object()
+        return context
+
+    def post(self, request, *args, **kwargs):
+        event = self.get_object()
+        event.delete()
+        return super().post(request, *args, **kwargs)
